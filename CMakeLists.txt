@@ -1,0 +1,4 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.25 FATAL_ERROR)
+PROJECT(FleetHttpClient)
+
+ADD_SUBDIRECTORY("lib/Cpp-rest-openapi-client")
