@@ -1,4 +1,4 @@
-#include "include/RequestFrequencyGuard.hpp"
+#include "RequestFrequencyGuard.hpp"
 
 #include <unistd.h>
 
@@ -9,6 +9,11 @@ RequestFrequencyGuard::RequestFrequencyGuard(int maxRequestsThresholdCount, int 
     this->maxRequestsThresholdPeriodMs = maxRequestsThresholdPeriodMs;
     this->delayAfterThresholdReachedMs = delayAfterThresholdReachedMs;
     this->retryRequestsDelayMs = retryRequestsDelayMs;
+}
+
+
+RequestFrequencyGuard::~RequestFrequencyGuard() {
+
 }
 
 

@@ -1,0 +1,13 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.25)
+PROJECT(FleetHttpClient)
+
+SET(CMAKE_CXX_STANDARD 20)
+
+FIND_PACKAGE(GTest REQUIRED)
+INCLUDE_DIRECTORIES(${GTEST_INCLUDE_DIRS})
+FILE(GLOB_RECURSE source_test_files "${CMAKE_CURRENT_LIST_DIR}/src/*")
+ADD_EXECUTABLE(fleethttpclient_tests ${source_test_files} ${CMAKE_CURRENT_LIST_DIR}/main.cpp)
+TARGET_INCLUDE_DIRECTORIES(fleethttpclient_tests PUBLIC "${CMAKE_CURRENT_LIST_DIR}/include/")
+TARGET_LINK_LIBRARIES(fleethttpclient_tests PUBLIC ${GTEST_LIBRARIES} fleet_http_client)
+INCLUDE(GoogleTest)
+GTEST_DISCOVER_TESTS(fleethttpclient_tests)

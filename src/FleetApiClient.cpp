@@ -1,4 +1,4 @@
-#include "include/FleetApiClient.hpp"
+#include "FleetApiClient.hpp"
 
 using namespace org::openapitools::client;
 
@@ -33,6 +33,10 @@ FleetApiClient::FleetApiClient(std::string apiUrl, std::string apiKey, std::stri
 
     requestFrequencyGuard = std::make_shared<RequestFrequencyGuard>(maxRequestsThresholdCount, maxRequestsThresholdPeriodMs,
                                                                     delayAfterThresholdReachedMs, retryRequestsDelayMs);
+}
+
+FleetApiClient::~FleetApiClient() {
+
 }
 
 

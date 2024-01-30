@@ -30,4 +30,4 @@ The generated code does not work properly without some adjustments:
 
 ## Tests
 
-TODO add unit tests
+[Tests Readme](./test/README.md)
