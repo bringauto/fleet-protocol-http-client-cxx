@@ -1,5 +1,7 @@
 #include "include/FleetApiClient.hpp"
 
+using namespace org::openapitools::client;
+
 
 FleetApiClient::FleetApiClient(std::string apiUrl, std::string apiKey, std::string companyName, std::string carName,
                                int maxRequestsThresholdCount, int maxRequestsThresholdPeriodMs,
@@ -51,7 +53,9 @@ std::vector<std::shared_ptr<model::Car>> FleetApiClient::getCars() {
 std::vector<std::shared_ptr<model::Message>> FleetApiClient::getCommands(long since, bool wait) {
     auto commandsRequest = deviceApi->listCommands(companyName, carName, since, wait);
     auto commands = commandsRequest.get();
-    requestFrequencyGuard->handleDelays(utility::datetime::utc_now().to_interval());
+    if (wait) {
+        requestFrequencyGuard->handleDelays(utility::datetime::utc_now().to_interval());
+    }
     return commands;
 }
 
@@ -59,7 +63,9 @@ std::vector<std::shared_ptr<model::Message>> FleetApiClient::getCommands(long si
 std::vector<std::shared_ptr<model::Message>> FleetApiClient::getStatuses(long since, bool wait) {
     auto statusesRequest = deviceApi->listStatuses(companyName, carName, since, wait);
     auto statuses = statusesRequest.get();
-    requestFrequencyGuard->handleDelays(utility::datetime::utc_now().to_interval());
+    if (wait) {
+        requestFrequencyGuard->handleDelays(utility::datetime::utc_now().to_interval());
+    }
     return statuses;
 }
 

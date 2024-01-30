@@ -1,5 +1,7 @@
 #include "include/RequestFrequencyGuard.hpp"
 
+#include <unistd.h>
+
 
 RequestFrequencyGuard::RequestFrequencyGuard(int maxRequestsThresholdCount, int maxRequestsThresholdPeriodMs,
                                              int delayAfterThresholdReachedMs, int retryRequestsDelayMs) {
@@ -16,12 +18,13 @@ void RequestFrequencyGuard::handleDelays(unsigned long currentTimestamp) {
     if (!thresholdReached && isOverThreshold()) {
         thresholdReached = true;
         msgTimestamps.clear();
-        //long delay
+        usleep(delayAfterThresholdReachedMs * 1000);
         return;
     }
 
     if (thresholdReached) {
-        //short delay
+        usleep(retryRequestsDelayMs * 1000);
+
         if (msgTimestamps.size() >= maxRequestsThresholdCount) {
             thresholdReached = false;
             msgTimestamps.pop_back();
