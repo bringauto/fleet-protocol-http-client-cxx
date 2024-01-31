@@ -58,7 +58,13 @@ std::vector<std::shared_ptr<model::Car>> FleetApiClient::getCars() {
 
 std::vector<std::shared_ptr<model::Message>> FleetApiClient::getCommands(int64_t since, bool wait) {
     auto commandsRequest = deviceApi->listCommands(companyName, carName, since, wait);
-    auto commands = commandsRequest.get();
+    std::vector<std::shared_ptr<model::Message>> commands;
+
+    try {
+        commands = commandsRequest.get();
+    } catch (std::exception& e) {
+    }
+
     if (wait) {
         requestFrequencyGuard->handleDelays(
             std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count()
@@ -70,7 +76,13 @@ std::vector<std::shared_ptr<model::Message>> FleetApiClient::getCommands(int64_t
 
 std::vector<std::shared_ptr<model::Message>> FleetApiClient::getStatuses(int64_t since, bool wait) {
     auto statusesRequest = deviceApi->listStatuses(companyName, carName, since, wait);
-    auto statuses = statusesRequest.get();
+    std::vector<std::shared_ptr<model::Message>> statuses;
+
+    try {
+        statuses = statusesRequest.get();
+    } catch (std::exception& e) {
+    }
+
     if (wait) {
         requestFrequencyGuard->handleDelays(
             std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count()
