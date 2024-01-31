@@ -23,8 +23,8 @@ public:
      * @param retryRequestsDelayMs delay in ms between requests until request rate is no longer over the threshold (only for getCommands/getStatuses)
      */
     FleetApiClient(std::string apiUrl, std::string apiKey, std::string companyName, std::string carName,
-                   int maxRequestsThresholdCount = 10, int maxRequestsThresholdPeriodMs = 5000,
-                   int delayAfterThresholdReachedMs = 5000, int retryRequestsDelayMs = 200);
+                   int32_t maxRequestsThresholdCount = 10, int32_t maxRequestsThresholdPeriodMs = 5000,
+                   int32_t delayAfterThresholdReachedMs = 5000, int32_t retryRequestsDelayMs = 200);
 
     ~FleetApiClient();
 
@@ -35,7 +35,7 @@ public:
      * @param deviceRole role of device
      * @param deviceName name of device
      */
-    void setDeviceIdentification(int moduleId, int deviceType, std::string deviceRole, std::string deviceName);
+    void setDeviceIdentification(int32_t moduleId, int32_t deviceType, std::string deviceRole, std::string deviceName);
 
     /**
      * @brief Calls the GET function on /cars of Fleet v2 HTTP API
@@ -49,7 +49,7 @@ public:
      * @param wait optional, if true, waits for a predefined period until any command is found, will check request rate and possibly delay them
      * @return Vector of shared pointers to the Message model containing commands in payload data
      */
-    std::vector<std::shared_ptr<org::openapitools::client::model::Message>> getCommands(long since = 0, bool wait = false);
+    std::vector<std::shared_ptr<org::openapitools::client::model::Message>> getCommands(int64_t since = 0, bool wait = false);
 
     /**
      * @brief Calls the GET function on /status/{company_name}/{car_name} of Fleet v2 HTTP API
@@ -57,7 +57,7 @@ public:
      * @param wait optional, if true, waits for a predefined period until any status is found, will check request rate and possibly delay them
      * @return Vector of shared pointers to the Message model containing statuses in payload data
      */
-    std::vector<std::shared_ptr<org::openapitools::client::model::Message>> getStatuses(long since = 0, bool wait = false);
+    std::vector<std::shared_ptr<org::openapitools::client::model::Message>> getStatuses(int64_t since = 0, bool wait = false);
 
     /**
      * Calls the POST function on /command/{company_name}/{car_name} of Fleet v2 HTTP API.
@@ -79,7 +79,7 @@ public:
      * @return Shared pointer to the AvailableDevices model
      */
     //TODO might not work properly with api because it probably returns an array
-    std::shared_ptr<org::openapitools::client::model::AvailableDevices> getAvailableDevices(std::optional<int> moduleId);
+    std::shared_ptr<org::openapitools::client::model::AvailableDevices> getAvailableDevices(std::optional<int32_t> moduleId);
 
 private:
     std::shared_ptr<RequestFrequencyGuard> requestFrequencyGuard;

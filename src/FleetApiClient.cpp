@@ -1,11 +1,13 @@
 #include "FleetApiClient.hpp"
 
+#include <chrono>
+
 using namespace org::openapitools::client;
 
 
 FleetApiClient::FleetApiClient(std::string apiUrl, std::string apiKey, std::string companyName, std::string carName,
-                               int maxRequestsThresholdCount, int maxRequestsThresholdPeriodMs,
-                               int delayAfterThresholdReachedMs, int retryRequestsDelayMs) {
+                               int32_t maxRequestsThresholdCount, int32_t maxRequestsThresholdPeriodMs,
+                               int32_t delayAfterThresholdReachedMs, int32_t retryRequestsDelayMs) {
     auto apiConfigPtr = std::make_shared<api::ApiConfiguration>();
     apiConfigPtr->setBaseUrl(apiUrl);
     apiConfigPtr->setApiKey("api_key", apiKey);
@@ -40,7 +42,7 @@ FleetApiClient::~FleetApiClient() {
 }
 
 
-void FleetApiClient::setDeviceIdentification(int moduleId, int deviceType, std::string deviceRole, std::string deviceName) {
+void FleetApiClient::setDeviceIdentification(int32_t moduleId, int32_t deviceType, std::string deviceRole, std::string deviceName) {
     deviceIdPtr->setModuleId(moduleId);
     deviceIdPtr->setType(deviceType);
     deviceIdPtr->setRole(deviceRole);
@@ -54,21 +56,25 @@ std::vector<std::shared_ptr<model::Car>> FleetApiClient::getCars() {
 }
 
 
-std::vector<std::shared_ptr<model::Message>> FleetApiClient::getCommands(long since, bool wait) {
+std::vector<std::shared_ptr<model::Message>> FleetApiClient::getCommands(int64_t since, bool wait) {
     auto commandsRequest = deviceApi->listCommands(companyName, carName, since, wait);
     auto commands = commandsRequest.get();
     if (wait) {
-        requestFrequencyGuard->handleDelays(utility::datetime::utc_now().to_interval());
+        requestFrequencyGuard->handleDelays(
+            std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count()
+        );
     }
     return commands;
 }
 
 
-std::vector<std::shared_ptr<model::Message>> FleetApiClient::getStatuses(long since, bool wait) {
+std::vector<std::shared_ptr<model::Message>> FleetApiClient::getStatuses(int64_t since, bool wait) {
     auto statusesRequest = deviceApi->listStatuses(companyName, carName, since, wait);
     auto statuses = statusesRequest.get();
     if (wait) {
-        requestFrequencyGuard->handleDelays(utility::datetime::utc_now().to_interval());
+        requestFrequencyGuard->handleDelays(
+            std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count()
+        );
     }
     return statuses;
 }
@@ -100,7 +106,7 @@ void FleetApiClient::sendStatus(std::string statusJson) {
 }
 
 
-std::shared_ptr<model::AvailableDevices> FleetApiClient::getAvailableDevices(std::optional<int> moduleId) {
+std::shared_ptr<model::AvailableDevices> FleetApiClient::getAvailableDevices(std::optional<int32_t> moduleId) {
     boost::optional<int32_t> moduleIdBoost = boost::none;
     if (moduleId.has_value()) {
         moduleIdBoost = moduleId.value();

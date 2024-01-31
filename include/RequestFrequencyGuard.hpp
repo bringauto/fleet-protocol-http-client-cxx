@@ -13,8 +13,8 @@ public:
      * @param delayAfterThresholdReachedMs time to sleep for in ms when threshold is initially reached
      * @param retryRequestsDelayMs delay in ms between requests until request rate is no longer over the threshold
      */
-    RequestFrequencyGuard(int maxRequestsThresholdCount, int maxRequestsThresholdPeriodMs,
-                          int delayAfterThresholdReachedMs, int retryRequestsDelayMs);
+    RequestFrequencyGuard(int32_t maxRequestsThresholdCount, int32_t maxRequestsThresholdPeriodMs,
+                          int32_t delayAfterThresholdReachedMs, int32_t retryRequestsDelayMs);
 
     ~RequestFrequencyGuard();
 
@@ -22,16 +22,16 @@ public:
      * @brief Determines how long the next request should be delayed when the max request rate is reached
      * @param currentTimestamp timestamp that gets added to a container, used to calculate if the max request threshold is reached
      */
-    void handleDelays(unsigned long currentTimestamp);
+    void handleDelays(int64_t currentTimestamp);
 
 private:
-    int maxRequestsThresholdCount;
-    int maxRequestsThresholdPeriodMs;
-    int delayAfterThresholdReachedMs;
-    int retryRequestsDelayMs;
+    int32_t maxRequestsThresholdCount;
+    int32_t maxRequestsThresholdPeriodMs;
+    int32_t delayAfterThresholdReachedMs;
+    int32_t retryRequestsDelayMs;
 
     bool thresholdReached = false;
-    std::vector<long> msgTimestamps;
+    std::vector<int64_t> msgTimestamps;
 
     /**
      * @brief Checks if the current request rate is over the threshold

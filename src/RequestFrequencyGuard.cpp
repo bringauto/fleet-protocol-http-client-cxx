@@ -3,8 +3,8 @@
 #include <unistd.h>
 
 
-RequestFrequencyGuard::RequestFrequencyGuard(int maxRequestsThresholdCount, int maxRequestsThresholdPeriodMs,
-                                             int delayAfterThresholdReachedMs, int retryRequestsDelayMs) {
+RequestFrequencyGuard::RequestFrequencyGuard(int32_t maxRequestsThresholdCount, int32_t maxRequestsThresholdPeriodMs,
+                                             int32_t delayAfterThresholdReachedMs, int32_t retryRequestsDelayMs) {
     this->maxRequestsThresholdCount = maxRequestsThresholdCount;
     this->maxRequestsThresholdPeriodMs = maxRequestsThresholdPeriodMs;
     this->delayAfterThresholdReachedMs = delayAfterThresholdReachedMs;
@@ -17,7 +17,7 @@ RequestFrequencyGuard::~RequestFrequencyGuard() {
 }
 
 
-void RequestFrequencyGuard::handleDelays(unsigned long currentTimestamp) {
+void RequestFrequencyGuard::handleDelays(int64_t currentTimestamp) {
     msgTimestamps.insert(msgTimestamps.begin(), currentTimestamp);
 
     if (!thresholdReached && isOverThreshold()) {
