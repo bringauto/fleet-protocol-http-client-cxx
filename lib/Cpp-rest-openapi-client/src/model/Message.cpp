@@ -68,7 +68,7 @@ bool Message::fromJson(const web::json::value& val)
         const web::json::value& fieldValue = val.at(utility::conversions::to_string_t(U("timestamp")));
         if(!fieldValue.is_null())
         {
-            int32_t refVal_setTimestamp;
+            int64_t refVal_setTimestamp;
             ok &= ModelBase::fromJson(fieldValue, refVal_setTimestamp);
             setTimestamp(refVal_setTimestamp);
         }
@@ -128,7 +128,7 @@ bool Message::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const 
 
     if(multipart->hasContent(utility::conversions::to_string_t(U("timestamp"))))
     {
-        int32_t refVal_setTimestamp;
+        int64_t refVal_setTimestamp;
         ok &= ModelBase::fromHttpContent(multipart->getContent(utility::conversions::to_string_t(U("timestamp"))), refVal_setTimestamp );
         setTimestamp(refVal_setTimestamp);
     }
@@ -147,12 +147,12 @@ bool Message::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const 
     return ok;
 }
 
-int32_t Message::getTimestamp() const
+int64_t Message::getTimestamp() const
 {
     return m_Timestamp;
 }
 
-void Message::setTimestamp(int32_t value)
+void Message::setTimestamp(int64_t value)
 {
     m_Timestamp = value;
     m_TimestampIsSet = true;

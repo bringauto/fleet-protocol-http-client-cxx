@@ -53,8 +53,18 @@ public:
     /////////////////////////////////////////////
     /// Payload_data members
 
+    /// <summary>
+    /// 
+    /// </summary>
+    web::json::value getJson() const;
+    bool jsonIsSet() const;
+    void unsetJson();
+
+    void setJson(const web::json::value& value);
 
 protected:
+web::json::value m_Json;
+    bool m_JsonIsSet;
 };
 
 
