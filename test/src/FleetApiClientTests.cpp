@@ -1,6 +1,6 @@
 #define _TURN_OFF_PLATFORM_STRING
 
-#include "FleetApiClient.hpp"
+#include <bringauto/fleet_protocol/http_client/FleetApiClient.hpp>
 
 #include <gtest/gtest.h>
 #include <stdio.h>
