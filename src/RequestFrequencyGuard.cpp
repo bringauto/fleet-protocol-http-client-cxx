@@ -1,6 +1,8 @@
 #include "RequestFrequencyGuard.hpp"
 
 #include <unistd.h>
+#include <chrono>
+#include <thread>
 
 
 RequestFrequencyGuard::RequestFrequencyGuard(int32_t maxRequestsThresholdCount, int32_t maxRequestsThresholdPeriodMs,
@@ -23,12 +25,12 @@ void RequestFrequencyGuard::handleDelays(int64_t currentTimestamp) {
     if (!thresholdReached && isOverThreshold()) {
         thresholdReached = true;
         msgTimestamps.clear();
-        usleep(delayAfterThresholdReachedMs * 1000);
+        std::this_thread::sleep_for(std::chrono::milliseconds(delayAfterThresholdReachedMs));
         return;
     }
 
     if (thresholdReached) {
-        usleep(retryRequestsDelayMs * 1000);
+        std::this_thread::sleep_for(std::chrono::milliseconds(retryRequestsDelayMs));
 
         if (msgTimestamps.size() >= maxRequestsThresholdCount) {
             thresholdReached = false;
