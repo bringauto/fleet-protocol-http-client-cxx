@@ -8,6 +8,9 @@
 #include <optional>
 
 
+namespace bringauto::fleet_protocol::http_client {
+
+
 class FleetApiClient
 {
 public:
@@ -96,3 +99,5 @@ private:
     std::shared_ptr<org::openapitools::client::model::Payload> payloadPtr;
     std::shared_ptr<org::openapitools::client::model::Payload_data> payloadDataPtr;
 };
+
+}

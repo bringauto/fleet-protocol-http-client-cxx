@@ -5,6 +5,9 @@
 using namespace org::openapitools::client;
 
 
+namespace bringauto::fleet_protocol::http_client {
+
+
 FleetApiClient::FleetApiClient(std::string apiUrl, std::string apiKey, std::string companyName, std::string carName,
                                int32_t maxRequestsThresholdCount, int32_t maxRequestsThresholdPeriodMs,
                                int32_t delayAfterThresholdReachedMs, int32_t retryRequestsDelayMs) {
@@ -126,4 +129,6 @@ std::shared_ptr<model::AvailableDevices> FleetApiClient::getAvailableDevices(std
 
     auto availableDevicesRequest = moduleApi->availableDevices(companyName, carName, moduleIdBoost);
     return availableDevicesRequest.get();
+}
+
 }
