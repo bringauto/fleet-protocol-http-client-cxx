@@ -28,6 +28,8 @@ The generated code does not work properly without some adjustments:
 - timestamp for Message model needs to be changed to int64_t, otherwise it overflows
 - Payload_data needs m_Json added to it store data
 
+This is taken care of by the `regen.sh` script. Changes to the input specification might make it not work, so be careful when generating from new openapi.yaml files.
+
 ## Tests
 
 [Tests Readme](./test/README.md)
