@@ -29,7 +29,7 @@ FleetApiClient::FleetApiClient(std::string apiUrl, std::string apiKey, std::stri
     payloadPtr = std::make_shared<model::Payload>();
     payloadDataPtr = std::make_shared<model::Payload_data>();
 
-    setDeviceIdentification(0, 0, "None", "None");
+    setDeviceIdentification(0, 0, "none", "none");
     payloadPtr->setEncoding("JSON");
 
     payloadPtr->setData(payloadDataPtr);
