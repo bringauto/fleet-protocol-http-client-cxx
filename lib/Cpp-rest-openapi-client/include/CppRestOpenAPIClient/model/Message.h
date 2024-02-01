@@ -60,11 +60,11 @@ public:
     /// <summary>
     /// Unix timestamp of the message in milliseconds.
     /// </summary>
-    int64_t getTimestamp() const;
+    int32_t getTimestamp() const;
     bool timestampIsSet() const;
     void unsetTimestamp();
 
-    void setTimestamp(int64_t value);
+    void setTimestamp(int32_t value);
 
     /// <summary>
     /// 
@@ -86,7 +86,7 @@ public:
 
 
 protected:
-    int64_t m_Timestamp;
+    int32_t m_Timestamp;
     bool m_TimestampIsSet;
     std::shared_ptr<DeviceId> m_Device_id;
     bool m_Device_idIsSet;

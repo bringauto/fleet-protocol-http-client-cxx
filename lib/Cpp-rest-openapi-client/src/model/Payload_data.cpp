@@ -23,8 +23,6 @@ namespace model {
 
 Payload_data::Payload_data()
 {
-m_Json = web::json::value::object();
-    m_JsonIsSet = false;
 }
 
 Payload_data::~Payload_data()
@@ -38,16 +36,16 @@ void Payload_data::validate()
 
 web::json::value Payload_data::toJson() const
 {
-return m_Json;
+
+    web::json::value val = web::json::value::object();
+    
+
+    return val;
 }
 
 bool Payload_data::fromJson(const web::json::value& val)
 {
     bool ok = true;
-
-    web::json::value refVal_setJson;
-    ok &= ModelBase::fromJson(val, refVal_setJson);
-    setJson(refVal_setJson);
     
     return ok;
 }
@@ -73,29 +71,9 @@ bool Payload_data::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, c
     return ok;
 }
 
-web::json::value Payload_data::getJson() const
-{
-    return m_Json;
+}
+}
+}
 }
 
-void Payload_data::setJson(const web::json::value& value)
-{
-    m_Json = value;
-    m_JsonIsSet = true;
-}
 
-bool Payload_data::jsonIsSet() const
-{
-    return m_JsonIsSet;
-}
-
-void Payload_data::unsetJson()
-{
-    m_JsonIsSet = false;
-
-}
-
-}
-}
-}
-}
