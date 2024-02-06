@@ -10,7 +10,9 @@ namespace bringauto::fleet_protocol::http_client {
 
 FleetApiClient::FleetApiClient(std::string apiUrl, std::string apiKey, std::string companyName, std::string carName,
                                int32_t maxRequestsThresholdCount, int32_t maxRequestsThresholdPeriodMs,
-                               int32_t delayAfterThresholdReachedMs, int32_t retryRequestsDelayMs) {
+                               int32_t delayAfterThresholdReachedMs, int32_t retryRequestsDelayMs):
+    companyName_(companyName),
+    carName_(carName) {
     auto apiConfigPtr = std::make_shared<api::ApiConfiguration>();
     apiConfigPtr->setBaseUrl(apiUrl);
     apiConfigPtr->setApiKey("api_key", apiKey);
@@ -20,9 +22,6 @@ FleetApiClient::FleetApiClient(std::string apiUrl, std::string apiKey, std::stri
     carApi_ = std::make_shared<api::CarApi>(apiClientPtr_);
     deviceApi_ = std::make_shared<api::DeviceApi>(apiClientPtr_);
     moduleApi_ = std::make_shared<api::ModuleApi>(apiClientPtr_);
-
-    companyName_ = companyName;
-    carName_ = carName;
 
     deviceIdPtr_ = std::make_shared<model::DeviceId>();
     messagePtr_ = std::make_shared<model::Message>();

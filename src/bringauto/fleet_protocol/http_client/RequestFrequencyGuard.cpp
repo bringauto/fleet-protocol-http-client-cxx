@@ -6,12 +6,11 @@
 
 
 RequestFrequencyGuard::RequestFrequencyGuard(int32_t maxRequestsThresholdCount, int32_t maxRequestsThresholdPeriodMs,
-                                             int32_t delayAfterThresholdReachedMs, int32_t retryRequestsDelayMs) {
-    maxRequestsThresholdCount_ = maxRequestsThresholdCount;
-    maxRequestsThresholdPeriodMs_ = maxRequestsThresholdPeriodMs;
-    delayAfterThresholdReachedMs_ = delayAfterThresholdReachedMs;
-    retryRequestsDelayMs_ = retryRequestsDelayMs;
-}
+                                             int32_t delayAfterThresholdReachedMs, int32_t retryRequestsDelayMs):
+    maxRequestsThresholdCount_(maxRequestsThresholdCount),
+    maxRequestsThresholdPeriodMs_(maxRequestsThresholdPeriodMs),
+    delayAfterThresholdReachedMs_(delayAfterThresholdReachedMs),
+    retryRequestsDelayMs_(retryRequestsDelayMs) {}
 
 
 void RequestFrequencyGuard::handleDelays(int64_t currentTimestamp) {
