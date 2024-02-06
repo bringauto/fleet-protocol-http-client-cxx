@@ -8,7 +8,7 @@
 
 
 TEST(FleetApiClientTests, DelayRepeatedRequests) {
-	auto fleetApiClient = std::make_shared<bringauto::fleet_protocol::http_client::FleetApiClient>(
+	auto fleetApiClient = std::make_unique<bringauto::fleet_protocol::http_client::FleetApiClient>(
 			"http://localhost:8080", "test", "test", "test", 5, 10, 5000, 200);
 	auto timeBefore = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 

@@ -19,9 +19,9 @@ FleetApiClient::FleetApiClient(const std::string &apiUrl, const std::string &api
 	apiClientPtr_ = std::make_shared<api::ApiClient>();
 	apiClientPtr_->setConfiguration(apiConfigPtr);
 
-	carApi_ = std::make_shared<api::CarApi>(apiClientPtr_);
-	deviceApi_ = std::make_shared<api::DeviceApi>(apiClientPtr_);
-	moduleApi_ = std::make_shared<api::ModuleApi>(apiClientPtr_);
+	carApi_ = std::make_unique<api::CarApi>(apiClientPtr_);
+	deviceApi_ = std::make_unique<api::DeviceApi>(apiClientPtr_);
+	moduleApi_ = std::make_unique<api::ModuleApi>(apiClientPtr_);
 
 	deviceIdPtr_ = std::make_shared<model::DeviceId>();
 	messagePtr_ = std::make_shared<model::Message>();
@@ -35,7 +35,7 @@ FleetApiClient::FleetApiClient(const std::string &apiUrl, const std::string &api
 	messagePtr_->setDeviceId(deviceIdPtr_);
 	messagePtr_->setPayload(payloadPtr_);
 
-	requestFrequencyGuard_ = std::make_shared<RequestFrequencyGuard>(maxRequestsThresholdCount, maxRequestsThresholdPeriodMs,
+	requestFrequencyGuard_ = std::make_unique<RequestFrequencyGuard>(maxRequestsThresholdCount, maxRequestsThresholdPeriodMs,
 																	 delayAfterThresholdReachedMs, retryRequestsDelayMs);
 }
 

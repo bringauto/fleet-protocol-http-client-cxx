@@ -83,12 +83,12 @@ public:
 	std::shared_ptr<org::openapitools::client::model::AvailableDevices> getAvailableDevices(std::optional<int32_t> moduleId);
 
 private:
-	std::shared_ptr<RequestFrequencyGuard> requestFrequencyGuard_;
+	std::unique_ptr<RequestFrequencyGuard> requestFrequencyGuard_;
 
 	std::shared_ptr<org::openapitools::client::api::ApiClient> apiClientPtr_;
-	std::shared_ptr<org::openapitools::client::api::CarApi> carApi_;
-	std::shared_ptr<org::openapitools::client::api::DeviceApi> deviceApi_;
-	std::shared_ptr<org::openapitools::client::api::ModuleApi> moduleApi_;
+	std::unique_ptr<org::openapitools::client::api::CarApi> carApi_;
+	std::unique_ptr<org::openapitools::client::api::DeviceApi> deviceApi_;
+	std::unique_ptr<org::openapitools::client::api::ModuleApi> moduleApi_;
 	std::string companyName_;
 	std::string carName_;
 
