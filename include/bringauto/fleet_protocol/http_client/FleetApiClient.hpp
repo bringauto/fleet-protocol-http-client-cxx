@@ -51,7 +51,8 @@ public:
      * @param wait optional, if true, waits for a predefined period until any command is found, will check request rate and possibly delay them
      * @return Vector of shared pointers to the Message model containing commands in payload data
      */
-	std::vector<std::shared_ptr<org::openapitools::client::model::Message>> getCommands(int64_t since = 0, bool wait = false);
+	std::vector<std::shared_ptr<org::openapitools::client::model::Message>> getCommands(std::optional<int64_t> since = std::nullopt,
+																						std::optional<bool> wait = std::nullopt);
 
 	/**
      * @brief Calls the GET function on /status/{company_name}/{car_name} of Fleet v2 HTTP API
@@ -59,7 +60,8 @@ public:
      * @param wait optional, if true, waits for a predefined period until any status is found, will check request rate and possibly delay them
      * @return Vector of shared pointers to the Message model containing statuses in payload data
      */
-	std::vector<std::shared_ptr<org::openapitools::client::model::Message>> getStatuses(int64_t since = 0, bool wait = false);
+	std::vector<std::shared_ptr<org::openapitools::client::model::Message>> getStatuses(std::optional<int64_t> since = std::nullopt,
+																						std::optional<bool> wait = std::nullopt);
 
 	/**
      * Calls the POST function on /command/{company_name}/{car_name} of Fleet v2 HTTP API.
@@ -80,7 +82,7 @@ public:
      * @param moduleId optional, filters returned devices to only those with matching module Id
      * @return Shared pointer to the AvailableDevices model
      */
-	std::shared_ptr<org::openapitools::client::model::AvailableDevices> getAvailableDevices(std::optional<int32_t> moduleId);
+	std::shared_ptr<org::openapitools::client::model::AvailableDevices> getAvailableDevices(std::optional<int32_t> moduleId = std::nullopt);
 
 private:
 	std::unique_ptr<RequestFrequencyGuard> requestFrequencyGuard_;

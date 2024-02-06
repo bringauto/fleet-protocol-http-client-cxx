@@ -54,8 +54,8 @@ std::vector<std::shared_ptr<model::Car>> FleetApiClient::getCars() {
 }
 
 
-std::vector<std::shared_ptr<model::Message>> FleetApiClient::getCommands(int64_t since, bool wait) {
-	auto commandsRequest = deviceApi_->listCommands(companyName_, carName_, since, wait);
+std::vector<std::shared_ptr<model::Message>> FleetApiClient::getCommands(std::optional<int64_t> since, std::optional<bool> wait) {
+	auto commandsRequest = deviceApi_->listCommands(companyName_, carName_, since.value_or(0), wait.value_or(false));
 	std::vector<std::shared_ptr<model::Message>> commands;
 
 	try {
@@ -71,8 +71,8 @@ std::vector<std::shared_ptr<model::Message>> FleetApiClient::getCommands(int64_t
 }
 
 
-std::vector<std::shared_ptr<model::Message>> FleetApiClient::getStatuses(int64_t since, bool wait) {
-	auto statusesRequest = deviceApi_->listStatuses(companyName_, carName_, since, wait);
+std::vector<std::shared_ptr<model::Message>> FleetApiClient::getStatuses(std::optional<int64_t> since, std::optional<bool> wait) {
+	auto statusesRequest = deviceApi_->listStatuses(companyName_, carName_, since.value_or(0), wait.value_or(false));
 	std::vector<std::shared_ptr<model::Message>> statuses;
 
 	try {
