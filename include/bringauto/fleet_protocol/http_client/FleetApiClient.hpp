@@ -1,9 +1,9 @@
 #pragma once
 
-#include "CppRestOpenAPIClient/api/CarApi.h"
-#include "CppRestOpenAPIClient/api/DeviceApi.h"
-#include "CppRestOpenAPIClient/api/ModuleApi.h"
-#include "RequestFrequencyGuard.hpp"
+#include <CppRestOpenAPIClient/api/CarApi.h>
+#include <CppRestOpenAPIClient/api/DeviceApi.h>
+#include <CppRestOpenAPIClient/api/ModuleApi.h>
+#include <bringauto/fleet_protocol/http_client/RequestFrequencyGuard.hpp>
 
 #include <optional>
 
