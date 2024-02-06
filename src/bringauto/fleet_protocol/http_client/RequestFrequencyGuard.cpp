@@ -14,11 +14,6 @@ RequestFrequencyGuard::RequestFrequencyGuard(int32_t maxRequestsThresholdCount, 
 }
 
 
-RequestFrequencyGuard::~RequestFrequencyGuard() {
-
-}
-
-
 void RequestFrequencyGuard::handleDelays(int64_t currentTimestamp) {
     msgTimestamps_.insert(msgTimestamps_.begin(), currentTimestamp);
 

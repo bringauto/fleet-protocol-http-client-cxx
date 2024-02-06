@@ -29,7 +29,7 @@ public:
                    int32_t maxRequestsThresholdCount = 10, int32_t maxRequestsThresholdPeriodMs = 5000,
                    int32_t delayAfterThresholdReachedMs = 5000, int32_t retryRequestsDelayMs = 200);
 
-    ~FleetApiClient();
+    ~FleetApiClient() = default;
 
     /**
      * @brief Sets the DeviceId parameters, required for sendCommand and sendStatuse functions

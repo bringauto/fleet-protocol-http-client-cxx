@@ -16,7 +16,7 @@ public:
     RequestFrequencyGuard(int32_t maxRequestsThresholdCount, int32_t maxRequestsThresholdPeriodMs,
                           int32_t delayAfterThresholdReachedMs, int32_t retryRequestsDelayMs);
 
-    ~RequestFrequencyGuard();
+    ~RequestFrequencyGuard() = default;
 
     /**
      * @brief Determines how long the next request should be delayed when the max request rate is reached

@@ -40,10 +40,6 @@ FleetApiClient::FleetApiClient(std::string apiUrl, std::string apiKey, std::stri
                                                                      delayAfterThresholdReachedMs, retryRequestsDelayMs);
 }
 
-FleetApiClient::~FleetApiClient() {
-
-}
-
 
 void FleetApiClient::setDeviceIdentification(int32_t moduleId, int32_t deviceType, std::string deviceRole, std::string deviceName) {
     deviceIdPtr_->setModuleId(moduleId);
