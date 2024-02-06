@@ -6,7 +6,9 @@
 #include <gtest/gtest.h>
 #include <stdio.h>
 
-
+/**
+ * @brief Ensure getCommands and getStatuses functions trigger the delay mechanism; requests are sent to a non existent api 
+ */
 TEST(FleetApiClientTests, DelayRepeatedRequests) {
 	auto fleetApiClient = std::make_unique<bringauto::fleet_protocol::http_client::FleetApiClient>(
 			"http://localhost:8080", "test", "test", "test", 5, 10, 5000, 200);

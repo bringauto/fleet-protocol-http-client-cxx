@@ -2,7 +2,6 @@
 
 #include <chrono>
 #include <thread>
-#include <unistd.h>
 
 
 RequestFrequencyGuard::RequestFrequencyGuard(int32_t maxRequestsThresholdCount, int32_t maxRequestsThresholdPeriodMs,

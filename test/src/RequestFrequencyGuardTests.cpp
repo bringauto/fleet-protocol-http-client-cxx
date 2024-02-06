@@ -9,6 +9,9 @@ int64_t getCurrentTime() {
 }
 
 
+/**
+ * @brief Try sending 20 requests with time difference large enough to not trigger the threshold
+ */
 TEST_F(RequestFrequencyGuardTests_F, ThresholdNotReached) {
 	int64_t currentTimestamp = 0;
 	auto timeBefore = getCurrentTime();
@@ -25,6 +28,9 @@ TEST_F(RequestFrequencyGuardTests_F, ThresholdNotReached) {
 }
 
 
+/**
+ * @brief Try sending 5 requests with time difference small enough to trigger the threshold; next request should be delayed by shorter time
+ */
 TEST_F(RequestFrequencyGuardTests_F, ThresholdReached) {
 	int64_t currentTimestamp = 0;
 	auto timeBefore = getCurrentTime();
@@ -52,6 +58,10 @@ TEST_F(RequestFrequencyGuardTests_F, ThresholdReached) {
 }
 
 
+/**
+ * @brief Try sending 5 requests with time difference small enough to trigger the threshold; next 5 requests should be delayed by shorter time;
+ * their timestamp difference is large enough to not trigger the threshold afterwards
+ */
 TEST_F(RequestFrequencyGuardTests_F, DelayResetAfterThresholdReached) {
 	int64_t currentTimestamp = 0;
 	auto timeBefore = getCurrentTime();
@@ -94,6 +104,10 @@ TEST_F(RequestFrequencyGuardTests_F, DelayResetAfterThresholdReached) {
 }
 
 
+/**
+ * @brief Try sending 5 requests with time difference small enough to trigger the threshold; next 5 requests should be delayed by shorter time;
+ * their timestamp difference is small enough to trigger the threshold afterwards
+ */
 TEST_F(RequestFrequencyGuardTests_F, DelayNotResetAfterThresholdReached) {
 	int64_t currentTimestamp = 0;
 	auto timeBefore = getCurrentTime();
