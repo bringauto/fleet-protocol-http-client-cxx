@@ -8,7 +8,7 @@ using namespace org::openapitools::client;
 namespace bringauto::fleet_protocol::http_client {
 
 
-FleetApiClient::FleetApiClient(std::string apiUrl, std::string apiKey, std::string companyName, std::string carName,
+FleetApiClient::FleetApiClient(const std::string& apiUrl, const std::string& apiKey, const std::string& companyName, const std::string& carName,
                                int32_t maxRequestsThresholdCount, int32_t maxRequestsThresholdPeriodMs,
                                int32_t delayAfterThresholdReachedMs, int32_t retryRequestsDelayMs):
     companyName_(companyName),
@@ -40,7 +40,7 @@ FleetApiClient::FleetApiClient(std::string apiUrl, std::string apiKey, std::stri
 }
 
 
-void FleetApiClient::setDeviceIdentification(int32_t moduleId, int32_t deviceType, std::string deviceRole, std::string deviceName) {
+void FleetApiClient::setDeviceIdentification(int32_t moduleId, int32_t deviceType, const std::string& deviceRole, const std::string& deviceName) {
     deviceIdPtr_->setModuleId(moduleId);
     deviceIdPtr_->setType(deviceType);
     deviceIdPtr_->setRole(deviceRole);
@@ -90,7 +90,7 @@ std::vector<std::shared_ptr<model::Message>> FleetApiClient::getStatuses(int64_t
 }
 
 
-void FleetApiClient::sendCommand(std::string commandJson) {
+void FleetApiClient::sendCommand(const std::string& commandJson) {
     payloadPtr_->setMessageType("COMMAND");
     payloadDataPtr_->setJson(web::json::value::parse(commandJson));
     messagePtr_->setTimestamp(utility::datetime::utc_timestamp());
@@ -103,7 +103,7 @@ void FleetApiClient::sendCommand(std::string commandJson) {
 }
 
 
-void FleetApiClient::sendStatus(std::string statusJson) {
+void FleetApiClient::sendStatus(const std::string& statusJson) {
     payloadPtr_->setMessageType("STATUS");
     payloadDataPtr_->setJson(web::json::value::parse(statusJson));
     messagePtr_->setTimestamp(utility::datetime::utc_timestamp());

@@ -25,7 +25,7 @@ public:
      * @param delayAfterThresholdReachedMs time to sleep for in ms when threshold is initially reached (only for getCommands/getStatuses)
      * @param retryRequestsDelayMs delay in ms between requests until request rate is no longer over the threshold (only for getCommands/getStatuses)
      */
-    FleetApiClient(std::string apiUrl, std::string apiKey, std::string companyName, std::string carName,
+    FleetApiClient(const std::string& apiUrl, const std::string& apiKey, const std::string& companyName, const std::string& carName,
                    int32_t maxRequestsThresholdCount = 10, int32_t maxRequestsThresholdPeriodMs = 5000,
                    int32_t delayAfterThresholdReachedMs = 5000, int32_t retryRequestsDelayMs = 200);
 
@@ -38,7 +38,7 @@ public:
      * @param deviceRole role of device
      * @param deviceName name of device
      */
-    void setDeviceIdentification(int32_t moduleId, int32_t deviceType, std::string deviceRole, std::string deviceName);
+    void setDeviceIdentification(int32_t moduleId, int32_t deviceType, const std::string& deviceRole, const std::string& deviceName);
 
     /**
      * @brief Calls the GET function on /cars of Fleet v2 HTTP API
@@ -67,14 +67,14 @@ public:
      * setDeviceIdentification needs to be used beforehand to set DeviceId, otherwise placeholder values will be used.
      * @param commandJson payload data of a command represented by a json as a string
      */
-    void sendCommand(std::string commandJson);
+    void sendCommand(const std::string& commandJson);
 
     /**
      * Calls the POST function on /status/{company_name}/{car_name} of Fleet v2 HTTP API.
      * setDeviceIdentification needs to be used beforehand to set DeviceId, otherwise placeholder values will be used.
      * @param statusJson payload data of a status represented by a json as a string
      */
-    void sendStatus(std::string statusJson);
+    void sendStatus(const std::string& statusJson);
 
     /**
      * @brief Calls the GET function on /available-devices/{company_name}/{car_name} of Fleet v2 HTTP API
