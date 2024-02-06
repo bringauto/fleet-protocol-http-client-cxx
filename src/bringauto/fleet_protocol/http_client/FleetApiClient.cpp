@@ -1,4 +1,5 @@
 #include <bringauto/fleet_protocol/http_client/FleetApiClient.hpp>
+#include <bringauto/fleet_protocol/http_client/settings/Constants.hpp>
 
 #include <chrono>
 
@@ -15,7 +16,7 @@ FleetApiClient::FleetApiClient(const std::string& apiUrl, const std::string& api
     carName_(carName) {
     auto apiConfigPtr = std::make_shared<api::ApiConfiguration>();
     apiConfigPtr->setBaseUrl(apiUrl);
-    apiConfigPtr->setApiKey("api_key", apiKey);
+    apiConfigPtr->setApiKey(settings::Constants::API_KEY_HEADER_KEY, apiKey);
     apiClientPtr_ = std::make_shared<api::ApiClient>();    
     apiClientPtr_->setConfiguration(apiConfigPtr);
 
@@ -28,8 +29,8 @@ FleetApiClient::FleetApiClient(const std::string& apiUrl, const std::string& api
     payloadPtr_ = std::make_shared<model::Payload>();
     payloadDataPtr_ = std::make_shared<model::Payload_data>();
 
-    setDeviceIdentification(0, 0, "none", "none");
-    payloadPtr_->setEncoding("JSON");
+    setDeviceIdentification(0, 0, settings::Constants::DEFAULT_COMPANY_NAME, settings::Constants::DEFAULT_CAR_NAME);
+    payloadPtr_->setEncoding(settings::Constants::PAYLOAD_ENCODING);
 
     payloadPtr_->setData(payloadDataPtr_);
     messagePtr_->setDeviceId(deviceIdPtr_);
@@ -91,7 +92,7 @@ std::vector<std::shared_ptr<model::Message>> FleetApiClient::getStatuses(int64_t
 
 
 void FleetApiClient::sendCommand(const std::string& commandJson) {
-    payloadPtr_->setMessageType("COMMAND");
+    payloadPtr_->setMessageType(settings::Constants::COMMAND_MESSAGE_TYPE);
     payloadDataPtr_->setJson(web::json::value::parse(commandJson));
     messagePtr_->setTimestamp(utility::datetime::utc_timestamp());
     
@@ -104,7 +105,7 @@ void FleetApiClient::sendCommand(const std::string& commandJson) {
 
 
 void FleetApiClient::sendStatus(const std::string& statusJson) {
-    payloadPtr_->setMessageType("STATUS");
+    payloadPtr_->setMessageType(settings::Constants::STATUS_MESSAGE_TYPE);
     payloadDataPtr_->setJson(web::json::value::parse(statusJson));
     messagePtr_->setTimestamp(utility::datetime::utc_timestamp());
     

@@ -81,7 +81,6 @@ public:
      * @param moduleId optional, filters returned devices to only those with matching module Id
      * @return Shared pointer to the AvailableDevices model
      */
-    //TODO might not work properly with api because it probably returns an array
     std::shared_ptr<org::openapitools::client::model::AvailableDevices> getAvailableDevices(std::optional<int32_t> moduleId);
 
 private:

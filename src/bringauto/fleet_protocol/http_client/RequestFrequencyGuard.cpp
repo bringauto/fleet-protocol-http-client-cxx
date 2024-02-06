@@ -38,8 +38,9 @@ bool RequestFrequencyGuard::isOverThreshold() {
     bool retVal = false;
     
     if (msgTimestamps_.size() >= maxRequestsThresholdCount_) {
-        if ((msgTimestamps_.front() - msgTimestamps_.back()) < maxRequestsThresholdPeriodMs_)
+        if ((msgTimestamps_.front() - msgTimestamps_.back()) < maxRequestsThresholdPeriodMs_) {
             retVal = true;
+        }
 
         msgTimestamps_.pop_back();
     }

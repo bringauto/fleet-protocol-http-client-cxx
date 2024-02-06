@@ -30,7 +30,7 @@ private:
     int32_t delayAfterThresholdReachedMs_;
     int32_t retryRequestsDelayMs_;
 
-    bool thresholdReached_ = false;
+    bool thresholdReached_ { false };
     std::vector<int64_t> msgTimestamps_;
 
     /**
