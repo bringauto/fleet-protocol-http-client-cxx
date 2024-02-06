@@ -25,13 +25,13 @@ public:
     void handleDelays(int64_t currentTimestamp);
 
 private:
-    int32_t maxRequestsThresholdCount;
-    int32_t maxRequestsThresholdPeriodMs;
-    int32_t delayAfterThresholdReachedMs;
-    int32_t retryRequestsDelayMs;
+    int32_t maxRequestsThresholdCount_;
+    int32_t maxRequestsThresholdPeriodMs_;
+    int32_t delayAfterThresholdReachedMs_;
+    int32_t retryRequestsDelayMs_;
 
-    bool thresholdReached = false;
-    std::vector<int64_t> msgTimestamps;
+    bool thresholdReached_ = false;
+    std::vector<int64_t> msgTimestamps_;
 
     /**
      * @brief Checks if the current request rate is over the threshold

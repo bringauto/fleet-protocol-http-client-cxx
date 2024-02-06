@@ -7,10 +7,10 @@
 
 RequestFrequencyGuard::RequestFrequencyGuard(int32_t maxRequestsThresholdCount, int32_t maxRequestsThresholdPeriodMs,
                                              int32_t delayAfterThresholdReachedMs, int32_t retryRequestsDelayMs) {
-    this->maxRequestsThresholdCount = maxRequestsThresholdCount;
-    this->maxRequestsThresholdPeriodMs = maxRequestsThresholdPeriodMs;
-    this->delayAfterThresholdReachedMs = delayAfterThresholdReachedMs;
-    this->retryRequestsDelayMs = retryRequestsDelayMs;
+    maxRequestsThresholdCount_ = maxRequestsThresholdCount;
+    maxRequestsThresholdPeriodMs_ = maxRequestsThresholdPeriodMs;
+    delayAfterThresholdReachedMs_ = delayAfterThresholdReachedMs;
+    retryRequestsDelayMs_ = retryRequestsDelayMs;
 }
 
 
@@ -20,21 +20,21 @@ RequestFrequencyGuard::~RequestFrequencyGuard() {
 
 
 void RequestFrequencyGuard::handleDelays(int64_t currentTimestamp) {
-    msgTimestamps.insert(msgTimestamps.begin(), currentTimestamp);
+    msgTimestamps_.insert(msgTimestamps_.begin(), currentTimestamp);
 
-    if (!thresholdReached && isOverThreshold()) {
-        thresholdReached = true;
-        msgTimestamps.clear();
-        std::this_thread::sleep_for(std::chrono::milliseconds(delayAfterThresholdReachedMs));
+    if (!thresholdReached_ && isOverThreshold()) {
+        thresholdReached_ = true;
+        msgTimestamps_.clear();
+        std::this_thread::sleep_for(std::chrono::milliseconds(delayAfterThresholdReachedMs_));
         return;
     }
 
-    if (thresholdReached) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(retryRequestsDelayMs));
+    if (thresholdReached_) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(retryRequestsDelayMs_));
 
-        if (msgTimestamps.size() >= maxRequestsThresholdCount) {
-            thresholdReached = false;
-            msgTimestamps.pop_back();
+        if (msgTimestamps_.size() >= maxRequestsThresholdCount_) {
+            thresholdReached_ = false;
+            msgTimestamps_.pop_back();
         }
     }
 }
@@ -43,11 +43,11 @@ void RequestFrequencyGuard::handleDelays(int64_t currentTimestamp) {
 bool RequestFrequencyGuard::isOverThreshold() {
     bool retVal = false;
     
-    if (msgTimestamps.size() >= maxRequestsThresholdCount) {
-        if ((msgTimestamps.front() - msgTimestamps.back()) < maxRequestsThresholdPeriodMs)
+    if (msgTimestamps_.size() >= maxRequestsThresholdCount_) {
+        if ((msgTimestamps_.front() - msgTimestamps_.back()) < maxRequestsThresholdPeriodMs_)
             retVal = true;
 
-        msgTimestamps.pop_back();
+        msgTimestamps_.pop_back();
     }
 
     return retVal;
