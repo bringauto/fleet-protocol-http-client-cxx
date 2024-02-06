@@ -28,7 +28,7 @@ FleetApiClient::FleetApiClient(const std::string &apiUrl, const std::string &api
 	payloadPtr_ = std::make_shared<model::Payload>();
 	payloadDataPtr_ = std::make_shared<model::Payload_data>();
 
-	setDeviceIdentification(0, 0, settings::Constants::DEFAULT_COMPANY_NAME, settings::Constants::DEFAULT_CAR_NAME);
+	setDeviceIdentification(0, 0, settings::Constants::DEFAULT_DEVICE_ROLE, settings::Constants::DEFAULT_DEVICE_NAME);
 	payloadPtr_->setEncoding(settings::Constants::PAYLOAD_ENCODING);
 
 	payloadPtr_->setData(payloadDataPtr_);

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <unistd.h>
+#include <cstdint>
 
 
 class RequestFrequencyGuard {
