@@ -43,6 +43,7 @@ public:
      * @param deviceRole role of device
      * @param deviceName name of device
      */
+	/// TODO: change to use DeviceId from fleet protocol cpp repo
 	void setDeviceIdentification(int32_t moduleId, int32_t deviceType, const std::string &deviceRole, const std::string &deviceName);
 
 	/**

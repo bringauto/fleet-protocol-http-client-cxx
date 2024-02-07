@@ -1,3 +1,3 @@
 ADD_EXECUTABLE(fleet_http_client_sample_app ${CMAKE_CURRENT_LIST_DIR}/main.cpp)
 
-TARGET_LINK_LIBRARIES(fleet_http_client_sample_app PUBLIC fleet_http_client)
+TARGET_LINK_LIBRARIES(fleet_http_client_sample_app PUBLIC bringautolib)
