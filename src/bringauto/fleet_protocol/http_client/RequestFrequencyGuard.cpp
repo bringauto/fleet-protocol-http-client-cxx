@@ -4,11 +4,13 @@
 #include <thread>
 
 
-RequestFrequencyGuard::RequestFrequencyGuard(int32_t maxRequestsThresholdCount, int32_t maxRequestsThresholdPeriodMs,
-											 int32_t delayAfterThresholdReachedMs, int32_t retryRequestsDelayMs): maxRequestsThresholdCount_(maxRequestsThresholdCount),
-																												  maxRequestsThresholdPeriodMs_(maxRequestsThresholdPeriodMs),
-																												  delayAfterThresholdReachedMs_(delayAfterThresholdReachedMs),
-																												  retryRequestsDelayMs_(retryRequestsDelayMs) {}
+namespace bringauto::fleet_protocol::http_client {
+
+
+RequestFrequencyGuard::RequestFrequencyGuard(const RequestFrequencyGuardConfig &config): maxRequestsThresholdCount_(config.maxRequestsThresholdCount),
+																						 maxRequestsThresholdPeriodMs_(config.maxRequestsThresholdPeriodMs),
+																						 delayAfterThresholdReachedMs_(config.delayAfterThresholdReachedMs),
+																						 retryRequestsDelayMs_(config.retryRequestsDelayMs) {}
 
 
 void RequestFrequencyGuard::handleDelays(int64_t currentTimestamp) {
@@ -45,3 +47,5 @@ bool RequestFrequencyGuard::isOverThreshold() {
 
 	return retVal;
 }
+
+}// namespace bringauto::fleet_protocol::http_client

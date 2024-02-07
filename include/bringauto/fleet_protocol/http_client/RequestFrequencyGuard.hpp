@@ -4,17 +4,30 @@
 #include <vector>
 
 
+namespace bringauto::fleet_protocol::http_client {
+
+
 class RequestFrequencyGuard {
 public:
 	/**
+	 * @brief Configuration struct for the RequestFrequencyGuard
+	 */
+	struct RequestFrequencyGuardConfig {
+		/// max amount of allowed requests in the specified time period
+		int32_t maxRequestsThresholdCount {3};
+		/// time period in which the amount of requests is checked
+		int32_t maxRequestsThresholdPeriodMs {1000};
+		/// time to sleep for in ms when threshold is initially reached
+		int32_t delayAfterThresholdReachedMs {500};
+		/// delay in ms between requests until request rate is no longer over the threshold
+		int32_t retryRequestsDelayMs {220};
+	};
+
+	/**
      * @brief Constructs the request frequency guard
-     * @param maxRequestsThresholdCount max amount of allowed requests in the specified time period
-     * @param maxRequestsThresholdPeriodMs time period in which the amount of requests is checked
-     * @param delayAfterThresholdReachedMs time to sleep for in ms when threshold is initially reached
-     * @param retryRequestsDelayMs delay in ms between requests until request rate is no longer over the threshold
+	 * @param config struct containing the configuration for the request frequency guard
      */
-	RequestFrequencyGuard(int32_t maxRequestsThresholdCount, int32_t maxRequestsThresholdPeriodMs,
-						  int32_t delayAfterThresholdReachedMs, int32_t retryRequestsDelayMs);
+	RequestFrequencyGuard(const RequestFrequencyGuardConfig &config);
 
 	~RequestFrequencyGuard() = default;
 
@@ -39,3 +52,5 @@ private:
      */
 	bool isOverThreshold();
 };
+
+}// namespace bringauto::fleet_protocol::http_client

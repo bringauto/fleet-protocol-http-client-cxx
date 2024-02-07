@@ -6,10 +6,11 @@ using namespace bringauto::fleet_protocol::http_client;
 std::unique_ptr<FleetApiClient> fleetApiClient;
 
 void createFleetApiClient() {
-	fleetApiClient = std::make_unique<FleetApiClient>("http://localhost:8080",
+	FleetApiClient::FleetApiClientConfig facConfig = {"http://localhost:8080",
 													  "StaticAccessKeyToBeUsedByDevelopersOnEtna",
-													  "bringauto", "virtual_vehicle",
-													  3, 1000, 500, 220);
+													  "bringauto", "virtual_vehicle"};
+	RequestFrequencyGuard::RequestFrequencyGuardConfig rfgConfig = {3, 1000, 500, 220};
+	fleetApiClient = std::make_unique<FleetApiClient>(facConfig, rfgConfig);
 	fleetApiClient->setDeviceIdentification(1, 1, "autonomy", "virtual-vehicle");
 }
 

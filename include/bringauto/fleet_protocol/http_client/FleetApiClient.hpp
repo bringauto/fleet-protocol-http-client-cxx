@@ -14,19 +14,25 @@ namespace bringauto::fleet_protocol::http_client {
 class FleetApiClient {
 public:
 	/**
-     * @brief Constructs the fleet API client
-     * @param apiUrl URL of Fleet v2 HTTP API
-     * @param apiKey api key used for authorization
-     * @param companyName company identifier in the API
-     * @param carName car identifier in the API
-     * @param maxRequestsThresholdCount max amount of allowed requests in the specified time period (only for getCommands/getStatuses)
-     * @param maxRequestsThresholdPeriodMs time period in which the amount of requests is checked (only for getCommands/getStatuses)
-     * @param delayAfterThresholdReachedMs time to sleep for in ms when threshold is initially reached (only for getCommands/getStatuses)
-     * @param retryRequestsDelayMs delay in ms between requests until request rate is no longer over the threshold (only for getCommands/getStatuses)
+     * @brief Configuration struct for the FleetApiClient
      */
-	FleetApiClient(const std::string &apiUrl, const std::string &apiKey, const std::string &companyName, const std::string &carName,
-				   int32_t maxRequestsThresholdCount = 10, int32_t maxRequestsThresholdPeriodMs = 5000,
-				   int32_t delayAfterThresholdReachedMs = 5000, int32_t retryRequestsDelayMs = 200);
+	struct FleetApiClientConfig {
+		/// URL of Fleet v2 HTTP API
+		std::string apiUrl;
+		/// api key used for authorization
+		std::string apiKey;
+		/// company identifier in the API
+		std::string companyName;
+		/// car identifier in the API
+		std::string carName;
+	};
+
+	/**
+     * @brief Constructs the fleet API client
+     * @param facConfig struct containing the configuration for the fleet api client
+     * @param rfgConfig struct containing the configuration for the request frequency guard (used in getCommands/getStatuses)
+     */
+	FleetApiClient(const FleetApiClientConfig &facConfig, const RequestFrequencyGuard::RequestFrequencyGuardConfig &rfgConfig);
 
 	~FleetApiClient() = default;
 

@@ -9,13 +9,12 @@ using namespace org::openapitools::client;
 namespace bringauto::fleet_protocol::http_client {
 
 
-FleetApiClient::FleetApiClient(const std::string &apiUrl, const std::string &apiKey, const std::string &companyName, const std::string &carName,
-							   int32_t maxRequestsThresholdCount, int32_t maxRequestsThresholdPeriodMs,
-							   int32_t delayAfterThresholdReachedMs, int32_t retryRequestsDelayMs): companyName_(companyName),
-																									carName_(carName) {
+FleetApiClient::FleetApiClient(const FleetApiClientConfig &facConfig,
+							   const RequestFrequencyGuard::RequestFrequencyGuardConfig &rfgConfig): companyName_(facConfig.companyName),
+																									 carName_(facConfig.carName) {
 	auto apiConfigPtr = std::make_shared<api::ApiConfiguration>();
-	apiConfigPtr->setBaseUrl(apiUrl);
-	apiConfigPtr->setApiKey(settings::Constants::API_KEY_HEADER_KEY, apiKey);
+	apiConfigPtr->setBaseUrl(facConfig.apiUrl);
+	apiConfigPtr->setApiKey(settings::Constants::API_KEY_HEADER_KEY, facConfig.apiKey);
 	apiClientPtr_ = std::make_shared<api::ApiClient>();
 	apiClientPtr_->setConfiguration(apiConfigPtr);
 
@@ -35,8 +34,7 @@ FleetApiClient::FleetApiClient(const std::string &apiUrl, const std::string &api
 	messagePtr_->setDeviceId(deviceIdPtr_);
 	messagePtr_->setPayload(payloadPtr_);
 
-	requestFrequencyGuard_ = std::make_unique<RequestFrequencyGuard>(maxRequestsThresholdCount, maxRequestsThresholdPeriodMs,
-																	 delayAfterThresholdReachedMs, retryRequestsDelayMs);
+	requestFrequencyGuard_ = std::make_unique<RequestFrequencyGuard>(rfgConfig);
 }
 
 
