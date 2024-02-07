@@ -16,6 +16,8 @@ Is only used on getCommands and getStatuses functions. Each time these functions
 
 After the initial threshold delay ends, the time container is emptied and subsequent requests are delayed for a shorter time. If the threshold is no longer reached afterwards, the following requests work without any delay as originally.
 
+![Flow chart](./doc/img/request_frequency_guard.png)
+
 ## Requirements
 
 - cpprestsdk: `sudo apt-get install libcpprest-dev`
