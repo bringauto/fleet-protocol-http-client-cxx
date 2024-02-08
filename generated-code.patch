@@ -4,18 +4,18 @@ Date: Thu, 1 Feb 2024 14:14:41 +0100
 Subject: [PATCH] patch for generated code
 
 ---
- .../CppRestOpenAPIClient/api/DeviceApi.h      |  4 +--
- .../CppRestOpenAPIClient/model/Message.h      |  6 ++--
- .../CppRestOpenAPIClient/model/Payload_data.h | 10 ++++++
+ .../bringauto-fleet-http-client-generated/api/DeviceApi.h      |  4 +--
+ .../bringauto-fleet-http-client-generated/model/Message.h      |  6 ++--
+ .../bringauto-fleet-http-client-generated/model/Payload_data.h | 10 ++++++
  .../src/api/DeviceApi.cpp                     |  4 +--
  .../src/model/Message.cpp                     |  8 ++---
  .../src/model/Payload_data.cpp                | 34 ++++++++++++++++---
  6 files changed, 50 insertions(+), 16 deletions(-)
 
-diff --git a/lib/Cpp-rest-openapi-client/include/CppRestOpenAPIClient/api/DeviceApi.h b/lib/Cpp-rest-openapi-client/include/CppRestOpenAPIClient/api/DeviceApi.h
+diff --git a/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/api/DeviceApi.h b/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/api/DeviceApi.h
 index 50d6f99..86093d7 100644
---- a/lib/Cpp-rest-openapi-client/include/CppRestOpenAPIClient/api/DeviceApi.h
-+++ b/lib/Cpp-rest-openapi-client/include/CppRestOpenAPIClient/api/DeviceApi.h
+--- a/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/api/DeviceApi.h
++++ b/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/api/DeviceApi.h
 @@ -58,7 +58,7 @@ public:
      pplx::task<std::vector<std::shared_ptr<Message>>> listCommands(
          utility::string_t companyName,
@@ -34,10 +34,10 @@ index 50d6f99..86093d7 100644
          boost::optional<bool> wait
      ) const;
      /// <summary>
-diff --git a/lib/Cpp-rest-openapi-client/include/CppRestOpenAPIClient/model/Message.h b/lib/Cpp-rest-openapi-client/include/CppRestOpenAPIClient/model/Message.h
+diff --git a/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Message.h b/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Message.h
 index d8ae2a1..d0bf30f 100644
---- a/lib/Cpp-rest-openapi-client/include/CppRestOpenAPIClient/model/Message.h
-+++ b/lib/Cpp-rest-openapi-client/include/CppRestOpenAPIClient/model/Message.h
+--- a/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Message.h
++++ b/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Message.h
 @@ -60,11 +60,11 @@ public:
      /// <summary>
      /// Unix timestamp of the message in milliseconds.
@@ -61,10 +61,10 @@ index d8ae2a1..d0bf30f 100644
      bool m_TimestampIsSet;
      std::shared_ptr<DeviceId> m_Device_id;
      bool m_Device_idIsSet;
-diff --git a/lib/Cpp-rest-openapi-client/include/CppRestOpenAPIClient/model/Payload_data.h b/lib/Cpp-rest-openapi-client/include/CppRestOpenAPIClient/model/Payload_data.h
+diff --git a/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Payload_data.h b/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Payload_data.h
 index c64e481..c79ae30 100644
---- a/lib/Cpp-rest-openapi-client/include/CppRestOpenAPIClient/model/Payload_data.h
-+++ b/lib/Cpp-rest-openapi-client/include/CppRestOpenAPIClient/model/Payload_data.h
+--- a/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Payload_data.h
++++ b/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Payload_data.h
 @@ -53,8 +53,18 @@ public:
      /////////////////////////////////////////////
      /// Payload_data members
@@ -84,10 +84,10 @@ index c64e481..c79ae30 100644
  };
  
  
-diff --git a/lib/Cpp-rest-openapi-client/src/api/DeviceApi.cpp b/lib/Cpp-rest-openapi-client/src/api/DeviceApi.cpp
+diff --git a/lib/bringauto-fleet-http-client-generated/src/api/DeviceApi.cpp b/lib/bringauto-fleet-http-client-generated/src/api/DeviceApi.cpp
 index f3621f1..c7231d0 100644
---- a/lib/Cpp-rest-openapi-client/src/api/DeviceApi.cpp
-+++ b/lib/Cpp-rest-openapi-client/src/api/DeviceApi.cpp
+--- a/lib/bringauto-fleet-http-client-generated/src/api/DeviceApi.cpp
++++ b/lib/bringauto-fleet-http-client-generated/src/api/DeviceApi.cpp
 @@ -36,7 +36,7 @@ DeviceApi::~DeviceApi()
  {
  }
@@ -106,10 +106,10 @@ index f3621f1..c7231d0 100644
  {
  
  
-diff --git a/lib/Cpp-rest-openapi-client/src/model/Message.cpp b/lib/Cpp-rest-openapi-client/src/model/Message.cpp
+diff --git a/lib/bringauto-fleet-http-client-generated/src/model/Message.cpp b/lib/bringauto-fleet-http-client-generated/src/model/Message.cpp
 index 9ffc352..5bbebf4 100644
---- a/lib/Cpp-rest-openapi-client/src/model/Message.cpp
-+++ b/lib/Cpp-rest-openapi-client/src/model/Message.cpp
+--- a/lib/bringauto-fleet-http-client-generated/src/model/Message.cpp
++++ b/lib/bringauto-fleet-http-client-generated/src/model/Message.cpp
 @@ -68,7 +68,7 @@ bool Message::fromJson(const web::json::value& val)
          const web::json::value& fieldValue = val.at(utility::conversions::to_string_t(U("timestamp")));
          if(!fieldValue.is_null())
@@ -143,10 +143,10 @@ index 9ffc352..5bbebf4 100644
  {
      m_Timestamp = value;
      m_TimestampIsSet = true;
-diff --git a/lib/Cpp-rest-openapi-client/src/model/Payload_data.cpp b/lib/Cpp-rest-openapi-client/src/model/Payload_data.cpp
+diff --git a/lib/bringauto-fleet-http-client-generated/src/model/Payload_data.cpp b/lib/bringauto-fleet-http-client-generated/src/model/Payload_data.cpp
 index 7fa6952..6d84e65 100644
---- a/lib/Cpp-rest-openapi-client/src/model/Payload_data.cpp
-+++ b/lib/Cpp-rest-openapi-client/src/model/Payload_data.cpp
+--- a/lib/bringauto-fleet-http-client-generated/src/model/Payload_data.cpp
++++ b/lib/bringauto-fleet-http-client-generated/src/model/Payload_data.cpp
 @@ -23,6 +23,8 @@ namespace model {
  
  Payload_data::Payload_data()

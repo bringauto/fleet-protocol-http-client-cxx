@@ -1,5 +1,5 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.25 FATAL_ERROR)
-PROJECT(FleetHttpClient)
+PROJECT(fleet-http-client)
 INCLUDE(GNUInstallDirs)
 
 SET(FLEET_HTTP_CLIENT_VERSION 1.0.0)
@@ -39,7 +39,8 @@ ENDIF()
 
 FIND_PACKAGE(libbringauto_logger 1.2.0 REQUIRED)
 
-ADD_SUBDIRECTORY("lib/Cpp-rest-openapi-client")
+SET(BUILD_SHARED_LIBS ON)
+ADD_SUBDIRECTORY("lib/bringauto-fleet-http-client-generated")
 
 IF(BRINGAUTO_SAMPLES)
     ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/example/)
@@ -49,27 +50,28 @@ FILE(GLOB_RECURSE source_files "src/*")
 ADD_LIBRARY(bringautolib STATIC ${source_files})
 TARGET_INCLUDE_DIRECTORIES(bringautolib PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
 TARGET_LINK_LIBRARIES(bringautolib PUBLIC
-                        CppRestOpenAPIClient
+                        bringauto-fleet-http-client-generated
                         bringauto_logger::bringauto_logger)
 
-#CMDEF_ADD_LIBRARY(
-#        LIBRARY_GROUP FleetHttpClient
-#        TYPE SHARED
-#        SOURCES ${source_files}
-#        INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include
-#        VERSION ${FLEET_HTTP_CLIENT_VERSION}
-#)
+CMDEF_ADD_LIBRARY(
+        LIBRARY_GROUP fleet-http-client
+        TYPE SHARED
+        SOURCES ${source_files}
+        INCLUDE_DIRECTORIES "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/>"
+        INSTALL_INCLUDE_DIRECTORIES "include/"
+        VERSION ${FLEET_HTTP_CLIENT_VERSION}
+)
 
-#TARGET_LINK_LIBRARIES(FleetHttpClient-shared PUBLIC bringautolib)
+TARGET_LINK_LIBRARIES(fleet-http-client-object PUBLIC bringautolib)
 
 IF (BRINGAUTO_INSTALL)
     INCLUDE(GNUInstallDirs)
-    CMDEF_INSTALL(TARGET FleetHttpClient-shared)
+    CMDEF_INSTALL(TARGET fleet-http-client-shared)
 ENDIF ()
 
 IF (BRINGAUTO_PACKAGE)
     CMDEF_PACKAGE(
-            MAIN_TARGET FleetHttpClient-shared
+            MAIN_TARGET fleet-http-client-shared
             VERSION ${FLEET_HTTP_CLIENT_VERSION}
     )
     SET(CPACK_GENERATOR ZIP)
