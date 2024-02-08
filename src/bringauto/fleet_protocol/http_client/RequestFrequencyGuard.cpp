@@ -1,10 +1,13 @@
 #include <bringauto/fleet_protocol/http_client/RequestFrequencyGuard.hpp>
+#include <bringauto/logging/Logger.hpp>
 
 #include <chrono>
 #include <thread>
 
 
 namespace bringauto::fleet_protocol::http_client {
+
+using namespace bringauto::logging;
 
 
 RequestFrequencyGuard::RequestFrequencyGuard(const RequestFrequencyGuardConfig &config): maxRequestsThresholdCount_(config.maxRequestsThresholdCount),
@@ -40,6 +43,7 @@ bool RequestFrequencyGuard::isOverThreshold() {
 	if(msgTimestamps_.size() >= maxRequestsThresholdCount_) {
 		if((msgTimestamps_.front() - msgTimestamps_.back()) < maxRequestsThresholdPeriodMs_) {
 			retVal = true;
+			Logger::logWarning("Http api request frequency threshold reached, delaying requests");
 		}
 
 		msgTimestamps_.pop_back();

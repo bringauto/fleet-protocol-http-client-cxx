@@ -1,7 +1,10 @@
 #include <bringauto/fleet_protocol/http_client/FleetApiClient.hpp>
+#include <bringauto/logging/ConsoleSink.hpp>
+#include <bringauto/logging/Logger.hpp>
 
 
 using namespace bringauto::fleet_protocol::http_client;
+using namespace bringauto::logging;
 
 std::unique_ptr<FleetApiClient> fleetApiClient;
 
@@ -77,6 +80,11 @@ void getAvailableDevices() {
 }
 
 int main(int argc, char **argv) {
+	Logger::addSink<ConsoleSink>();
+	Logger::LoggerSettings params {"FleetHttpClientExample",
+								   Logger::Verbosity::Debug};
+	Logger::init(params);
+
 	createFleetApiClient();
 	getCars();
 	getCommands();

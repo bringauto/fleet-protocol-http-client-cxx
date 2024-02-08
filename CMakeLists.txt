@@ -37,6 +37,8 @@ IF(NOT BRINGAUTO_SYSTEM_DEP)
     INCLUDE(cmake/Dependencies.cmake)
 ENDIF()
 
+FIND_PACKAGE(libbringauto_logger 1.2.0 REQUIRED)
+
 ADD_SUBDIRECTORY("lib/Cpp-rest-openapi-client")
 
 IF(BRINGAUTO_SAMPLES)
@@ -46,7 +48,9 @@ ENDIF()
 FILE(GLOB_RECURSE source_files "src/*")
 ADD_LIBRARY(bringautolib STATIC ${source_files})
 TARGET_INCLUDE_DIRECTORIES(bringautolib PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
-TARGET_LINK_LIBRARIES(bringautolib PUBLIC CppRestOpenAPIClient)
+TARGET_LINK_LIBRARIES(bringautolib PUBLIC
+                        CppRestOpenAPIClient
+                        bringauto_logger::bringauto_logger)
 
 #CMDEF_ADD_LIBRARY(
 #        LIBRARY_GROUP FleetHttpClient
