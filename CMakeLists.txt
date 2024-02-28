@@ -63,6 +63,7 @@ CMDEF_ADD_LIBRARY(
 )
 
 TARGET_LINK_LIBRARIES(fleet-http-client-object PUBLIC bringautolib)
+TARGET_LINK_LIBRARIES(fleet-http-client-shared PUBLIC bringautolib)
 
 IF (BRINGAUTO_INSTALL)
     INCLUDE(GNUInstallDirs)

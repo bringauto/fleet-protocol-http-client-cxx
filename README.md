@@ -24,7 +24,7 @@ After the initial threshold delay ends, the time container is emptied and subseq
 
 ## Generating client code
 
-To regenerate the Cpp-rest-openapi-client lib, use the `regen.sh` script (npm and git are required). It uses th openapi.yaml file as an input. The most up-to-date version can be found in the [fleet-protocol-http-api project](https://github.com/bringauto/fleet-protocol-http-api).
+To regenerate the Cpp-rest-openapi-client lib, use the `regen.sh` script (npm, git and [OpenAPI Generator](https://openapi-generator.tech/docs/installation/) are required). It uses th openapi.yaml file as an input. The most up-to-date version can be found in the [fleet-protocol-http-api project](https://github.com/bringauto/fleet-protocol-http-api).
 
 ### Necessary changes
 
