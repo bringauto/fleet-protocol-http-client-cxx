@@ -23,11 +23,6 @@ IF(BRINGAUTO_PACKAGE)
     ENDIF()
 ENDIF()
 
-IF(BRINGAUTO_TESTS)
-    ENABLE_TESTING()
-    INCLUDE(${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt)
-ENDIF(BRINGAUTO_TESTS)
-
 FIND_PACKAGE(CMLIB
         COMPONENTS CMDEF CMUTIL STORAGE
         REQUIRED
@@ -40,6 +35,7 @@ ENDIF()
 FIND_PACKAGE(libbringauto_logger 1.2.0 REQUIRED)
 FIND_PACKAGE(fleet-protocol-interface 2.0.0 REQUIRED)
 FIND_PACKAGE(fleet-protocol-cxx-helpers-static 1.1.0 REQUIRED)
+FIND_PACKAGE(OpenSSL REQUIRED)
 
 SET(BUILD_SHARED_LIBS ON)
 ADD_SUBDIRECTORY("lib/bringauto-fleet-http-client-generated")
@@ -54,6 +50,8 @@ TARGET_INCLUDE_DIRECTORIES(bringautolib PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include
 TARGET_LINK_LIBRARIES(bringautolib PUBLIC
                         fleet-protocol-cxx-helpers-static::fleet-protocol-cxx-helpers-static
                         bringauto-fleet-http-client-generated
+                        OpenSSL::SSL
+                        OpenSSL::Crypto
                         bringauto_logger::bringauto_logger)
 
 CMDEF_ADD_LIBRARY(
@@ -66,6 +64,13 @@ CMDEF_ADD_LIBRARY(
 )
 
 TARGET_LINK_LIBRARIES(fleet-http-client-shared PUBLIC bringautolib)
+
+
+
+IF(BRINGAUTO_TESTS)
+    ENABLE_TESTING()
+    INCLUDE(${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt)
+ENDIF()
 
 IF (BRINGAUTO_INSTALL)
     INCLUDE(GNUInstallDirs)
