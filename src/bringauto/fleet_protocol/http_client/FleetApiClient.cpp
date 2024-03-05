@@ -27,7 +27,10 @@ FleetApiClient::FleetApiClient(const FleetApiClientConfig &facConfig,
 	payloadPtr_ = std::make_shared<model::Payload>();
 	payloadDataPtr_ = std::make_shared<model::Payload_data>();
 
-	setDeviceIdentification(0, 0, settings::Constants::DEFAULT_DEVICE_ROLE, settings::Constants::DEFAULT_DEVICE_NAME);
+	setDeviceIdentification(fleet_protocol::cxx::DeviceID(0, 0, 0,
+		settings::Constants::DEFAULT_DEVICE_ROLE, settings::Constants::DEFAULT_DEVICE_NAME
+	));
+
 	payloadPtr_->setEncoding(settings::Constants::PAYLOAD_ENCODING);
 
 	payloadPtr_->setData(payloadDataPtr_);
@@ -38,11 +41,12 @@ FleetApiClient::FleetApiClient(const FleetApiClientConfig &facConfig,
 }
 
 
-void FleetApiClient::setDeviceIdentification(int32_t moduleId, int32_t deviceType, const std::string &deviceRole, const std::string &deviceName) {
-	deviceIdPtr_->setModuleId(moduleId);
-	deviceIdPtr_->setType(deviceType);
-	deviceIdPtr_->setRole(deviceRole);
-	deviceIdPtr_->setName(deviceName);
+void FleetApiClient::setDeviceIdentification(const fleet_protocol::cxx::DeviceID &deviceId) {
+	auto deviceIdentification = deviceId.getDeviceId();
+	deviceIdPtr_->setModuleId(deviceIdentification.module);
+	deviceIdPtr_->setType(deviceIdentification.device_type);
+	deviceIdPtr_->setRole(std::string(static_cast<char*>(deviceIdentification.device_role.data)));
+	deviceIdPtr_->setName(std::string(static_cast<char*>(deviceIdentification.device_name.data)));
 }
 
 

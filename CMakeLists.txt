@@ -38,6 +38,8 @@ IF(NOT BRINGAUTO_SYSTEM_DEP)
 ENDIF()
 
 FIND_PACKAGE(libbringauto_logger 1.2.0 REQUIRED)
+FIND_PACKAGE(fleet-protocol-interface 2.0.0 REQUIRED)
+FIND_PACKAGE(fleet-protocol-cxx-helpers-static 1.1.0 REQUIRED)
 
 SET(BUILD_SHARED_LIBS ON)
 ADD_SUBDIRECTORY("lib/bringauto-fleet-http-client-generated")
@@ -50,6 +52,7 @@ FILE(GLOB_RECURSE source_files "src/*")
 ADD_LIBRARY(bringautolib STATIC ${source_files})
 TARGET_INCLUDE_DIRECTORIES(bringautolib PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
 TARGET_LINK_LIBRARIES(bringautolib PUBLIC
+                        fleet-protocol-cxx-helpers-static::fleet-protocol-cxx-helpers-static
                         bringauto-fleet-http-client-generated
                         bringauto_logger::bringauto_logger)
 
@@ -62,7 +65,6 @@ CMDEF_ADD_LIBRARY(
         VERSION ${FLEET_HTTP_CLIENT_VERSION}
 )
 
-TARGET_LINK_LIBRARIES(fleet-http-client-object PUBLIC bringautolib)
 TARGET_LINK_LIBRARIES(fleet-http-client-shared PUBLIC bringautolib)
 
 IF (BRINGAUTO_INSTALL)

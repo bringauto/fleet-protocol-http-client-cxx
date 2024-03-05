@@ -4,6 +4,7 @@
 #include <bringauto-fleet-http-client-generated/api/DeviceApi.h>
 #include <bringauto-fleet-http-client-generated/api/ModuleApi.h>
 #include <bringauto/fleet_protocol/http_client/RequestFrequencyGuard.hpp>
+#include <bringauto/fleet_protocol/cxx/DeviceID.hpp>
 
 #include <optional>
 
@@ -38,13 +39,10 @@ public:
 
 	/**
      * @brief Sets the DeviceId parameters, required for sendCommand and sendStatuse functions
-     * @param moduleId moduleId of device
-     * @param deviceType type of device
-     * @param deviceRole role of device
-     * @param deviceName name of device
+     * @param deviceId DeviceId struct containing the device identification parameters
      */
 	/// TODO: change to use DeviceId from fleet protocol cpp repo
-	void setDeviceIdentification(int32_t moduleId, int32_t deviceType, const std::string &deviceRole, const std::string &deviceName);
+	void setDeviceIdentification(const fleet_protocol::cxx::DeviceID &deviceId);
 
 	/**
      * @brief Calls the GET function on /cars of Fleet v2 HTTP API
