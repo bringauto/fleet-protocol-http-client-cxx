@@ -34,7 +34,7 @@ ENDIF()
 
 FIND_PACKAGE(libbringauto_logger 1.2.0 REQUIRED)
 FIND_PACKAGE(fleet-protocol-interface 2.0.0 REQUIRED)
-FIND_PACKAGE(fleet-protocol-cxx-helpers-static 1.1.0 REQUIRED)
+FIND_PACKAGE(fleet-protocol-cxx-helpers-static 1.1.1 REQUIRED)
 
 SET(BUILD_SHARED_LIBS OFF)
 ADD_SUBDIRECTORY("lib/bringauto-fleet-http-client-generated")
