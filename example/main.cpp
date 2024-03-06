@@ -1,6 +1,7 @@
 #include <bringauto/fleet_protocol/http_client/FleetApiClient.hpp>
 #include <bringauto/logging/ConsoleSink.hpp>
 #include <bringauto/logging/Logger.hpp>
+#include <bringauto/fleet_protocol/cxx/DeviceID.hpp>
 
 
 using namespace bringauto::fleet_protocol::http_client;
@@ -14,7 +15,7 @@ void createFleetApiClient() {
 													  "bringauto", "virtual_vehicle"};
 	RequestFrequencyGuard::RequestFrequencyGuardConfig rfgConfig = {3, 1000, 500, 220};
 	fleetApiClient = std::make_unique<FleetApiClient>(facConfig, rfgConfig);
-	fleetApiClient->setDeviceIdentification(1, 1, "autonomy", "virtual-vehicle");
+	fleetApiClient->setDeviceIdentification(bringauto::fleet_protocol::cxx::DeviceID(1, 1, 1, "autonomy", "virtual-vehicle"));
 }
 
 void getCars() {

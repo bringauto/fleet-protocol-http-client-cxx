@@ -1,5 +1,5 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.25 FATAL_ERROR)
-PROJECT(fleet-http-client)
+PROJECT(fleet-http-client C CXX)
 INCLUDE(GNUInstallDirs)
 
 SET(FLEET_HTTP_CLIENT_VERSION 1.0.0)
@@ -21,11 +21,6 @@ IF(BRINGAUTO_PACKAGE)
         SET(BRINGAUTO_INSTALL ON CACHE BOOL "Forced install due to BRINGAUTO_PACKAGE=ON" FORCE)
         MESSAGE(WARNING "BRINGAUTO_INSTALL is switched to on because of BRINGAUTO_PACKAGE=ON")
     ENDIF()
-ENDIF()
-
-IF(BRINGAUTO_TESTS)
-    ENABLE_TESTING()
-    INCLUDE(${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt)
 ENDIF()
 
 FIND_PACKAGE(CMLIB
@@ -52,29 +47,35 @@ FILE(GLOB_RECURSE source_files "src/*")
 ADD_LIBRARY(bringautolib STATIC ${source_files})
 TARGET_INCLUDE_DIRECTORIES(bringautolib PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
 TARGET_LINK_LIBRARIES(bringautolib PUBLIC
+                        fleet-protocol-interface::common-headers-interface
                         fleet-protocol-cxx-helpers-static::fleet-protocol-cxx-helpers-static
                         bringauto-fleet-http-client-generated
                         bringauto_logger::bringauto_logger)
 
 CMDEF_ADD_LIBRARY(
         LIBRARY_GROUP fleet-http-client
-        TYPE SHARED
+        TYPE STATIC
         SOURCES ${source_files}
         INCLUDE_DIRECTORIES "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/>"
         INSTALL_INCLUDE_DIRECTORIES "include/"
         VERSION ${FLEET_HTTP_CLIENT_VERSION}
 )
 
-TARGET_LINK_LIBRARIES(fleet-http-client-shared PUBLIC bringautolib)
+TARGET_LINK_LIBRARIES(fleet-http-client-static PUBLIC bringautolib)
+
+IF(BRINGAUTO_TESTS)
+    ENABLE_TESTING()
+    Add_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/test/)
+ENDIF()
 
 IF (BRINGAUTO_INSTALL)
     INCLUDE(GNUInstallDirs)
-    CMDEF_INSTALL(TARGET fleet-http-client-shared)
+    CMDEF_INSTALL(TARGET fleet-http-client-static)
 ENDIF ()
 
 IF (BRINGAUTO_PACKAGE)
     CMDEF_PACKAGE(
-            MAIN_TARGET fleet-http-client-shared
+            MAIN_TARGET fleet-http-client-static
             VERSION ${FLEET_HTTP_CLIENT_VERSION}
     )
     SET(CPACK_GENERATOR ZIP)
