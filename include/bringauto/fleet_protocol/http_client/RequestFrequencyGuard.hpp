@@ -24,17 +24,17 @@ public:
 	};
 
 	/**
-     * @brief Constructs the request frequency guard
+	 * @brief Constructs the request frequency guard
 	 * @param config struct containing the configuration for the request frequency guard
-     */
+	 */
 	RequestFrequencyGuard(const RequestFrequencyGuardConfig &config);
 
 	~RequestFrequencyGuard() = default;
 
 	/**
-     * @brief Determines how long the next request should be delayed when the max request rate is reached
-     * @param currentTimestamp timestamp that gets added to a container, used to calculate if the max request threshold is reached
-     */
+	 * @brief Determines how long the next request should be delayed when the max request rate is reached
+	 * @param currentTimestamp timestamp that gets added to a container, used to calculate if the max request threshold is reached
+	 */
 	void handleDelays(int64_t currentTimestamp);
 
 private:
@@ -47,9 +47,9 @@ private:
 	std::vector<int64_t> msgTimestamps_;
 
 	/**
-     * @brief Checks if the current request rate is over the threshold
-     * @return true if there are more requests than allowed within the set period
-     */
+	 * @brief Checks if the current request rate is over the threshold
+	 * @return true if there are more requests than allowed within the set period
+	 */
 	bool isOverThreshold();
 };
 
