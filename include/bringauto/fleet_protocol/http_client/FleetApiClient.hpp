@@ -69,14 +69,14 @@ public:
 																						std::optional<bool> wait = std::nullopt);
 
 	/**
-	 * Calls the POST function on /command/{company_name}/{car_name} of Fleet v2 HTTP API.
+	 * @brief Calls the POST function on /command/{company_name}/{car_name} of Fleet v2 HTTP API.
 	 * setDeviceIdentification needs to be used beforehand to set DeviceId, otherwise placeholder values will be used.
 	 * @param commandJson payload data of a command represented by a json as a string
 	 */
 	void sendCommand(const std::string &commandJson);
 
 	/**
-	 * Calls the POST function on /status/{company_name}/{car_name} of Fleet v2 HTTP API.
+	 * @brief Calls the POST function on /status/{company_name}/{car_name} of Fleet v2 HTTP API.
 	 * setDeviceIdentification needs to be used beforehand to set DeviceId, otherwise placeholder values will be used.
 	 * @param statusJson payload data of a status represented by a json as a string
 	 */
