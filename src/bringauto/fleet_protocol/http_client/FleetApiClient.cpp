@@ -9,9 +9,12 @@ using namespace org::openapitools::client;
 namespace bringauto::fleet_protocol::http_client {
 
 
-FleetApiClient::FleetApiClient(const FleetApiClientConfig &facConfig,
-							   const RequestFrequencyGuard::RequestFrequencyGuardConfig &rfgConfig): companyName_(facConfig.companyName),
-																									 carName_(facConfig.carName) {
+FleetApiClient::FleetApiClient(
+	const FleetApiClientConfig &facConfig, 
+	const RequestFrequencyGuard::RequestFrequencyGuardConfig &rfgConfig):
+	companyName_(facConfig.companyName),
+	carName_(facConfig.carName)
+{
 	auto apiConfigPtr = std::make_shared<api::ApiConfiguration>();
 	apiConfigPtr->setBaseUrl(facConfig.apiUrl);
 	apiConfigPtr->setApiKey(settings::Constants::API_KEY_HEADER_KEY, facConfig.apiKey);
@@ -67,7 +70,7 @@ std::vector<std::shared_ptr<model::Message>> FleetApiClient::getCommands(std::op
 
 	if(wait) {
 		requestFrequencyGuard_->handleDelays(
-				std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
+			std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
 	}
 	return commands;
 }
@@ -84,7 +87,7 @@ std::vector<std::shared_ptr<model::Message>> FleetApiClient::getStatuses(std::op
 
 	if(wait) {
 		requestFrequencyGuard_->handleDelays(
-				std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
+			std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
 	}
 	return statuses;
 }

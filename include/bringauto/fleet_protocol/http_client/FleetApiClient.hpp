@@ -57,7 +57,7 @@ public:
 	 * @return Vector of shared pointers to the Message model containing commands in payload data
 	 */
 	std::vector<std::shared_ptr<org::openapitools::client::model::Message>> getCommands(std::optional<int64_t> since = std::nullopt,
-																						std::optional<bool> wait = std::nullopt);
+		std::optional<bool> wait = std::nullopt);
 
 	/**
 	 * @brief Calls the GET function on /status/{company_name}/{car_name} of Fleet v2 HTTP API
@@ -66,7 +66,7 @@ public:
 	 * @return Vector of shared pointers to the Message model containing statuses in payload data
 	 */
 	std::vector<std::shared_ptr<org::openapitools::client::model::Message>> getStatuses(std::optional<int64_t> since = std::nullopt,
-																						std::optional<bool> wait = std::nullopt);
+		std::optional<bool> wait = std::nullopt);
 
 	/**
 	 * @brief Calls the POST function on /command/{company_name}/{car_name} of Fleet v2 HTTP API.

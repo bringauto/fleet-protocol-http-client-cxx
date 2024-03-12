@@ -10,10 +10,11 @@ namespace bringauto::fleet_protocol::http_client {
 using namespace bringauto::logging;
 
 
-RequestFrequencyGuard::RequestFrequencyGuard(const RequestFrequencyGuardConfig &config): maxRequestsThresholdCount_(config.maxRequestsThresholdCount),
-																						 maxRequestsThresholdPeriodMs_(config.maxRequestsThresholdPeriodMs),
-																						 delayAfterThresholdReachedMs_(config.delayAfterThresholdReachedMs),
-																						 retryRequestsDelayMs_(config.retryRequestsDelayMs) {}
+RequestFrequencyGuard::RequestFrequencyGuard(const RequestFrequencyGuardConfig &config):
+	maxRequestsThresholdCount_(config.maxRequestsThresholdCount),
+	maxRequestsThresholdPeriodMs_(config.maxRequestsThresholdPeriodMs),
+	delayAfterThresholdReachedMs_(config.delayAfterThresholdReachedMs),
+	retryRequestsDelayMs_(config.retryRequestsDelayMs) {}
 
 
 void RequestFrequencyGuard::handleDelays(int64_t currentTimestamp) {
