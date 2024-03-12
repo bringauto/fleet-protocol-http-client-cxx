@@ -19,5 +19,5 @@ protected:
 		requestFrequencyGuard = std::make_unique<RequestFrequencyGuard>(config);
 	}
 
-	std::unique_ptr<RequestFrequencyGuard> requestFrequencyGuard;
+	std::unique_ptr<RequestFrequencyGuard> requestFrequencyGuard {};
 };

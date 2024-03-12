@@ -90,19 +90,19 @@ public:
 	std::shared_ptr<org::openapitools::client::model::AvailableDevices> getAvailableDevices(std::optional<int32_t> moduleId = std::nullopt);
 
 private:
-	std::unique_ptr<RequestFrequencyGuard> requestFrequencyGuard_;
+	std::unique_ptr<RequestFrequencyGuard> requestFrequencyGuard_ {};
 
-	std::shared_ptr<org::openapitools::client::api::ApiClient> apiClientPtr_;
-	std::unique_ptr<org::openapitools::client::api::CarApi> carApi_;
-	std::unique_ptr<org::openapitools::client::api::DeviceApi> deviceApi_;
-	std::unique_ptr<org::openapitools::client::api::ModuleApi> moduleApi_;
-	std::string companyName_;
-	std::string carName_;
+	std::shared_ptr<org::openapitools::client::api::ApiClient> apiClientPtr_ {};
+	std::unique_ptr<org::openapitools::client::api::CarApi> carApi_ {};
+	std::unique_ptr<org::openapitools::client::api::DeviceApi> deviceApi_ {};
+	std::unique_ptr<org::openapitools::client::api::ModuleApi> moduleApi_ {};
+	std::string companyName_ {};
+	std::string carName_ {};
 
-	std::shared_ptr<org::openapitools::client::model::DeviceId> deviceIdPtr_;
-	std::shared_ptr<org::openapitools::client::model::Message> messagePtr_;
-	std::shared_ptr<org::openapitools::client::model::Payload> payloadPtr_;
-	std::shared_ptr<org::openapitools::client::model::Payload_data> payloadDataPtr_;
+	std::shared_ptr<org::openapitools::client::model::DeviceId> deviceIdPtr_ {};
+	std::shared_ptr<org::openapitools::client::model::Message> messagePtr_ {};
+	std::shared_ptr<org::openapitools::client::model::Payload> payloadPtr_ {};
+	std::shared_ptr<org::openapitools::client::model::Payload_data> payloadDataPtr_ {};
 };
 
 }// namespace bringauto::fleet_protocol::http_client
