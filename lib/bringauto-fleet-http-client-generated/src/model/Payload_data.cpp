@@ -23,7 +23,7 @@ namespace model {
 
 Payload_data::Payload_data()
 {
-m_Json = web::json::value::object();
+    m_Json = web::json::value::object();
     m_JsonIsSet = false;
 }
 
@@ -38,7 +38,7 @@ void Payload_data::validate()
 
 web::json::value Payload_data::toJson() const
 {
-return m_Json;
+    return m_Json;
 }
 
 bool Payload_data::fromJson(const web::json::value& val)
