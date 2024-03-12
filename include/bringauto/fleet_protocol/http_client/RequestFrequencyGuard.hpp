@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <cstdint>
 #include <vector>
 
@@ -16,11 +17,11 @@ public:
 		/// max amount of allowed requests in the specified time period
 		int32_t maxRequestsThresholdCount {3};
 		/// time period in which the amount of requests is checked
-		int32_t maxRequestsThresholdPeriodMs {1000};
+		std::chrono::milliseconds maxRequestsThresholdPeriodMs {1000};
 		/// time to sleep for in ms when threshold is initially reached
-		int32_t delayAfterThresholdReachedMs {500};
+		std::chrono::milliseconds delayAfterThresholdReachedMs {500};
 		/// delay in ms between requests until request rate is no longer over the threshold
-		int32_t retryRequestsDelayMs {220};
+		std::chrono::milliseconds retryRequestsDelayMs {220};
 	};
 
 	/**
@@ -39,9 +40,9 @@ public:
 
 private:
 	int32_t maxRequestsThresholdCount_;
-	int32_t maxRequestsThresholdPeriodMs_;
-	int32_t delayAfterThresholdReachedMs_;
-	int32_t retryRequestsDelayMs_;
+	std::chrono::milliseconds maxRequestsThresholdPeriodMs_;
+	std::chrono::milliseconds delayAfterThresholdReachedMs_;
+	std::chrono::milliseconds retryRequestsDelayMs_;
 
 	bool thresholdReached_ {false};
 	std::vector<int64_t> msgTimestamps_;

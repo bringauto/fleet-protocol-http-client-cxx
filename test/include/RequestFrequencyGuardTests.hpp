@@ -13,9 +13,9 @@ protected:
 	void SetUp() override {
 		RequestFrequencyGuard::RequestFrequencyGuardConfig config {};
 		config.maxRequestsThresholdCount = 5;
-		config.maxRequestsThresholdPeriodMs = 10;
-		config.delayAfterThresholdReachedMs = 5000;
-		config.retryRequestsDelayMs = 200;
+		config.maxRequestsThresholdPeriodMs = std::chrono::milliseconds(10);
+		config.delayAfterThresholdReachedMs = std::chrono::milliseconds(5000);
+		config.retryRequestsDelayMs = std::chrono::milliseconds(200);
 		requestFrequencyGuard = std::make_unique<RequestFrequencyGuard>(config);
 	}
 

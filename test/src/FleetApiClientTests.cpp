@@ -22,9 +22,9 @@ TEST(FleetApiClientTests, DelayRepeatedRequests) {
 	
 	RequestFrequencyGuard::RequestFrequencyGuardConfig rfgConfig {};
 	rfgConfig.maxRequestsThresholdCount = 5;
-	rfgConfig.maxRequestsThresholdPeriodMs = 10;
-	rfgConfig.delayAfterThresholdReachedMs = 5000;
-	rfgConfig.retryRequestsDelayMs = 200;
+	rfgConfig.maxRequestsThresholdPeriodMs = std::chrono::milliseconds(10);
+	rfgConfig.delayAfterThresholdReachedMs = std::chrono::milliseconds(5000);
+	rfgConfig.retryRequestsDelayMs = std::chrono::milliseconds(200);
 
 	auto fleetApiClient = std::make_unique<FleetApiClient>(facConfig, rfgConfig);
 	auto timeBefore = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();

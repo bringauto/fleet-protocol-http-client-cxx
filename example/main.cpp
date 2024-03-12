@@ -18,9 +18,9 @@ void createFleetApiClient() {
 
 	RequestFrequencyGuard::RequestFrequencyGuardConfig rfgConfig {};
 	rfgConfig.maxRequestsThresholdCount = 3;
-	rfgConfig.maxRequestsThresholdPeriodMs = 1000;
-	rfgConfig.delayAfterThresholdReachedMs = 500;
-	rfgConfig.retryRequestsDelayMs = 220;
+	rfgConfig.maxRequestsThresholdPeriodMs = std::chrono::milliseconds(1000);
+	rfgConfig.delayAfterThresholdReachedMs = std::chrono::milliseconds(500);
+	rfgConfig.retryRequestsDelayMs = std::chrono::milliseconds(220);
 
 	fleetApiClient = std::make_unique<FleetApiClient>(facConfig, rfgConfig);
 	fleetApiClient->setDeviceIdentification(bringauto::fleet_protocol::cxx::DeviceID(1, 1, 1, "autonomy", "virtual-vehicle"));

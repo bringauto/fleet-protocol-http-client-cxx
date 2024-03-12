@@ -22,12 +22,12 @@ void RequestFrequencyGuard::handleDelays(int64_t currentTimestamp) {
 	if(!thresholdReached_ && isOverThreshold()) {
 		thresholdReached_ = true;
 		msgTimestamps_.clear();
-		std::this_thread::sleep_for(std::chrono::milliseconds(delayAfterThresholdReachedMs_));
+		std::this_thread::sleep_for(delayAfterThresholdReachedMs_);
 		return;
 	}
 
 	if(thresholdReached_) {
-		std::this_thread::sleep_for(std::chrono::milliseconds(retryRequestsDelayMs_));
+		std::this_thread::sleep_for(retryRequestsDelayMs_);
 
 		if(msgTimestamps_.size() >= maxRequestsThresholdCount_) {
 			thresholdReached_ = false;
@@ -41,7 +41,7 @@ bool RequestFrequencyGuard::isOverThreshold() {
 	bool retVal = false;
 
 	if(msgTimestamps_.size() >= maxRequestsThresholdCount_) {
-		if((msgTimestamps_.front() - msgTimestamps_.back()) < maxRequestsThresholdPeriodMs_) {
+		if((msgTimestamps_.front() - msgTimestamps_.back()) < maxRequestsThresholdPeriodMs_.count()) {
 			retVal = true;
 			Logger::logWarning("Http api request frequency threshold reached, delaying requests");
 		}
