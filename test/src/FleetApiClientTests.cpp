@@ -14,8 +14,18 @@ using namespace bringauto::fleet_protocol::http_client;
  * @brief Ensure getCommands and getStatuses functions trigger the delay mechanism; requests are sent to a non existent api 
  */
 TEST(FleetApiClientTests, DelayRepeatedRequests) {
-	FleetApiClient::FleetApiClientConfig facConfig = {"http://localhost:8080", "test", "test", "test"};
-	RequestFrequencyGuard::RequestFrequencyGuardConfig rfgConfig = {5, 10, 5000, 200};
+	FleetApiClient::FleetApiClientConfig facConfig {};
+	facConfig.apiUrl = "http://localhost:8080";
+	facConfig.apiKey = "test";
+	facConfig.companyName = "test";
+	facConfig.carName = "test";
+	
+	RequestFrequencyGuard::RequestFrequencyGuardConfig rfgConfig {};
+	rfgConfig.maxRequestsThresholdCount = 5;
+	rfgConfig.maxRequestsThresholdPeriodMs = 10;
+	rfgConfig.delayAfterThresholdReachedMs = 5000;
+	rfgConfig.retryRequestsDelayMs = 200;
+
 	auto fleetApiClient = std::make_unique<FleetApiClient>(facConfig, rfgConfig);
 	auto timeBefore = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
