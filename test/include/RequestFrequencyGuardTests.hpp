@@ -1,6 +1,7 @@
 #pragma once
 
 #include <bringauto/fleet_protocol/http_client/RequestFrequencyGuard.hpp>
+#include <TestConstants.hpp>
 
 #include <gtest/gtest.h>
 
@@ -12,10 +13,10 @@ class RequestFrequencyGuardTests_F: public ::testing::Test {
 protected:
 	void SetUp() override {
 		RequestFrequencyGuard::RequestFrequencyGuardConfig config {
-			.maxRequestsThresholdCount = 5,
-			.maxRequestsThresholdPeriodMs = std::chrono::milliseconds(10),
-			.delayAfterThresholdReachedMs = std::chrono::milliseconds(5000),
-			.retryRequestsDelayMs = std::chrono::milliseconds(200)
+			.maxRequestsThresholdCount = MAX_REQUEST_THRESHOLD_COUNT,
+			.maxRequestsThresholdPeriodMs = std::chrono::milliseconds(MAX_REQUEST_THRESHOLD_PERIOD_MS),
+			.delayAfterThresholdReachedMs = std::chrono::milliseconds(DELAY_AFTER_THRESHOLD_REACHED_MS),
+			.retryRequestsDelayMs = std::chrono::milliseconds(RETRY_REQUESTS_DELAY_MS)
 		};
 		requestFrequencyGuard = std::make_unique<RequestFrequencyGuard>(config);
 	}

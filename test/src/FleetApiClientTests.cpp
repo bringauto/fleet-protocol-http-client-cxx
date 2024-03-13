@@ -1,6 +1,7 @@
 #define _TURN_OFF_PLATFORM_STRING
 
 #include <bringauto/fleet_protocol/http_client/FleetApiClient.hpp>
+#include <TestConstants.hpp>
 
 #include <chrono>
 #include <gtest/gtest.h>
@@ -22,34 +23,34 @@ TEST(FleetApiClientTests, DelayRepeatedRequests) {
 	};
 	
 	RequestFrequencyGuard::RequestFrequencyGuardConfig rfgConfig {
-		.maxRequestsThresholdCount = 5,
-		.maxRequestsThresholdPeriodMs = std::chrono::milliseconds(10),
-		.delayAfterThresholdReachedMs = std::chrono::milliseconds(5000),
-		.retryRequestsDelayMs = std::chrono::milliseconds(200)
+		.maxRequestsThresholdCount = MAX_REQUEST_THRESHOLD_COUNT,
+		.maxRequestsThresholdPeriodMs = std::chrono::milliseconds(MAX_REQUEST_THRESHOLD_PERIOD_MS),
+		.delayAfterThresholdReachedMs = std::chrono::milliseconds(DELAY_AFTER_THRESHOLD_REACHED_MS),
+		.retryRequestsDelayMs = std::chrono::milliseconds(RETRY_REQUESTS_DELAY_MS)
 	};
 
 	auto fleetApiClient = std::make_unique<FleetApiClient>(facConfig, rfgConfig);
 	auto timeBefore = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
-	// Do 5 requests with no delay which should trigger the threshold
-	std::cout << "Expecting 5s delay" << std::endl;
-	for(int i = 0; i < 5; i++) {
+	// Do MAX_REQUEST_THRESHOLD_COUNT requests with no delay which should trigger the threshold
+	std::cout << "Expecting " << DELAY_AFTER_THRESHOLD_REACHED_MS << "ms delay" << std::endl;
+	for(int i = 0; i < MAX_REQUEST_THRESHOLD_COUNT; i++) {
 		fleetApiClient->getCommands(0, true);
 	}
 
 	auto timeAfter = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-	ASSERT_GE(timeAfter - timeBefore, 5000);
-	ASSERT_LT(timeAfter - timeBefore, 5100);
+	ASSERT_GE(timeAfter - timeBefore, DELAY_AFTER_THRESHOLD_REACHED_MS);
+	ASSERT_LT(timeAfter - timeBefore, MAX_DELAY_AFTER_THRESHOLD_REACHED_MS);
 
 	timeBefore = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
-	// The next 5 requests should be delayed by 200ms
-	for(int i = 0; i < 5; i++) {
-		std::cout << "Expecting 200ms delay" << std::endl;
+	// The next MAX_REQUEST_THRESHOLD_COUNT requests should be delayed by RETRY_REQUESTS_DELAY_MS
+	for(int i = 0; i < MAX_REQUEST_THRESHOLD_COUNT; i++) {
+		std::cout << "Expecting " << RETRY_REQUESTS_DELAY_MS << "ms delay" << std::endl;
 		fleetApiClient->getStatuses(0, true);
 	}
 
 	timeAfter = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-	ASSERT_GE(timeAfter - timeBefore, 1000);
-	ASSERT_LT(timeAfter - timeBefore, 1100);
+	ASSERT_GE(timeAfter - timeBefore, MAX_REQUEST_THRESHOLD_COUNT * RETRY_REQUESTS_DELAY_MS);
+	ASSERT_LT(timeAfter - timeBefore, MAX_REQUEST_THRESHOLD_COUNT * MAX_RETRY_REQUESTS_DELAY_MS);
 }

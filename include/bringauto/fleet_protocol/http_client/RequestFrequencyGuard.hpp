@@ -39,7 +39,7 @@ public:
 	void handleDelays(int64_t currentTimestamp);
 
 private:
-	int32_t maxRequestsThresholdCount_ {};
+	uint32_t maxRequestsThresholdCount_ {};
 	std::chrono::milliseconds maxRequestsThresholdPeriodMs_ {};
 	std::chrono::milliseconds delayAfterThresholdReachedMs_ {};
 	std::chrono::milliseconds retryRequestsDelayMs_ {};

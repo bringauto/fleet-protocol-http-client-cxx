@@ -63,6 +63,11 @@ CMDEF_ADD_LIBRARY(
 
 TARGET_LINK_LIBRARIES(fleet-http-client-static PUBLIC bringautolib)
 
+IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    TARGET_COMPILE_OPTIONS(fleet-http-client-static PRIVATE -Wall -Wextra -Wpedantic -fsanitize=address)
+    TARGET_LINK_LIBRARIES(fleet-http-client-static PUBLIC -fsanitize=address)
+ENDIF()
+
 IF(BRINGAUTO_TESTS)
     ENABLE_TESTING()
     Add_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/test/)
