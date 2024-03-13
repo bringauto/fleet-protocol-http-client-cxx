@@ -19,13 +19,13 @@ public:
 	 */
 	struct FleetApiClientConfig {
 		/// URL of Fleet v2 HTTP API
-		std::string apiUrl;
+		const std::string apiUrl;
 		/// api key used for authorization
-		std::string apiKey;
+		const std::string apiKey;
 		/// company identifier in the API
-		std::string companyName;
+		const std::string companyName;
 		/// car identifier in the API
-		std::string carName;
+		const std::string carName;
 	};
 
 	/**

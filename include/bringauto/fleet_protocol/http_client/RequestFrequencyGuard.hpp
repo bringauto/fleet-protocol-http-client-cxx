@@ -15,13 +15,13 @@ public:
 	 */
 	struct RequestFrequencyGuardConfig {
 		/// max amount of allowed requests in the specified time period
-		int32_t maxRequestsThresholdCount {3};
+		const int32_t maxRequestsThresholdCount {3};
 		/// time period in which the amount of requests is checked
-		std::chrono::milliseconds maxRequestsThresholdPeriodMs {1000};
+		const std::chrono::milliseconds maxRequestsThresholdPeriodMs {1000};
 		/// time to sleep for in ms when threshold is initially reached
-		std::chrono::milliseconds delayAfterThresholdReachedMs {500};
+		const std::chrono::milliseconds delayAfterThresholdReachedMs {500};
 		/// delay in ms between requests until request rate is no longer over the threshold
-		std::chrono::milliseconds retryRequestsDelayMs {220};
+		const std::chrono::milliseconds retryRequestsDelayMs {220};
 	};
 
 	/**
