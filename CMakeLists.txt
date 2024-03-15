@@ -61,7 +61,7 @@ CMDEF_ADD_LIBRARY(
         VERSION ${FLEET_HTTP_CLIENT_VERSION}
 )
 
-TARGET_LINK_LIBRARIES(fleet-http-client-static PUBLIC bringautolib)
+TARGET_LINK_LIBRARIES(fleet-http-client-static PUBLIC "$<BUILD_INTERFACE:bringautolib>")
 
 IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
     TARGET_COMPILE_OPTIONS(fleet-http-client-static PRIVATE -Wall -Wextra -Wpedantic -fsanitize=address)
@@ -74,16 +74,14 @@ IF(BRINGAUTO_TESTS)
 ENDIF()
 
 IF (BRINGAUTO_INSTALL)
-    INCLUDE(GNUInstallDirs)
-    CMDEF_INSTALL(TARGET fleet-http-client-static)
+    IF (PROJECT_IS_TOP_LEVEL)
+        INCLUDE(GNUInstallDirs)
+        CMDEF_INSTALL(TARGET fleet-http-client-static)
+    ENDIF ()
 ENDIF ()
 
 IF (BRINGAUTO_PACKAGE)
-    CMDEF_PACKAGE(
-            MAIN_TARGET fleet-http-client-static
-            VERSION ${FLEET_HTTP_CLIENT_VERSION}
-    )
-    SET(CPACK_GENERATOR ZIP)
-    SET(CPACK_PACKAGE_CONTACT "BringAuto s.r.o. <maintainers@bringauto.com>")
-    INCLUDE(CPack)
+    IF (PROJECT_IS_TOP_LEVEL)
+        MESSAGE(STATUS "Fleet HTTP Client will not be released as a package as it is not a static library.")
+    ENDIF ()
 ENDIF ()
