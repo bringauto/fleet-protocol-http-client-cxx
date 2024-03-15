@@ -1,0 +1,212 @@
+From 0563297d440e7a46337d85298caf1b20de1e2b9e Mon Sep 17 00:00:00 2001
+From: mario <mario.ivancik@bringauto.com>
+Date: Thu, 1 Feb 2024 14:14:41 +0100
+Subject: [PATCH] patch for generated code
+
+---
+ .../bringauto-fleet-http-client-generated/api/DeviceApi.h      |  4 +--
+ .../bringauto-fleet-http-client-generated/model/Message.h      |  6 ++--
+ .../bringauto-fleet-http-client-generated/model/Payload_data.h | 10 ++++++
+ .../src/api/DeviceApi.cpp                     |  4 +--
+ .../src/model/Message.cpp                     |  8 ++---
+ .../src/model/Payload_data.cpp                | 34 ++++++++++++++++---
+ 6 files changed, 50 insertions(+), 16 deletions(-)
+
+diff --git a/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/api/DeviceApi.h b/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/api/DeviceApi.h
+index 50d6f99..86093d7 100644
+--- a/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/api/DeviceApi.h
++++ b/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/api/DeviceApi.h
+@@ -58,7 +58,7 @@ public:
+     pplx::task<std::vector<std::shared_ptr<Message>>> listCommands(
+         utility::string_t companyName,
+         utility::string_t carName,
+-        boost::optional<int32_t> since,
++        boost::optional<int64_t> since,
+         boost::optional<bool> wait
+     ) const;
+     /// <summary>
+@@ -74,7 +74,7 @@ public:
+     pplx::task<std::vector<std::shared_ptr<Message>>> listStatuses(
+         utility::string_t companyName,
+         utility::string_t carName,
+-        boost::optional<int32_t> since,
++        boost::optional<int64_t> since,
+         boost::optional<bool> wait
+     ) const;
+     /// <summary>
+diff --git a/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Message.h b/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Message.h
+index d8ae2a1..d0bf30f 100644
+--- a/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Message.h
++++ b/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Message.h
+@@ -60,11 +60,11 @@ public:
+     /// <summary>
+     /// Unix timestamp of the message in milliseconds.
+     /// </summary>
+-    int32_t getTimestamp() const;
++    int64_t getTimestamp() const;
+     bool timestampIsSet() const;
+     void unsetTimestamp();
+ 
+-    void setTimestamp(int32_t value);
++    void setTimestamp(int64_t value);
+ 
+     /// <summary>
+     /// 
+@@ -86,7 +86,7 @@ public:
+ 
+ 
+ protected:
+-    int32_t m_Timestamp;
++    int64_t m_Timestamp;
+     bool m_TimestampIsSet;
+     std::shared_ptr<DeviceId> m_Device_id;
+     bool m_Device_idIsSet;
+diff --git a/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Payload_data.h b/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Payload_data.h
+index c64e481..c79ae30 100644
+--- a/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Payload_data.h
++++ b/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Payload_data.h
+@@ -53,8 +53,18 @@ public:
+     /////////////////////////////////////////////
+     /// Payload_data members
+ 
++    /// <summary>
++    /// 
++    /// </summary>
++    web::json::value getJson() const;
++    bool jsonIsSet() const;
++    void unsetJson();
++
++    void setJson(const web::json::value& value);
+ 
+ protected:
++web::json::value m_Json;
++    bool m_JsonIsSet;
+ };
+ 
+ 
+diff --git a/lib/bringauto-fleet-http-client-generated/src/api/DeviceApi.cpp b/lib/bringauto-fleet-http-client-generated/src/api/DeviceApi.cpp
+index f3621f1..c7231d0 100644
+--- a/lib/bringauto-fleet-http-client-generated/src/api/DeviceApi.cpp
++++ b/lib/bringauto-fleet-http-client-generated/src/api/DeviceApi.cpp
+@@ -36,7 +36,7 @@ DeviceApi::~DeviceApi()
+ {
+ }
+ 
+-pplx::task<std::vector<std::shared_ptr<Message>>> DeviceApi::listCommands(utility::string_t companyName, utility::string_t carName, boost::optional<int32_t> since, boost::optional<bool> wait) const
++pplx::task<std::vector<std::shared_ptr<Message>>> DeviceApi::listCommands(utility::string_t companyName, utility::string_t carName, boost::optional<int64_t> since, boost::optional<bool> wait) const
+ {
+ 
+ 
+@@ -182,7 +182,7 @@ pplx::task<std::vector<std::shared_ptr<Message>>> DeviceApi::listCommands(utilit
+         return localVarResult;
+     });
+ }
+-pplx::task<std::vector<std::shared_ptr<Message>>> DeviceApi::listStatuses(utility::string_t companyName, utility::string_t carName, boost::optional<int32_t> since, boost::optional<bool> wait) const
++pplx::task<std::vector<std::shared_ptr<Message>>> DeviceApi::listStatuses(utility::string_t companyName, utility::string_t carName, boost::optional<int64_t> since, boost::optional<bool> wait) const
+ {
+ 
+ 
+diff --git a/lib/bringauto-fleet-http-client-generated/src/model/Message.cpp b/lib/bringauto-fleet-http-client-generated/src/model/Message.cpp
+index 9ffc352..5bbebf4 100644
+--- a/lib/bringauto-fleet-http-client-generated/src/model/Message.cpp
++++ b/lib/bringauto-fleet-http-client-generated/src/model/Message.cpp
+@@ -68,7 +68,7 @@ bool Message::fromJson(const web::json::value& val)
+         const web::json::value& fieldValue = val.at(utility::conversions::to_string_t(U("timestamp")));
+         if(!fieldValue.is_null())
+         {
+-            int32_t refVal_setTimestamp;
++            int64_t refVal_setTimestamp;
+             ok &= ModelBase::fromJson(fieldValue, refVal_setTimestamp);
+             setTimestamp(refVal_setTimestamp);
+         }
+@@ -128,7 +128,7 @@ bool Message::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const
+ 
+     if(multipart->hasContent(utility::conversions::to_string_t(U("timestamp"))))
+     {
+-        int32_t refVal_setTimestamp;
++        int64_t refVal_setTimestamp;
+         ok &= ModelBase::fromHttpContent(multipart->getContent(utility::conversions::to_string_t(U("timestamp"))), refVal_setTimestamp );
+         setTimestamp(refVal_setTimestamp);
+     }
+@@ -147,12 +147,12 @@ bool Message::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const
+     return ok;
+ }
+ 
+-int32_t Message::getTimestamp() const
++int64_t Message::getTimestamp() const
+ {
+     return m_Timestamp;
+ }
+ 
+-void Message::setTimestamp(int32_t value)
++void Message::setTimestamp(int64_t value)
+ {
+     m_Timestamp = value;
+     m_TimestampIsSet = true;
+diff --git a/lib/bringauto-fleet-http-client-generated/src/model/Payload_data.cpp b/lib/bringauto-fleet-http-client-generated/src/model/Payload_data.cpp
+index 7fa6952..6d84e65 100644
+--- a/lib/bringauto-fleet-http-client-generated/src/model/Payload_data.cpp
++++ b/lib/bringauto-fleet-http-client-generated/src/model/Payload_data.cpp
+@@ -23,6 +23,8 @@ namespace model {
+ 
+ Payload_data::Payload_data()
+ {
++    m_Json = web::json::value::object();
++    m_JsonIsSet = false;
+ }
+ 
+ Payload_data::~Payload_data()
+@@ -36,16 +38,16 @@ void Payload_data::validate()
+ 
+ web::json::value Payload_data::toJson() const
+ {
+-
+-    web::json::value val = web::json::value::object();
+-    
+-
+-    return val;
++    return m_Json;
+ }
+ 
+ bool Payload_data::fromJson(const web::json::value& val)
+ {
+     bool ok = true;
++
++    web::json::value refVal_setJson;
++    ok &= ModelBase::fromJson(val, refVal_setJson);
++    setJson(refVal_setJson);
+     
+     return ok;
+ }
+@@ -71,6 +73,28 @@ bool Payload_data::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, c
+     return ok;
+ }
+ 
++web::json::value Payload_data::getJson() const
++{
++    return m_Json;
++}
++
++void Payload_data::setJson(const web::json::value& value)
++{
++    m_Json = value;
++    m_JsonIsSet = true;
++}
++
++bool Payload_data::jsonIsSet() const
++{
++    return m_JsonIsSet;
++}
++
++void Payload_data::unsetJson()
++{
++    m_JsonIsSet = false;
++
++}
++
+ }
+ }
+ }
+-- 
+2.43.0
+
