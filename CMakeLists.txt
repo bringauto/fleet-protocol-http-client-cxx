@@ -82,6 +82,6 @@ ENDIF ()
 
 IF (BRINGAUTO_PACKAGE)
     IF (PROJECT_IS_TOP_LEVEL)
-        MESSAGE(FATAL_ERROR "Fleet HTTP Client will not be released as a package as it is not a static library.")
+        MESSAGE(STATUS "Fleet HTTP Client will not be released as a package as it is a static library.")
     ENDIF ()
 ENDIF ()
