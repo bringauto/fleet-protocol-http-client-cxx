@@ -47,10 +47,10 @@ FILE(GLOB_RECURSE source_files "src/*")
 ADD_LIBRARY(bringautolib STATIC ${source_files})
 TARGET_INCLUDE_DIRECTORIES(bringautolib PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
 TARGET_LINK_LIBRARIES(bringautolib PUBLIC
-                        fleet-protocol-interface::common-headers-interface
-                        fleet-protocol-cxx-helpers-static::fleet-protocol-cxx-helpers-static
-                        bringauto-fleet-http-client-generated
-                        bringauto_logger::bringauto_logger)
+    fleet-protocol-interface::common-headers-interface
+    fleet-protocol-cxx-helpers-static::fleet-protocol-cxx-helpers-static
+    bringauto-fleet-http-client-generated
+    bringauto_logger::bringauto_logger)
 
 CMDEF_ADD_LIBRARY(
         LIBRARY_GROUP fleet-http-client
