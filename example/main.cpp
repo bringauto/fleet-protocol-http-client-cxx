@@ -10,10 +10,20 @@ using namespace bringauto::logging;
 std::unique_ptr<FleetApiClient> fleetApiClient;
 
 void createFleetApiClient() {
-	FleetApiClient::FleetApiClientConfig facConfig = {"http://localhost:8080",
-													  "StaticAccessKeyToBeUsedByDevelopersOnEtna",
-													  "bringauto", "virtual_vehicle"};
-	RequestFrequencyGuard::RequestFrequencyGuardConfig rfgConfig = {3, 1000, 500, 220};
+	FleetApiClient::FleetApiClientConfig facConfig {
+		.apiUrl = "http://localhost:8080",
+		.apiKey = "StaticAccessKeyToBeUsedByDevelopersOnEtna",
+		.companyName = "bringauto",
+		.carName = "virtual_vehicle"
+	};
+
+	RequestFrequencyGuard::RequestFrequencyGuardConfig rfgConfig {
+		.maxRequestsThresholdCount = 3,
+		.maxRequestsThresholdPeriodMs = std::chrono::milliseconds(1000),
+		.delayAfterThresholdReachedMs = std::chrono::milliseconds(500),
+		.retryRequestsDelayMs = std::chrono::milliseconds(220)
+	};
+
 	fleetApiClient = std::make_unique<FleetApiClient>(facConfig, rfgConfig);
 	fleetApiClient->setDeviceIdentification(bringauto::fleet_protocol::cxx::DeviceID(1, 1, 1, "autonomy", "virtual-vehicle"));
 }

@@ -19,13 +19,13 @@ public:
 	 */
 	struct FleetApiClientConfig {
 		/// URL of Fleet v2 HTTP API
-		std::string apiUrl;
+		const std::string apiUrl;
 		/// api key used for authorization
-		std::string apiKey;
+		const std::string apiKey;
 		/// company identifier in the API
-		std::string companyName;
+		const std::string companyName;
 		/// car identifier in the API
-		std::string carName;
+		const std::string carName;
 	};
 
 	/**
@@ -57,7 +57,7 @@ public:
 	 * @return Vector of shared pointers to the Message model containing commands in payload data
 	 */
 	std::vector<std::shared_ptr<org::openapitools::client::model::Message>> getCommands(std::optional<int64_t> since = std::nullopt,
-																						std::optional<bool> wait = std::nullopt);
+		std::optional<bool> wait = std::nullopt);
 
 	/**
 	 * @brief Calls the GET function on /status/{company_name}/{car_name} of Fleet v2 HTTP API
@@ -66,17 +66,17 @@ public:
 	 * @return Vector of shared pointers to the Message model containing statuses in payload data
 	 */
 	std::vector<std::shared_ptr<org::openapitools::client::model::Message>> getStatuses(std::optional<int64_t> since = std::nullopt,
-																						std::optional<bool> wait = std::nullopt);
+		std::optional<bool> wait = std::nullopt);
 
 	/**
-	 * Calls the POST function on /command/{company_name}/{car_name} of Fleet v2 HTTP API.
+	 * @brief Calls the POST function on /command/{company_name}/{car_name} of Fleet v2 HTTP API.
 	 * setDeviceIdentification needs to be used beforehand to set DeviceId, otherwise placeholder values will be used.
 	 * @param commandJson payload data of a command represented by a json as a string
 	 */
 	void sendCommand(const std::string &commandJson);
 
 	/**
-	 * Calls the POST function on /status/{company_name}/{car_name} of Fleet v2 HTTP API.
+	 * @brief Calls the POST function on /status/{company_name}/{car_name} of Fleet v2 HTTP API.
 	 * setDeviceIdentification needs to be used beforehand to set DeviceId, otherwise placeholder values will be used.
 	 * @param statusJson payload data of a status represented by a json as a string
 	 */
@@ -90,19 +90,19 @@ public:
 	std::shared_ptr<org::openapitools::client::model::AvailableDevices> getAvailableDevices(std::optional<int32_t> moduleId = std::nullopt);
 
 private:
-	std::unique_ptr<RequestFrequencyGuard> requestFrequencyGuard_;
+	std::unique_ptr<RequestFrequencyGuard> requestFrequencyGuard_ {};
 
-	std::shared_ptr<org::openapitools::client::api::ApiClient> apiClientPtr_;
-	std::unique_ptr<org::openapitools::client::api::CarApi> carApi_;
-	std::unique_ptr<org::openapitools::client::api::DeviceApi> deviceApi_;
-	std::unique_ptr<org::openapitools::client::api::ModuleApi> moduleApi_;
-	std::string companyName_;
-	std::string carName_;
+	std::shared_ptr<org::openapitools::client::api::ApiClient> apiClientPtr_ {};
+	std::unique_ptr<org::openapitools::client::api::CarApi> carApi_ {};
+	std::unique_ptr<org::openapitools::client::api::DeviceApi> deviceApi_ {};
+	std::unique_ptr<org::openapitools::client::api::ModuleApi> moduleApi_ {};
+	std::string companyName_ {};
+	std::string carName_ {};
 
-	std::shared_ptr<org::openapitools::client::model::DeviceId> deviceIdPtr_;
-	std::shared_ptr<org::openapitools::client::model::Message> messagePtr_;
-	std::shared_ptr<org::openapitools::client::model::Payload> payloadPtr_;
-	std::shared_ptr<org::openapitools::client::model::Payload_data> payloadDataPtr_;
+	std::shared_ptr<org::openapitools::client::model::DeviceId> deviceIdPtr_ {};
+	std::shared_ptr<org::openapitools::client::model::Message> messagePtr_ {};
+	std::shared_ptr<org::openapitools::client::model::Payload> payloadPtr_ {};
+	std::shared_ptr<org::openapitools::client::model::Payload_data> payloadDataPtr_ {};
 };
 
 }// namespace bringauto::fleet_protocol::http_client

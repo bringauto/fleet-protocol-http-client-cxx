@@ -151,7 +151,7 @@ index 7fa6952..6d84e65 100644
  
  Payload_data::Payload_data()
  {
-+m_Json = web::json::value::object();
++    m_Json = web::json::value::object();
 +    m_JsonIsSet = false;
  }
  
@@ -165,7 +165,7 @@ index 7fa6952..6d84e65 100644
 -    
 -
 -    return val;
-+return m_Json;
++    return m_Json;
  }
  
  bool Payload_data::fromJson(const web::json::value& val)

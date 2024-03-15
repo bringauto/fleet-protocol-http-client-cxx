@@ -1,9 +1,6 @@
 .gitignore
-.openapi-generator-ignore
-CMakeLists.txt
 Config.cmake.in
 README.md
-git_push.sh
 include/bringauto-fleet-http-client-generated/ApiClient.h
 include/bringauto-fleet-http-client-generated/ApiConfiguration.h
 include/bringauto-fleet-http-client-generated/ApiException.h

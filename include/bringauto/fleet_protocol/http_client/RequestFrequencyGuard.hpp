@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <cstdint>
 #include <vector>
 
@@ -14,13 +15,13 @@ public:
 	 */
 	struct RequestFrequencyGuardConfig {
 		/// max amount of allowed requests in the specified time period
-		int32_t maxRequestsThresholdCount {3};
+		const int32_t maxRequestsThresholdCount {3};
 		/// time period in which the amount of requests is checked
-		int32_t maxRequestsThresholdPeriodMs {1000};
+		const std::chrono::milliseconds maxRequestsThresholdPeriodMs {1000};
 		/// time to sleep for in ms when threshold is initially reached
-		int32_t delayAfterThresholdReachedMs {500};
+		const std::chrono::milliseconds delayAfterThresholdReachedMs {500};
 		/// delay in ms between requests until request rate is no longer over the threshold
-		int32_t retryRequestsDelayMs {220};
+		const std::chrono::milliseconds retryRequestsDelayMs {220};
 	};
 
 	/**
@@ -38,13 +39,13 @@ public:
 	void handleDelays(int64_t currentTimestamp);
 
 private:
-	int32_t maxRequestsThresholdCount_;
-	int32_t maxRequestsThresholdPeriodMs_;
-	int32_t delayAfterThresholdReachedMs_;
-	int32_t retryRequestsDelayMs_;
+	uint32_t maxRequestsThresholdCount_ {};
+	std::chrono::milliseconds maxRequestsThresholdPeriodMs_ {};
+	std::chrono::milliseconds delayAfterThresholdReachedMs_ {};
+	std::chrono::milliseconds retryRequestsDelayMs_ {};
 
 	bool thresholdReached_ {false};
-	std::vector<int64_t> msgTimestamps_;
+	std::vector<int64_t> msgTimestamps_ {};
 
 	/**
 	 * @brief Checks if the current request rate is over the threshold
