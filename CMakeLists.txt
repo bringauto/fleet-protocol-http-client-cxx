@@ -64,8 +64,10 @@ CMDEF_ADD_LIBRARY(
 TARGET_LINK_LIBRARIES(fleet-http-client-static PUBLIC "$<BUILD_INTERFACE:bringautolib>")
 
 IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    TARGET_COMPILE_OPTIONS(fleet-http-client-static PRIVATE -Wall -Wextra -Wpedantic -fsanitize=address)
-    TARGET_LINK_LIBRARIES(fleet-http-client-static PUBLIC -fsanitize=address)
+    IF (PROJECT_IS_TOP_LEVEL)
+        TARGET_COMPILE_OPTIONS(fleet-http-client-static PRIVATE -Wall -Wextra -Wpedantic -fsanitize=address)
+        TARGET_LINK_LIBRARIES(fleet-http-client-static PUBLIC -fsanitize=address)
+    ENDIF ()
 ENDIF()
 
 IF(BRINGAUTO_TESTS)
