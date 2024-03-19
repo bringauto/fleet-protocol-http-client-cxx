@@ -1,6 +1,9 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.25 FATAL_ERROR)
 PROJECT(fleet-http-client C CXX)
-INCLUDE(GNUInstallDirs)
+
+IF (TARGET fleet-http-client-static)
+    RETURN()
+ENDIF ()
 
 SET(FLEET_HTTP_CLIENT_VERSION 1.1.0)
 SET(CMAKE_INSTALL_RPATH "$ORIGIN/../${CMAKE_INSTALL_LIBDIR}")
@@ -72,6 +75,7 @@ IF (BRINGAUTO_INSTALL)
     IF (PROJECT_IS_TOP_LEVEL)
         INCLUDE(GNUInstallDirs)
         CMDEF_INSTALL(TARGET fleet-http-client-static)
+        BA_PACKAGE_DEPS_IMPORTED(fleet-http-client-static)
     ENDIF ()
 ENDIF ()
 
