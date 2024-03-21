@@ -63,7 +63,9 @@ else()
     endif()
 endif()
 
-configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
-    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-    INSTALL_DESTINATION "cmake/${PROJECT_NAME}"
-)
+IF (BRINGAUTO_INSTALL)
+    CMDEF_INSTALL(
+            TARGET ${PROJECT_NAME}
+            NAMESPACE fleet-http-client-shared::
+    )
+ENDIF ()

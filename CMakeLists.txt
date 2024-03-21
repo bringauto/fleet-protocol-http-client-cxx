@@ -47,40 +47,41 @@ IF(BRINGAUTO_SAMPLES)
 ENDIF()
 
 FILE(GLOB_RECURSE source_files "src/*")
-ADD_LIBRARY(bringautolib STATIC ${source_files})
-TARGET_INCLUDE_DIRECTORIES(bringautolib PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
-TARGET_LINK_LIBRARIES(bringautolib PUBLIC
-    fleet-protocol-interface::common-headers-interface
-    fleet-protocol-cxx-helpers-static::fleet-protocol-cxx-helpers-static
-    bringauto-fleet-http-client-generated
-    bringauto_logger::bringauto_logger)
 
 CMDEF_ADD_LIBRARY(
         LIBRARY_GROUP fleet-http-client
-        TYPE STATIC
+        TYPE SHARED
         SOURCES ${source_files}
-        INCLUDE_DIRECTORIES "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/>"
+        INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/
         INSTALL_INCLUDE_DIRECTORIES "include/"
         VERSION ${FLEET_HTTP_CLIENT_VERSION}
 )
 
-TARGET_LINK_LIBRARIES(fleet-http-client-static PUBLIC "$<BUILD_INTERFACE:bringautolib>")
+TARGET_LINK_LIBRARIES(fleet-http-client-shared
+        PUBLIC
+        fleet-protocol-interface::common-headers-interface
+        bringauto_logger::bringauto_logger
+        fleet-protocol-cxx-helpers-static::fleet-protocol-cxx-helpers-static
+
+        bringauto-fleet-http-client-generated
+)
 
 IF(BRINGAUTO_TESTS)
     ENABLE_TESTING()
-    Add_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/test/)
+    ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/test/)
 ENDIF()
 
 IF (BRINGAUTO_INSTALL)
-    IF (PROJECT_IS_TOP_LEVEL)
-        INCLUDE(GNUInstallDirs)
-        CMDEF_INSTALL(TARGET fleet-http-client-static)
-        BA_PACKAGE_DEPS_IMPORTED(fleet-http-client-static)
-    ENDIF ()
+    CMDEF_INSTALL(
+            TARGET fleet-http-client-shared
+            NAMESPACE fleet-http-client-shared::
+    )
+    BA_PACKAGE_DEPS_IMPORTED(fleet-http-client-shared)
 ENDIF ()
 
 IF (BRINGAUTO_PACKAGE)
-    IF (PROJECT_IS_TOP_LEVEL)
-        MESSAGE(STATUS "Fleet HTTP Client will not be released as a package as it is a static library.")
-    ENDIF ()
+    CMDEF_PACKAGE(
+            MAIN_TARGET fleet-http-client-shared
+            VERSION ${FLEET_HTTP_CLIENT_VERSION}
+    )
 ENDIF ()
