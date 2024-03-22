@@ -63,7 +63,7 @@ TARGET_LINK_LIBRARIES(fleet-http-client-shared
         fleet-protocol-interface::common-headers-interface
         bringauto_logger::bringauto_logger
         fleet-protocol-cxx-helpers-static::fleet-protocol-cxx-helpers-static
-        bringauto-fleet-http-client-generated
+        bringauto-fleet-http-client-generated-shared
 )
 
 IF(BRINGAUTO_TESTS)
