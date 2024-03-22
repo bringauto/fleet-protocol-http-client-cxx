@@ -33,7 +33,7 @@ include(CMakePackageConfigHelpers)
 file(GLOB_RECURSE HEADER_FILES "include/*.h")
 file(GLOB_RECURSE SOURCE_FILES "src/*.cpp")
 
-add_library(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
+add_library(${PROJECT_NAME} SHARED ${HEADER_FILES} ${SOURCE_FILES})
 
 target_compile_options(${PROJECT_NAME}
     PRIVATE
@@ -62,10 +62,10 @@ else()
         target_link_libraries(${PROJECT_NAME} PUBLIC Boost::headers cpprestsdk::cpprest bcrypt)
     endif()
 endif()
-#
-#IF (BRINGAUTO_INSTALL)
-#    CMDEF_INSTALL(
-#            TARGET ${PROJECT_NAME}
-#            NAMESPACE fleet-http-client-shared::
-#    )
-#ENDIF ()
+
+IF (BRINGAUTO_INSTALL)
+    CMDEF_INSTALL(
+            TARGET ${PROJECT_NAME}
+            NAMESPACE fleet-http-client-shared::
+    )
+ENDIF ()
