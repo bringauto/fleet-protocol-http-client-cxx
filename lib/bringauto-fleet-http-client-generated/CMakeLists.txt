@@ -62,10 +62,10 @@ else()
         target_link_libraries(${PROJECT_NAME} PUBLIC Boost::headers cpprestsdk::cpprest bcrypt)
     endif()
 endif()
-
-IF (BRINGAUTO_INSTALL)
-    CMDEF_INSTALL(
-            TARGET ${PROJECT_NAME}
-            NAMESPACE fleet-http-client-shared::
-    )
-ENDIF ()
+#
+#IF (BRINGAUTO_INSTALL)
+#    CMDEF_INSTALL(
+#            TARGET ${PROJECT_NAME}
+#            NAMESPACE fleet-http-client-shared::
+#    )
+#ENDIF ()
