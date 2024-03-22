@@ -5,9 +5,10 @@ IF (TARGET fleet-http-client-static)
     RETURN()
 ENDIF ()
 
-SET(FLEET_HTTP_CLIENT_VERSION 1.1.0)
-SET(CMAKE_INSTALL_RPATH "$ORIGIN/../${CMAKE_INSTALL_LIBDIR}")
+SET(CMAKE_BUILD_RPATH_USE_ORIGIN ON)
+SET(CMAKE_INSTALL_RPATH "$ORIGIN")
 SET(CMAKE_CXX_STANDARD 20)
+SET(FLEET_HTTP_CLIENT_VERSION 1.1.0)
 
 INCLUDE(CheckPIESupported)
 CHECK_PIE_SUPPORTED()
@@ -62,7 +63,6 @@ TARGET_LINK_LIBRARIES(fleet-http-client-shared
         fleet-protocol-interface::common-headers-interface
         bringauto_logger::bringauto_logger
         fleet-protocol-cxx-helpers-static::fleet-protocol-cxx-helpers-static
-
         bringauto-fleet-http-client-generated
 )
 
