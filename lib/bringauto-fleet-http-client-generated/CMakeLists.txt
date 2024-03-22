@@ -20,10 +20,6 @@ IF(NOT CMAKE_CXX_STANDARD)
     SET(CMAKE_CXX_STANDARD 14)
 ENDIF()
 
-IF(NOT CMAKE_BUILD_TYPE)
-    SET(CMAKE_BUILD_TYPE Release)
-ENDIF ()
-
 FIND_PACKAGE(cpprestsdk REQUIRED)
 FIND_PACKAGE(Boost REQUIRED)
 
@@ -46,12 +42,7 @@ target_compile_options(${PROJECT_NAME}-shared
         $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
             -Wall -Wno-unused-variable>
 )
-
-IF (BUILD_SHARED_LIBS)
-    TARGET_LINK_LIBRARIES(${PROJECT_NAME}-shared PUBLIC Boost::headers cpprestsdk::cpprest)
-ELSE()
-    TARGET_LINK_LIBRARIES(${PROJECT_NAME}-shared PUBLIC Boost::headers cpprestsdk::cpprest crypto)
-ENDIF()
+TARGET_LINK_LIBRARIES(${PROJECT_NAME}-shared PUBLIC Boost::headers cpprestsdk::cpprest)
 
 IF (BRINGAUTO_INSTALL)
     CMDEF_INSTALL(
