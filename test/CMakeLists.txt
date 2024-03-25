@@ -14,10 +14,10 @@ TARGET_INCLUDE_DIRECTORIES(fleet-http-client-tests PUBLIC "${CMAKE_CURRENT_LIST_
 TARGET_COMPILE_OPTIONS(fleet-http-client-tests PRIVATE -Wall -Wextra -Wpedantic -fsanitize=address)
 TARGET_LINK_OPTIONS(fleet-http-client-tests PRIVATE -fsanitize=address)
 TARGET_LINK_LIBRARIES(fleet-http-client-tests PUBLIC
-    fleet-http-client-static
+    fleet-http-client-shared
     ${GTEST_LIBRARIES}
 )
-TARGET_LINK_LIBRARIES(fleet-http-client-static PRIVATE memory_management)
+TARGET_LINK_LIBRARIES(fleet-http-client-shared PRIVATE memory_management)
 
 INCLUDE(GoogleTest)
 GTEST_DISCOVER_TESTS(fleet-http-client-tests)
