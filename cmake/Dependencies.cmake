@@ -5,6 +5,7 @@ BA_PACKAGE_LIBRARY(ba-logger     v1.2.0)
 BA_PACKAGE_LIBRARY(boost         v1.78.0)
 BA_PACKAGE_LIBRARY(fleet-protocol-interface             v2.0.0 PLATFORM_STRING_MODE any_machine NO_DEBUG ON)
 BA_PACKAGE_LIBRARY(fleet-protocol-cxx-helpers-static    v1.1.1)
+BA_PACKAGE_LIBRARY(cpprestsdk    v2.10.20)
 
 IF (BRINGAUTO_TESTS)
     BA_PACKAGE_LIBRARY(gtest         v1.12.1)

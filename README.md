@@ -18,9 +18,23 @@ After the initial threshold delay ends, the time container is emptied and subseq
 
 ![Flow chart](./doc/img/request_frequency_guard.png)
 
-## Requirements
+## Usage
 
-- cpprestsdk: `sudo apt-get install libcpprest-dev`
+When using fleet-http-client, it is required to install its dependencies. 
+This has to be done because cpprest is obsolete.
+
+### Requirements
+
+- cpprestsdk
+- bringauto-logger
+- Boost
+
+All requirements can be added by bringauto Packager
+
+### Example
+
+Usage example is in [Mission module CMakeLists](https://github.com/bringauto/mission-module/blob/master/CMakeLists.txt). 
+Pay attention to the FIND_PACKAGE part.
 
 ## Generating client code
 

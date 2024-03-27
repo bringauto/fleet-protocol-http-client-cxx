@@ -61,9 +61,10 @@ CMDEF_ADD_LIBRARY(
 TARGET_LINK_LIBRARIES(fleet-http-client-shared
         PUBLIC
         fleet-protocol-interface::common-headers-interface
-        bringauto_logger::bringauto_logger
         fleet-protocol-cxx-helpers-static::fleet-protocol-cxx-helpers-static
         bringauto-fleet-http-client-generated-shared
+        PRIVATE
+        bringauto_logger::bringauto_logger
 )
 
 IF(BRINGAUTO_TESTS)
@@ -76,7 +77,6 @@ IF (BRINGAUTO_INSTALL)
             TARGET fleet-http-client-shared
             NAMESPACE fleet-http-client-shared::
     )
-    BA_PACKAGE_DEPS_IMPORTED(fleet-http-client-shared)
 ENDIF ()
 
 IF (BRINGAUTO_PACKAGE)
@@ -84,4 +84,7 @@ IF (BRINGAUTO_PACKAGE)
             MAIN_TARGET fleet-http-client-shared
             VERSION ${FLEET_HTTP_CLIENT_VERSION}
     )
+    SET(CPACK_GENERATOR ZIP)
+    SET(CPACK_PACKAGE_CONTACT "BringAuto s.r.o. <maintainers@bringauto.com>")
+    INCLUDE(CPack)
 ENDIF ()
