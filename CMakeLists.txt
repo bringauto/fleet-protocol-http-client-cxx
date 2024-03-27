@@ -8,7 +8,7 @@ ENDIF ()
 SET(CMAKE_BUILD_RPATH_USE_ORIGIN ON)
 SET(CMAKE_INSTALL_RPATH "$ORIGIN")
 SET(CMAKE_CXX_STANDARD 20)
-SET(FLEET_HTTP_CLIENT_VERSION 1.2.0)
+SET(FLEET_HTTP_CLIENT_VERSION 1.2.1)
 
 INCLUDE(CheckPIESupported)
 CHECK_PIE_SUPPORTED()
@@ -63,7 +63,6 @@ TARGET_LINK_LIBRARIES(fleet-http-client-shared
         fleet-protocol-interface::common-headers-interface
         fleet-protocol-cxx-helpers-static::fleet-protocol-cxx-helpers-static
         bringauto-fleet-http-client-generated-shared
-        PRIVATE
         bringauto_logger::bringauto_logger
 )
 
