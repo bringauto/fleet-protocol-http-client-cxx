@@ -16,8 +16,8 @@ TARGET_LINK_OPTIONS(fleet-http-client-tests PRIVATE -fsanitize=address)
 TARGET_LINK_LIBRARIES(fleet-http-client-tests PUBLIC
     fleet-http-client-shared
     ${GTEST_LIBRARIES}
+    memory_management
 )
-TARGET_LINK_LIBRARIES(fleet-http-client-shared PRIVATE memory_management)
 
 INCLUDE(GoogleTest)
 GTEST_DISCOVER_TESTS(fleet-http-client-tests)
