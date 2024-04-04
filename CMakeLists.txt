@@ -76,6 +76,7 @@ IF (BRINGAUTO_INSTALL)
             TARGET fleet-http-client-shared
             NAMESPACE fleet-http-client-shared::
     )
+    BA_PACKAGE_DEPS_IMPORTED(fleet-http-client-shared)
 ENDIF ()
 
 IF (BRINGAUTO_PACKAGE)

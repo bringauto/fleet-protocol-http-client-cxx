@@ -23,9 +23,6 @@ ENDIF()
 FIND_PACKAGE(cpprestsdk REQUIRED 2.10.20)
 FIND_PACKAGE(Boost REQUIRED)
 
-INCLUDE(GNUInstallDirs)
-INCLUDE(CMakePackageConfigHelpers)
-
 FILE(GLOB_RECURSE HEADER_FILES "include/*.h")
 FILE(GLOB_RECURSE SOURCE_FILES "src/*.cpp")
 
@@ -42,7 +39,11 @@ target_compile_options(${PROJECT_NAME}-shared
         $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
             -Wall -Wno-unused-variable>
 )
-TARGET_LINK_LIBRARIES(${PROJECT_NAME}-shared PUBLIC Boost::headers cpprestsdk::cpprest)
+TARGET_LINK_LIBRARIES(${PROJECT_NAME}-shared
+        PUBLIC
+        Boost::headers
+        cpprestsdk::cpprest
+)
 
 IF (BRINGAUTO_INSTALL)
     CMDEF_INSTALL(
