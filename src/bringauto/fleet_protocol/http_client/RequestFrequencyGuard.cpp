@@ -44,7 +44,9 @@ bool RequestFrequencyGuard::isOverThreshold() {
 	if(msgTimestamps_.size() >= maxRequestsThresholdCount_) {
 		if((msgTimestamps_.front() - msgTimestamps_.back()) < maxRequestsThresholdPeriodMs_.count()) {
 			retVal = true;
-			Logger::logWarning("Http api request frequency threshold reached, delaying requests");
+			//temporarily removed due to logger not being initialized in external server
+			//Logger::logWarning("Http api request frequency threshold reached, delaying requests");
+			std::cerr << "Http api request frequency threshold reached, delaying requests" << std::endl;
 		}
 
 		msgTimestamps_.pop_back();
