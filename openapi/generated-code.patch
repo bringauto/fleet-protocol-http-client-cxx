@@ -70,7 +70,7 @@ index c64e481..c79ae30 100644
      /// Payload_data members
  
 +    /// <summary>
-+    /// 
++    ///
 +    /// </summary>
 +    web::json::value getJson() const;
 +    bool jsonIsSet() const;

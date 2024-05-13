@@ -53,9 +53,20 @@ void FleetApiClient::setDeviceIdentification(const fleet_protocol::cxx::DeviceID
 }
 
 
-std::vector<std::shared_ptr<model::Car>> FleetApiClient::getCars() {
-	auto carsRequest = carApi_->availableCars();
-	return carsRequest.get();
+std::vector<std::shared_ptr<model::Car>> FleetApiClient::getCars(std::optional<int64_t> since, std::optional<bool> wait) {
+	auto carsRequest = carApi_->availableCars(wait.value_or(false), since.value_or(0));
+	std::vector<std::shared_ptr<model::Car>> cars;
+
+	try {
+		cars = carsRequest.get();
+	} catch(std::exception &e) {
+	}
+
+	if(wait) {
+		requestFrequencyGuard_->handleDelays(
+			std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
+	}
+	return cars;
 }
 
 
@@ -106,8 +117,12 @@ void FleetApiClient::sendCommand(const std::string &commandJson) {
 }
 
 
-void FleetApiClient::sendStatus(const std::string &statusJson) {
-	payloadPtr_->setMessageType(settings::Constants::STATUS_MESSAGE_TYPE);
+void FleetApiClient::sendStatus(const std::string &statusJson, std::optional<bool> isError) {
+	if (isError.value_or(false)) {
+		payloadPtr_->setMessageType(settings::Constants::STATUS_ERROR_MESSAGE_TYPE);
+	} else {
+		payloadPtr_->setMessageType(settings::Constants::STATUS_MESSAGE_TYPE);
+	}
 	payloadDataPtr_->setJson(web::json::value::parse(statusJson));
 	messagePtr_->setTimestamp(utility::datetime::utc_timestamp());
 

@@ -41,14 +41,16 @@ public:
 	 * @brief Sets the DeviceId parameters, required for sendCommand and sendStatuse functions
 	 * @param deviceId DeviceId struct containing the device identification parameters
 	 */
-	/// TODO: change to use DeviceId from fleet protocol cpp repo
 	void setDeviceIdentification(const fleet_protocol::cxx::DeviceID &deviceId);
 
 	/**
 	 * @brief Calls the GET function on /cars of Fleet v2 HTTP API
+	 * @param since optional, minimal timestamp of cars to look for
+	 * @param wait optional, if true, waits for a predefined period until any car is found, will check request rate and possibly delay them
 	 * @return Vector of shared pointers to the Car model 
 	 */
-	std::vector<std::shared_ptr<org::openapitools::client::model::Car>> getCars();
+	std::vector<std::shared_ptr<org::openapitools::client::model::Car>> getCars(std::optional<int64_t> since = std::nullopt,
+		std::optional<bool> wait = std::nullopt);
 
 	/**
 	 * @brief Calls the GET function on /command/{company_name}/{car_name} of Fleet v2 HTTP API
@@ -79,8 +81,9 @@ public:
 	 * @brief Calls the POST function on /status/{company_name}/{car_name} of Fleet v2 HTTP API.
 	 * setDeviceIdentification needs to be used beforehand to set DeviceId, otherwise placeholder values will be used.
 	 * @param statusJson payload data of a status represented by a json as a string
+	 * @param isError optional, if true, the status will be marked as a STATUS_ERROR message
 	 */
-	void sendStatus(const std::string &statusJson);
+	void sendStatus(const std::string &statusJson, std::optional<bool> isError = std::nullopt);
 
 	/**
 	 * @brief Calls the GET function on /available-devices/{company_name}/{car_name} of Fleet v2 HTTP API
