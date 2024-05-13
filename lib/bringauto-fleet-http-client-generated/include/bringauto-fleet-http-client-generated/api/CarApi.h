@@ -54,7 +54,7 @@ public:
     /// <param name="since">A Unix timestamp; if specified, the method returns all messages inclusivelly newer than the specified timestamp \\ (i.e., messages with timestamp greater than or equal to the &#39;since&#39; timestamp) (optional, default to 0)</param>
     pplx::task<std::vector<std::shared_ptr<Car>>> availableCars(
         boost::optional<bool> wait,
-        boost::optional<int32_t> since
+        boost::optional<int64_t> since
     ) const;
 
 protected:

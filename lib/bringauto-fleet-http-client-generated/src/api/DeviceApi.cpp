@@ -36,7 +36,7 @@ DeviceApi::~DeviceApi()
 {
 }
 
-pplx::task<std::vector<std::shared_ptr<Message>>> DeviceApi::listCommands(utility::string_t companyName, utility::string_t carName, boost::optional<int32_t> since, boost::optional<bool> wait) const
+pplx::task<std::vector<std::shared_ptr<Message>>> DeviceApi::listCommands(utility::string_t companyName, utility::string_t carName, boost::optional<int64_t> since, boost::optional<bool> wait) const
 {
 
 
@@ -182,7 +182,7 @@ pplx::task<std::vector<std::shared_ptr<Message>>> DeviceApi::listCommands(utilit
         return localVarResult;
     });
 }
-pplx::task<std::vector<std::shared_ptr<Message>>> DeviceApi::listStatuses(utility::string_t companyName, utility::string_t carName, boost::optional<int32_t> since, boost::optional<bool> wait) const
+pplx::task<std::vector<std::shared_ptr<Message>>> DeviceApi::listStatuses(utility::string_t companyName, utility::string_t carName, boost::optional<int64_t> since, boost::optional<bool> wait) const
 {
 
 

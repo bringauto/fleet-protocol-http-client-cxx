@@ -56,11 +56,9 @@ TEST(FleetApiClientTests, DelayRepeatedRequests) {
 
 	timeBefore = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
-	// The next MAX_REQUEST_THRESHOLD_COUNT + 1 requests should be delayed by DELAY_AFTER_THRESHOLD_REACHED_MS
+	// The next request should be delayed by DELAY_AFTER_THRESHOLD_REACHED_MS
 	std::cout << "Expecting " << DELAY_AFTER_THRESHOLD_REACHED_MS << "ms delay" << std::endl;
-	for(int i = 0; i < MAX_REQUEST_THRESHOLD_COUNT + 1; i++) {
-		fleetApiClient->getCars(0, true);
-	}
+	fleetApiClient->getCars(0, true);
 
 	timeAfter = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 	ASSERT_GE(timeAfter - timeBefore, DELAY_AFTER_THRESHOLD_REACHED_MS);

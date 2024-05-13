@@ -36,7 +36,7 @@ CarApi::~CarApi()
 {
 }
 
-pplx::task<std::vector<std::shared_ptr<Car>>> CarApi::availableCars(boost::optional<bool> wait, boost::optional<int32_t> since) const
+pplx::task<std::vector<std::shared_ptr<Car>>> CarApi::availableCars(boost::optional<bool> wait, boost::optional<int64_t> since) const
 {
 
 

@@ -22,8 +22,6 @@
 
 #include "bringauto-fleet-http-client-generated/ModelBase.h"
 
-#include "bringauto-fleet-http-client-generated/model/AnyType.h"
-
 namespace org {
 namespace openapitools {
 namespace client {
@@ -54,8 +52,18 @@ public:
     /////////////////////////////////////////////
     /// Payload_data members
 
+    /// <summary>
+    ///
+    /// </summary>
+    web::json::value getJson() const;
+    bool jsonIsSet() const;
+    void unsetJson();
 
-protected:
+    void setJson(const web::json::value& value);
+
+ protected:
+    web::json::value m_Json;
+    bool m_JsonIsSet;
 };
 
 

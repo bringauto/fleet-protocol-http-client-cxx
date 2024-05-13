@@ -1,19 +1,18 @@
-From 0563297d440e7a46337d85298caf1b20de1e2b9e Mon Sep 17 00:00:00 2001
-From: mario <mario.ivancik@bringauto.com>
-Date: Thu, 1 Feb 2024 14:14:41 +0100
-Subject: [PATCH] patch for generated code
-
----
- .../bringauto-fleet-http-client-generated/api/DeviceApi.h      |  4 +--
- .../bringauto-fleet-http-client-generated/model/Message.h      |  6 ++--
- .../bringauto-fleet-http-client-generated/model/Payload_data.h | 10 ++++++
- .../src/api/DeviceApi.cpp                     |  4 +--
- .../src/model/Message.cpp                     |  8 ++---
- .../src/model/Payload_data.cpp                | 34 ++++++++++++++++---
- 6 files changed, 50 insertions(+), 16 deletions(-)
-
+diff --git a/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/api/CarApi.h b/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/api/CarApi.h
+index b677901..ad68de9 100644
+--- a/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/api/CarApi.h
++++ b/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/api/CarApi.h
+@@ -54,7 +54,7 @@ public:
+     /// <param name="since">A Unix timestamp; if specified, the method returns all messages inclusivelly newer than the specified timestamp \\ (i.e., messages with timestamp greater than or equal to the &#39;since&#39; timestamp) (optional, default to 0)</param>
+     pplx::task<std::vector<std::shared_ptr<Car>>> availableCars(
+         boost::optional<bool> wait,
+-        boost::optional<int32_t> since
++        boost::optional<int64_t> since
+     ) const;
+ 
+ protected:
 diff --git a/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/api/DeviceApi.h b/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/api/DeviceApi.h
-index 50d6f99..86093d7 100644
+index a972276..9961a88 100644
 --- a/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/api/DeviceApi.h
 +++ b/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/api/DeviceApi.h
 @@ -58,7 +58,7 @@ public:
@@ -35,7 +34,7 @@ index 50d6f99..86093d7 100644
      ) const;
      /// <summary>
 diff --git a/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Message.h b/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Message.h
-index d8ae2a1..d0bf30f 100644
+index 9c02d72..4bc6314 100644
 --- a/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Message.h
 +++ b/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Message.h
 @@ -60,11 +60,11 @@ public:
@@ -62,13 +61,24 @@ index d8ae2a1..d0bf30f 100644
      std::shared_ptr<DeviceId> m_Device_id;
      bool m_Device_idIsSet;
 diff --git a/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Payload_data.h b/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Payload_data.h
-index c64e481..c79ae30 100644
+index 3850516..fa19e88 100644
 --- a/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Payload_data.h
 +++ b/lib/bringauto-fleet-http-client-generated/include/bringauto-fleet-http-client-generated/model/Payload_data.h
-@@ -53,8 +53,18 @@ public:
+@@ -22,8 +22,6 @@
+ 
+ #include "bringauto-fleet-http-client-generated/ModelBase.h"
+ 
+-#include "bringauto-fleet-http-client-generated/model/AnyType.h"
+-
+ namespace org {
+ namespace openapitools {
+ namespace client {
+@@ -54,8 +52,18 @@ public:
      /////////////////////////////////////////////
      /// Payload_data members
  
+-
+-protected:
 +    /// <summary>
 +    ///
 +    /// </summary>
@@ -77,15 +87,28 @@ index c64e481..c79ae30 100644
 +    void unsetJson();
 +
 +    void setJson(const web::json::value& value);
- 
- protected:
-+web::json::value m_Json;
++
++ protected:
++    web::json::value m_Json;
 +    bool m_JsonIsSet;
  };
  
  
+diff --git a/lib/bringauto-fleet-http-client-generated/src/api/CarApi.cpp b/lib/bringauto-fleet-http-client-generated/src/api/CarApi.cpp
+index bd745dc..5eb4b7b 100644
+--- a/lib/bringauto-fleet-http-client-generated/src/api/CarApi.cpp
++++ b/lib/bringauto-fleet-http-client-generated/src/api/CarApi.cpp
+@@ -36,7 +36,7 @@ CarApi::~CarApi()
+ {
+ }
+ 
+-pplx::task<std::vector<std::shared_ptr<Car>>> CarApi::availableCars(boost::optional<bool> wait, boost::optional<int32_t> since) const
++pplx::task<std::vector<std::shared_ptr<Car>>> CarApi::availableCars(boost::optional<bool> wait, boost::optional<int64_t> since) const
+ {
+ 
+ 
 diff --git a/lib/bringauto-fleet-http-client-generated/src/api/DeviceApi.cpp b/lib/bringauto-fleet-http-client-generated/src/api/DeviceApi.cpp
-index f3621f1..c7231d0 100644
+index 8c7a074..d08c076 100644
 --- a/lib/bringauto-fleet-http-client-generated/src/api/DeviceApi.cpp
 +++ b/lib/bringauto-fleet-http-client-generated/src/api/DeviceApi.cpp
 @@ -36,7 +36,7 @@ DeviceApi::~DeviceApi()
@@ -107,7 +130,7 @@ index f3621f1..c7231d0 100644
  
  
 diff --git a/lib/bringauto-fleet-http-client-generated/src/model/Message.cpp b/lib/bringauto-fleet-http-client-generated/src/model/Message.cpp
-index 9ffc352..5bbebf4 100644
+index b42eae4..59d6b80 100644
 --- a/lib/bringauto-fleet-http-client-generated/src/model/Message.cpp
 +++ b/lib/bringauto-fleet-http-client-generated/src/model/Message.cpp
 @@ -68,7 +68,7 @@ bool Message::fromJson(const web::json::value& val)
@@ -144,7 +167,7 @@ index 9ffc352..5bbebf4 100644
      m_Timestamp = value;
      m_TimestampIsSet = true;
 diff --git a/lib/bringauto-fleet-http-client-generated/src/model/Payload_data.cpp b/lib/bringauto-fleet-http-client-generated/src/model/Payload_data.cpp
-index 7fa6952..6d84e65 100644
+index 7d2e05a..8afe97f 100644
 --- a/lib/bringauto-fleet-http-client-generated/src/model/Payload_data.cpp
 +++ b/lib/bringauto-fleet-http-client-generated/src/model/Payload_data.cpp
 @@ -23,6 +23,8 @@ namespace model {
@@ -156,7 +179,7 @@ index 7fa6952..6d84e65 100644
  }
  
  Payload_data::~Payload_data()
-@@ -36,16 +38,16 @@ void Payload_data::validate()
+@@ -36,17 +38,17 @@ void Payload_data::validate()
  
  web::json::value Payload_data::toJson() const
  {
@@ -171,14 +194,16 @@ index 7fa6952..6d84e65 100644
  bool Payload_data::fromJson(const web::json::value& val)
  {
      bool ok = true;
+-    
 +
 +    web::json::value refVal_setJson;
 +    ok &= ModelBase::fromJson(val, refVal_setJson);
 +    setJson(refVal_setJson);
-     
++
      return ok;
  }
-@@ -71,6 +73,28 @@ bool Payload_data::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, c
+ 
+@@ -71,6 +73,27 @@ bool Payload_data::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, c
      return ok;
  }
  
@@ -201,12 +226,8 @@ index 7fa6952..6d84e65 100644
 +void Payload_data::unsetJson()
 +{
 +    m_JsonIsSet = false;
-+
 +}
 +
  }
  }
  }
--- 
-2.43.0
-
