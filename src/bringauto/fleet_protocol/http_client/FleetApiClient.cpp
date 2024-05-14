@@ -117,11 +117,14 @@ void FleetApiClient::sendCommand(const std::string &commandJson) {
 }
 
 
-void FleetApiClient::sendStatus(const std::string &statusJson, std::optional<bool> isError) {
-	if (isError.value_or(false)) {
-		payloadPtr_->setMessageType(settings::Constants::STATUS_ERROR_MESSAGE_TYPE);
-	} else {
-		payloadPtr_->setMessageType(settings::Constants::STATUS_MESSAGE_TYPE);
+void FleetApiClient::sendStatus(const std::string &statusJson, StatusType statusType) {
+	switch(statusType) {
+		case StatusType::STATUS:
+			payloadPtr_->setMessageType(settings::Constants::STATUS_MESSAGE_TYPE);
+			break;
+		case StatusType::STATUS_ERROR:
+			payloadPtr_->setMessageType(settings::Constants::STATUS_ERROR_MESSAGE_TYPE);
+			break;
 	}
 	payloadDataPtr_->setJson(web::json::value::parse(statusJson));
 	messagePtr_->setTimestamp(utility::datetime::utc_timestamp());

@@ -15,6 +15,14 @@ namespace bringauto::fleet_protocol::http_client {
 class FleetApiClient {
 public:
 	/**
+	 * @brief Enum class for status types
+	 */
+	enum class StatusType {
+		STATUS,
+		STATUS_ERROR
+	};
+
+	/**
 	 * @brief Configuration struct for the FleetApiClient
 	 */
 	struct FleetApiClientConfig {
@@ -81,9 +89,9 @@ public:
 	 * @brief Calls the POST function on /status/{company_name}/{car_name} of Fleet v2 HTTP API.
 	 * setDeviceIdentification needs to be used beforehand to set DeviceId, otherwise placeholder values will be used.
 	 * @param statusJson payload data of a status represented by a json as a string
-	 * @param isError optional, if true, the status will be marked as a STATUS_ERROR message
+	 * @param statusType optional, type of the status, default is STATUS
 	 */
-	void sendStatus(const std::string &statusJson, std::optional<bool> isError = std::nullopt);
+	void sendStatus(const std::string &statusJson, StatusType statusType = StatusType::STATUS);
 
 	/**
 	 * @brief Calls the GET function on /available-devices/{company_name}/{car_name} of Fleet v2 HTTP API
