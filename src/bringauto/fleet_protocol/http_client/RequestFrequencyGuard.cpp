@@ -17,7 +17,9 @@ RequestFrequencyGuard::RequestFrequencyGuard(const RequestFrequencyGuardConfig &
 	retryRequestsDelayMs_(config.retryRequestsDelayMs) {}
 
 
-void RequestFrequencyGuard::handleDelays(int64_t currentTimestamp) {
+void RequestFrequencyGuard::handleDelays() {
+	auto currentTimestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
+		std::chrono::system_clock::now().time_since_epoch()).count();
 	msgTimestamps_.insert(msgTimestamps_.begin(), currentTimestamp);
 
 	if(!thresholdReached_ && isOverThreshold()) {

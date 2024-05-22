@@ -1,8 +1,6 @@
 #include <bringauto/fleet_protocol/http_client/FleetApiClient.hpp>
 #include <bringauto/fleet_protocol/http_client/settings/Constants.hpp>
 
-#include <chrono>
-
 using namespace org::openapitools::client;
 
 
@@ -55,7 +53,7 @@ void FleetApiClient::setDeviceIdentification(const fleet_protocol::cxx::DeviceID
 
 std::vector<std::shared_ptr<model::Car>> FleetApiClient::getCars(std::optional<int64_t> since, std::optional<bool> wait) {
 	auto carsRequest = carApi_->availableCars(wait.value_or(false), since.value_or(0));
-	std::vector<std::shared_ptr<model::Car>> cars;
+	std::vector<std::shared_ptr<model::Car>> cars {};
 
 	try {
 		cars = carsRequest.get();
@@ -63,8 +61,7 @@ std::vector<std::shared_ptr<model::Car>> FleetApiClient::getCars(std::optional<i
 	}
 
 	if(wait) {
-		requestFrequencyGuard_->handleDelays(
-			std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
+		requestFrequencyGuard_->handleDelays();
 	}
 	return cars;
 }
@@ -72,7 +69,7 @@ std::vector<std::shared_ptr<model::Car>> FleetApiClient::getCars(std::optional<i
 
 std::vector<std::shared_ptr<model::Message>> FleetApiClient::getCommands(std::optional<int64_t> since, std::optional<bool> wait) {
 	auto commandsRequest = deviceApi_->listCommands(companyName_, carName_, since.value_or(0), wait.value_or(false));
-	std::vector<std::shared_ptr<model::Message>> commands;
+	std::vector<std::shared_ptr<model::Message>> commands {};
 
 	try {
 		commands = commandsRequest.get();
@@ -80,8 +77,7 @@ std::vector<std::shared_ptr<model::Message>> FleetApiClient::getCommands(std::op
 	}
 
 	if(wait) {
-		requestFrequencyGuard_->handleDelays(
-			std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
+		requestFrequencyGuard_->handleDelays();
 	}
 	return commands;
 }
@@ -89,7 +85,7 @@ std::vector<std::shared_ptr<model::Message>> FleetApiClient::getCommands(std::op
 
 std::vector<std::shared_ptr<model::Message>> FleetApiClient::getStatuses(std::optional<int64_t> since, std::optional<bool> wait) {
 	auto statusesRequest = deviceApi_->listStatuses(companyName_, carName_, since.value_or(0), wait.value_or(false));
-	std::vector<std::shared_ptr<model::Message>> statuses;
+	std::vector<std::shared_ptr<model::Message>> statuses {};
 
 	try {
 		statuses = statusesRequest.get();
@@ -97,8 +93,7 @@ std::vector<std::shared_ptr<model::Message>> FleetApiClient::getStatuses(std::op
 	}
 
 	if(wait) {
-		requestFrequencyGuard_->handleDelays(
-			std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
+		requestFrequencyGuard_->handleDelays();
 	}
 	return statuses;
 }
