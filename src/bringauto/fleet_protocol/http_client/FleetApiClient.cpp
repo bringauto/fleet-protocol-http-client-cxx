@@ -125,6 +125,8 @@ void FleetApiClient::sendStatus(const std::string &statusJson, StatusType status
 		case StatusType::STATUS_ERROR:
 			payloadPtr_->setMessageType(settings::Constants::STATUS_ERROR_MESSAGE_TYPE);
 			break;
+		default:
+			throw std::invalid_argument("Invalid status type");
 	}
 	payloadDataPtr_->setJson(web::json::value::parse(statusJson));
 	messagePtr_->setTimestamp(utility::datetime::utc_timestamp());
