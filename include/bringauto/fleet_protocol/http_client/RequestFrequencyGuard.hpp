@@ -34,9 +34,9 @@ public:
 
 	/**
 	 * @brief Determines how long the next request should be delayed when the max request rate is reached
-	 * @param currentTimestamp timestamp that gets added to a container, used to calculate if the max request threshold is reached
+	 * Saves the current timestamp and calculates the delay based on timestamps of previous requests
 	 */
-	void handleDelays(int64_t currentTimestamp);
+	void handleDelays();
 
 private:
 	uint32_t maxRequestsThresholdCount_ {};

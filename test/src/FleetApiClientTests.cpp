@@ -12,7 +12,7 @@ using namespace bringauto::fleet_protocol::http_client;
 
 
 /**
- * @brief Ensure getCommands and getStatuses functions trigger the delay mechanism; requests are sent to a non existent api 
+ * @brief Ensure getCommands, getStatuses and getCars functions trigger the delay mechanism; requests are sent to a non existent api 
  */
 TEST(FleetApiClientTests, DelayRepeatedRequests) {
 	FleetApiClient::FleetApiClientConfig facConfig {
@@ -53,4 +53,14 @@ TEST(FleetApiClientTests, DelayRepeatedRequests) {
 	timeAfter = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 	ASSERT_GE(timeAfter - timeBefore, MAX_REQUEST_THRESHOLD_COUNT * RETRY_REQUESTS_DELAY_MS);
 	ASSERT_LT(timeAfter - timeBefore, MAX_REQUEST_THRESHOLD_COUNT * MAX_RETRY_REQUESTS_DELAY_MS);
+
+	timeBefore = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+
+	// The next request should be delayed by DELAY_AFTER_THRESHOLD_REACHED_MS
+	std::cout << "Expecting " << DELAY_AFTER_THRESHOLD_REACHED_MS << "ms delay" << std::endl;
+	fleetApiClient->getCars(0, true);
+
+	timeAfter = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	ASSERT_GE(timeAfter - timeBefore, DELAY_AFTER_THRESHOLD_REACHED_MS);
+	ASSERT_LT(timeAfter - timeBefore, MAX_DELAY_AFTER_THRESHOLD_REACHED_MS);
 }

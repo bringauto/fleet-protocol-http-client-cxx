@@ -16,6 +16,7 @@ public:
 	inline static const std::string PAYLOAD_ENCODING {"JSON"};
 	inline static const std::string COMMAND_MESSAGE_TYPE {"COMMAND"};
 	inline static const std::string STATUS_MESSAGE_TYPE {"STATUS"};
+	inline static const std::string STATUS_ERROR_MESSAGE_TYPE {"STATUS_ERROR"};
 };
 
 }// namespace bringauto::fleet_protocol::http_client::settings

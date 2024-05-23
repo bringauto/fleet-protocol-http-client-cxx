@@ -1,7 +1,7 @@
 #pragma once
 
 constexpr int MAX_REQUEST_THRESHOLD_COUNT {5};
-constexpr int MAX_REQUEST_THRESHOLD_PERIOD_MS {10};
+constexpr int MAX_REQUEST_THRESHOLD_PERIOD_MS {2000};
 constexpr int DELAY_AFTER_THRESHOLD_REACHED_MS {5000};
 constexpr int RETRY_REQUESTS_DELAY_MS {200};
 
