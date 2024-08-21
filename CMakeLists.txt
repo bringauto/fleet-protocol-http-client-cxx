@@ -14,11 +14,12 @@ INCLUDE(CheckPIESupported)
 CHECK_PIE_SUPPORTED()
 SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-OPTION(BRINGAUTO_TESTS "Enable tests" OFF)
-OPTION(BRINGAUTO_PACKAGE "Package creation" OFF)
-OPTION(BRINGAUTO_INSTALL "Enable install" OFF)
-OPTION(BRINGAUTO_SYSTEM_DEP "Enable system dependencies" OFF)
-OPTION(BRINGAUTO_SAMPLES "Enable build of sample app, not used in project" OFF)
+OPTION(BRINGAUTO_TESTS                 "Enable tests" OFF)
+OPTION(BRINGAUTO_PACKAGE               "Package creation" OFF)
+OPTION(BRINGAUTO_INSTALL               "Enable install" OFF)
+OPTION(BRINGAUTO_SYSTEM_DEP            "Enable system dependencies" OFF)
+OPTION(BRINGAUTO_SAMPLES               "Enable build of sample app, not used in project" OFF)
+OPTION(BRINGAUTO_INSTALL_IMPORTED_DEPS "Enable installation of imported deps" OFF)
 
 IF(BRINGAUTO_PACKAGE)
     IF(NOT BRINGAUTO_INSTALL)
@@ -76,7 +77,9 @@ IF (BRINGAUTO_INSTALL)
             TARGET fleet-http-client-shared
             NAMESPACE fleet-http-client-shared::
     )
-    BA_PACKAGE_DEPS_IMPORTED(fleet-http-client-shared)
+    IF(BRINGAUTO_INSTALL_IMPORTED_DEPS)
+        BA_PACKAGE_DEPS_IMPORTED(fleet-http-client-shared)
+    ENDIF()
 ENDIF ()
 
 IF (BRINGAUTO_PACKAGE)
