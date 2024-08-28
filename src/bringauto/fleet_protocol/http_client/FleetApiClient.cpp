@@ -50,60 +50,60 @@ void FleetApiClient::setDeviceIdentification(const cxx::DeviceID &deviceId) cons
 	deviceIdPtr_->setName(std::string(static_cast<char*>(deviceIdentification.device_name.data)));
 }
 
-std::pair<std::vector<std::shared_ptr<model::Car>>, bool> FleetApiClient::getCars(
+std::pair<std::vector<std::shared_ptr<model::Car>>, FleetApiClient::ReturnCode> FleetApiClient::getCars(
 	const std::optional<int64_t> since, const std::optional<bool> wait) const
 {
 	const auto carsRequest = carApi_->availableCars(wait.value_or(false), since.value_or(0));
 	std::vector<std::shared_ptr<model::Car>> cars {};
-	bool delayed = false;
+	auto rc = ReturnCode::OK;
 
 	try {
 		cars = carsRequest.get();
 	} catch(std::exception &) {
 	}
 
-	if(wait) {
-		delayed = requestFrequencyGuard_->handleDelays();
+	if(wait && requestFrequencyGuard_->handleDelays()) {
+		rc = ReturnCode::DELAYED;
 	}
-	return {cars, delayed};
+	return {cars, rc};
 }
 
 
-std::pair<std::vector<std::shared_ptr<model::Message>>, bool> FleetApiClient::getCommands(
+std::pair<std::vector<std::shared_ptr<model::Message>>, FleetApiClient::ReturnCode> FleetApiClient::getCommands(
 	const std::optional<int64_t> since, const std::optional<bool> wait) const
 {
 	const auto commandsRequest = deviceApi_->listCommands(companyName_, carName_, since.value_or(0), wait.value_or(false));
 	std::vector<std::shared_ptr<model::Message>> commands {};
-	bool delayed = false;
+	auto rc = ReturnCode::OK;
 
 	try {
 		commands = commandsRequest.get();
 	} catch(std::exception &) {
 	}
 
-	if(wait) {
-		delayed = requestFrequencyGuard_->handleDelays();
+	if(wait && requestFrequencyGuard_->handleDelays()) {
+		rc = ReturnCode::DELAYED;
 	}
-	return {commands, delayed};
+	return {commands, rc};
 }
 
 
-std::pair<std::vector<std::shared_ptr<model::Message>>, bool> FleetApiClient::getStatuses(
+std::pair<std::vector<std::shared_ptr<model::Message>>, FleetApiClient::ReturnCode> FleetApiClient::getStatuses(
 	const std::optional<int64_t> since, const std::optional<bool>& wait) const
 {
 	const auto statusesRequest = deviceApi_->listStatuses(companyName_, carName_, since.value_or(0), wait.value_or(false));
 	std::vector<std::shared_ptr<model::Message>> statuses {};
-	bool delayed = false;
+	auto rc = ReturnCode::OK;
 
 	try {
 		statuses = statusesRequest.get();
 	} catch(std::exception &) {
 	}
 
-	if(wait) {
-		delayed = requestFrequencyGuard_->handleDelays();
+	if(wait && requestFrequencyGuard_->handleDelays()) {
+		rc = ReturnCode::DELAYED;
 	}
-	return {statuses, delayed};
+	return {statuses, rc};
 }
 
 

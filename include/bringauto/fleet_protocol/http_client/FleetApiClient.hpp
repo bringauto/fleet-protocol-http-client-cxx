@@ -23,6 +23,14 @@ public:
 	};
 
 	/**
+	 * @brief Enum class for return codes
+	 */
+	enum class ReturnCode {
+		OK,
+		DELAYED
+	};
+
+	/**
 	 * @brief Configuration struct for the FleetApiClient
 	 */
 	struct FleetApiClientConfig {
@@ -55,9 +63,9 @@ public:
 	 * @brief Calls the GET function on /cars of Fleet v2 HTTP API
 	 * @param since optional, minimal timestamp of cars to look for
 	 * @param wait optional, if true, waits for a predefined period until any car is found, will check request rate and possibly delay them
-	 * @return Vector of shared pointers to the Car model and a boolean indicating if the request was delayed
+	 * @return Vector of shared pointers to the Car model and a return code
 	 */
-	[[nodiscard]] std::pair<std::vector<std::shared_ptr<org::openapitools::client::model::Car>>, bool> getCars(
+	[[nodiscard]] std::pair<std::vector<std::shared_ptr<org::openapitools::client::model::Car>>, ReturnCode> getCars(
 		std::optional<int64_t> since = std::nullopt,
 		std::optional<bool> wait = std::nullopt) const;
 
@@ -65,9 +73,9 @@ public:
 	 * @brief Calls the GET function on /command/{company_name}/{car_name} of Fleet v2 HTTP API
 	 * @param since optional, minimal timestamp of commands to look for
 	 * @param wait optional, if true, waits for a predefined period until any command is found, will check request rate and possibly delay them
-	 * @return Vector of shared pointers to the Message model containing commands in payload data and a boolean indicating if the request was delayed
+	 * @return Vector of shared pointers to the Message model containing commands in payload data and a return code
 	 */
-	[[nodiscard]] std::pair<std::vector<std::shared_ptr<org::openapitools::client::model::Message>>, bool> getCommands(
+	[[nodiscard]] std::pair<std::vector<std::shared_ptr<org::openapitools::client::model::Message>>, ReturnCode> getCommands(
 		std::optional<int64_t> since = std::nullopt,
 		std::optional<bool> wait = std::nullopt) const;
 
@@ -75,9 +83,9 @@ public:
 	 * @brief Calls the GET function on /status/{company_name}/{car_name} of Fleet v2 HTTP API
 	 * @param since optional, minimal timestamp of statuses to look for
 	 * @param wait optional, if true, waits for a predefined period until any status is found, will check request rate and possibly delay them
-	 * @return Vector of shared pointers to the Message model containing statuses in payload data and a boolean indicating if the request was delayed
+	 * @return Vector of shared pointers to the Message model containing statuses in payload data and a return code
 	 */
-	[[nodiscard]] std::pair<std::vector<std::shared_ptr<org::openapitools::client::model::Message>>, bool> getStatuses(
+	[[nodiscard]] std::pair<std::vector<std::shared_ptr<org::openapitools::client::model::Message>>, ReturnCode> getStatuses(
 		std::optional<int64_t> since = std::nullopt,
 		const std::optional<bool>& wait = std::nullopt) const;
 

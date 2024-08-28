@@ -5,7 +5,6 @@
 #include <TestConstants.hpp>
 
 #include <chrono>
-#include <cstdio>
 #include <gtest/gtest.h>
 
 
@@ -32,7 +31,7 @@ TEST(FleetApiClientTests, DelayRepeatedRequests) {
 
 	const auto fleetApiClient = std::make_unique<FleetApiClient>(facConfig, rfgConfig);
 	auto timeBefore = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-	bool delayed;
+	FleetApiClient::ReturnCode delayed;
 
 	// Do MAX_REQUEST_THRESHOLD_COUNT requests with no delay which should trigger the threshold
 	std::cout << "Expecting " << DELAY_AFTER_THRESHOLD_REACHED_MS << "ms delay" << std::endl;
@@ -41,7 +40,7 @@ TEST(FleetApiClientTests, DelayRepeatedRequests) {
 		delayed = ret.second;
 	}
 
-	ASSERT_TRUE(delayed);
+	ASSERT_EQ(delayed, FleetApiClient::ReturnCode::DELAYED);
 	auto timeAfter = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 	ASSERT_GE(timeAfter - timeBefore, DELAY_AFTER_THRESHOLD_REACHED_MS);
 	ASSERT_LT(timeAfter - timeBefore, MAX_DELAY_AFTER_THRESHOLD_REACHED_MS);
@@ -52,7 +51,7 @@ TEST(FleetApiClientTests, DelayRepeatedRequests) {
 	for(int i = 0; i < MAX_REQUEST_THRESHOLD_COUNT; i++) {
 		std::cout << "Expecting " << RETRY_REQUESTS_DELAY_MS << "ms delay" << std::endl;
 		auto ret = fleetApiClient->getStatuses(0, true);
-		ASSERT_FALSE(ret.second);
+		ASSERT_EQ(ret.second, FleetApiClient::ReturnCode::OK);
 	}
 
 	timeAfter = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
@@ -64,7 +63,7 @@ TEST(FleetApiClientTests, DelayRepeatedRequests) {
 	// The next request should be delayed by DELAY_AFTER_THRESHOLD_REACHED_MS
 	std::cout << "Expecting " << DELAY_AFTER_THRESHOLD_REACHED_MS << "ms delay" << std::endl;
 	auto ret = fleetApiClient->getCars(0, true);
-	ASSERT_TRUE(ret.second);
+	ASSERT_EQ(ret.second, FleetApiClient::ReturnCode::DELAYED);
 
 	timeAfter = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 	ASSERT_GE(timeAfter - timeBefore, DELAY_AFTER_THRESHOLD_REACHED_MS);
