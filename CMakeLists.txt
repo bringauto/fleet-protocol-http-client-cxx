@@ -37,7 +37,6 @@ IF(NOT BRINGAUTO_SYSTEM_DEP)
     INCLUDE(cmake/Dependencies.cmake)
 ENDIF()
 
-FIND_PACKAGE(libbringauto_logger 1.2.0 REQUIRED)
 FIND_PACKAGE(fleet-protocol-interface 2.0.0 REQUIRED)
 FIND_PACKAGE(fleet-protocol-cxx-helpers-static 1.1.1 REQUIRED)
 
@@ -64,7 +63,6 @@ TARGET_LINK_LIBRARIES(fleet-http-client-shared
         fleet-protocol-interface::common-headers-interface
         fleet-protocol-cxx-helpers-static::fleet-protocol-cxx-helpers-static
         bringauto-fleet-http-client-generated-shared
-        bringauto_logger::bringauto_logger
 )
 
 IF(BRINGAUTO_TESTS)

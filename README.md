@@ -26,7 +26,6 @@ This has to be done because cpprest is obsolete.
 ### Requirements
 
 - cpprestsdk
-- bringauto-logger
 - Boost
 
 All requirements can be added by bringauto Packager
