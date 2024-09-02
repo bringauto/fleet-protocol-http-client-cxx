@@ -26,8 +26,10 @@ public:
 	 * @brief Enum class for return codes
 	 */
 	enum class ReturnCode {
+		// request was successful without any delays
 		OK,
-		DELAYED
+		// request was delayed due to request rate threshold being reached
+		DELAYED 
 	};
 
 	/**
