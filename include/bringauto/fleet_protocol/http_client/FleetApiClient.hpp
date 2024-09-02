@@ -23,6 +23,16 @@ public:
 	};
 
 	/**
+	 * @brief Enum class for return codes
+	 */
+	enum class ReturnCode {
+		// request was successful without any delays
+		OK,
+		// request was delayed due to request rate threshold being reached
+		DELAYED 
+	};
+
+	/**
 	 * @brief Configuration struct for the FleetApiClient
 	 */
 	struct FleetApiClientConfig {
@@ -49,41 +59,44 @@ public:
 	 * @brief Sets the DeviceId parameters, required for sendCommand and sendStatuse functions
 	 * @param deviceId DeviceId struct containing the device identification parameters
 	 */
-	void setDeviceIdentification(const fleet_protocol::cxx::DeviceID &deviceId);
+	void setDeviceIdentification(const cxx::DeviceID &deviceId) const;
 
 	/**
 	 * @brief Calls the GET function on /cars of Fleet v2 HTTP API
 	 * @param since optional, minimal timestamp of cars to look for
 	 * @param wait optional, if true, waits for a predefined period until any car is found, will check request rate and possibly delay them
-	 * @return Vector of shared pointers to the Car model 
+	 * @return Vector of shared pointers to the Car model and a return code
 	 */
-	std::vector<std::shared_ptr<org::openapitools::client::model::Car>> getCars(std::optional<int64_t> since = std::nullopt,
-		std::optional<bool> wait = std::nullopt);
+	[[nodiscard]] std::pair<std::vector<std::shared_ptr<org::openapitools::client::model::Car>>, ReturnCode> getCars(
+		std::optional<int64_t> since = std::nullopt,
+		std::optional<bool> wait = std::nullopt) const;
 
 	/**
 	 * @brief Calls the GET function on /command/{company_name}/{car_name} of Fleet v2 HTTP API
 	 * @param since optional, minimal timestamp of commands to look for
 	 * @param wait optional, if true, waits for a predefined period until any command is found, will check request rate and possibly delay them
-	 * @return Vector of shared pointers to the Message model containing commands in payload data
+	 * @return Vector of shared pointers to the Message model containing commands in payload data and a return code
 	 */
-	std::vector<std::shared_ptr<org::openapitools::client::model::Message>> getCommands(std::optional<int64_t> since = std::nullopt,
-		std::optional<bool> wait = std::nullopt);
+	[[nodiscard]] std::pair<std::vector<std::shared_ptr<org::openapitools::client::model::Message>>, ReturnCode> getCommands(
+		std::optional<int64_t> since = std::nullopt,
+		std::optional<bool> wait = std::nullopt) const;
 
 	/**
 	 * @brief Calls the GET function on /status/{company_name}/{car_name} of Fleet v2 HTTP API
 	 * @param since optional, minimal timestamp of statuses to look for
 	 * @param wait optional, if true, waits for a predefined period until any status is found, will check request rate and possibly delay them
-	 * @return Vector of shared pointers to the Message model containing statuses in payload data
+	 * @return Vector of shared pointers to the Message model containing statuses in payload data and a return code
 	 */
-	std::vector<std::shared_ptr<org::openapitools::client::model::Message>> getStatuses(std::optional<int64_t> since = std::nullopt,
-		std::optional<bool> wait = std::nullopt);
+	[[nodiscard]] std::pair<std::vector<std::shared_ptr<org::openapitools::client::model::Message>>, ReturnCode> getStatuses(
+		std::optional<int64_t> since = std::nullopt,
+		const std::optional<bool>& wait = std::nullopt) const;
 
 	/**
 	 * @brief Calls the POST function on /command/{company_name}/{car_name} of Fleet v2 HTTP API.
 	 * setDeviceIdentification needs to be used beforehand to set DeviceId, otherwise placeholder values will be used.
 	 * @param commandJson payload data of a command represented by a json as a string
 	 */
-	void sendCommand(const std::string &commandJson);
+	void sendCommand(const std::string &commandJson) const;
 
 	/**
 	 * @brief Calls the POST function on /status/{company_name}/{car_name} of Fleet v2 HTTP API.
@@ -91,14 +104,15 @@ public:
 	 * @param statusJson payload data of a status represented by a json as a string
 	 * @param statusType optional, type of the status, default is STATUS
 	 */
-	void sendStatus(const std::string &statusJson, StatusType statusType = StatusType::STATUS);
+	void sendStatus(const std::string &statusJson, StatusType statusType = StatusType::STATUS) const;
 
 	/**
 	 * @brief Calls the GET function on /available-devices/{company_name}/{car_name} of Fleet v2 HTTP API
 	 * @param moduleId optional, filters returned devices to only those with matching module Id
 	 * @return Shared pointer to the AvailableDevices model
 	 */
-	std::shared_ptr<org::openapitools::client::model::AvailableDevices> getAvailableDevices(std::optional<int32_t> moduleId = std::nullopt);
+	[[nodiscard]] std::shared_ptr<org::openapitools::client::model::AvailableDevices> getAvailableDevices(
+		std::optional<int32_t> moduleId = std::nullopt) const;
 
 private:
 	std::unique_ptr<RequestFrequencyGuard> requestFrequencyGuard_ {};

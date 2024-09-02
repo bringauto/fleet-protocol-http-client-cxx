@@ -1,8 +1,8 @@
 #include <RequestFrequencyGuardTests.hpp>
 
 #include <chrono>
+#include <cstdio>
 #include <thread>
-#include <stdio.h>
 
 
 int64_t getCurrentTime() {
@@ -14,16 +14,16 @@ int64_t getCurrentTime() {
  * @brief Try sending MAX_REQUEST_THRESHOLD_COUNT * 2 requests with time difference not large enough to trigger the threshold
  */
 TEST_F(RequestFrequencyGuardTests_F, ThresholdNotReached) {
-	auto timeBefore = getCurrentTime();
+	const auto timeBefore = getCurrentTime();
 
 	// Do MAX_REQUEST_THRESHOLD_COUNT * 2 calls that should not trigger the threshold
 	std::cout << "Expecting " << (MAX_REQUEST_THRESHOLD_PERIOD_MS / 2) * (MAX_REQUEST_THRESHOLD_COUNT * 2) << " ms delay" << std::endl;
 	for(int i = 0; i < MAX_REQUEST_THRESHOLD_COUNT * 2; i++) {
-		requestFrequencyGuard->handleDelays();
+		ASSERT_FALSE(requestFrequencyGuard->handleDelays());
 		std::this_thread::sleep_for(std::chrono::milliseconds(MAX_REQUEST_THRESHOLD_PERIOD_MS / 2));
 	}
 
-	auto timeAfter = getCurrentTime();
+	const auto timeAfter = getCurrentTime();
 	ASSERT_LT(timeAfter - timeBefore,
 		MAX_ALLOWED_NO_DELAY_TIME_DIFFERENCE_MS +
 		(MAX_REQUEST_THRESHOLD_PERIOD_MS / 2) * (MAX_REQUEST_THRESHOLD_COUNT * 2));
@@ -51,7 +51,7 @@ TEST_F(RequestFrequencyGuardTests_F, ThresholdReached) {
 
 	// The next call should be delayed by RETRY_REQUESTS_DELAY_MS
 	std::cout << "Expecting " << RETRY_REQUESTS_DELAY_MS << "ms delay" << std::endl;
-	requestFrequencyGuard->handleDelays();
+	ASSERT_FALSE(requestFrequencyGuard->handleDelays());
 
 	timeAfter = getCurrentTime();
 	ASSERT_GE(timeAfter - timeBefore, RETRY_REQUESTS_DELAY_MS);
@@ -62,7 +62,7 @@ TEST_F(RequestFrequencyGuardTests_F, ThresholdReached) {
 /**
  * @brief Try sending MAX_REQUEST_THRESHOLD_COUNT requests with time difference small enough to trigger the threshold;
  * next MAX_REQUEST_THRESHOLD_COUNT requests should be delayed by shorter time;
- * their timestamp difference is large enough to not trigger the threshold afterwards
+ * their timestamp difference is large enough to not trigger the threshold afterward
  */
 TEST_F(RequestFrequencyGuardTests_F, DelayResetAfterThresholdReached) {
 	auto timeBefore = getCurrentTime();
@@ -82,7 +82,7 @@ TEST_F(RequestFrequencyGuardTests_F, DelayResetAfterThresholdReached) {
 	// The next MAX_REQUEST_THRESHOLD_COUNT calls should be delayed by RETRY_REQUESTS_DELAY_MS
 	for(int i = 0; i < MAX_REQUEST_THRESHOLD_COUNT; i++) {
 		std::cout << "Expecting " << RETRY_REQUESTS_DELAY_MS + (MAX_REQUEST_THRESHOLD_PERIOD_MS / 2) << "ms delay" << std::endl;
-		requestFrequencyGuard->handleDelays();
+		ASSERT_FALSE(requestFrequencyGuard->handleDelays());
 		std::this_thread::sleep_for(std::chrono::milliseconds(MAX_REQUEST_THRESHOLD_PERIOD_MS / 2));
 	}
 
@@ -99,7 +99,7 @@ TEST_F(RequestFrequencyGuardTests_F, DelayResetAfterThresholdReached) {
 	// Subsequent calls should not be delayed since the threshold was reset
 	std::cout << "Expecting " << (MAX_REQUEST_THRESHOLD_PERIOD_MS / 2) * MAX_REQUEST_THRESHOLD_COUNT << " ms delay" << std::endl;
 	for(int i = 0; i < MAX_REQUEST_THRESHOLD_COUNT; i++) {
-		requestFrequencyGuard->handleDelays();
+		ASSERT_FALSE(requestFrequencyGuard->handleDelays());
 		std::this_thread::sleep_for(std::chrono::milliseconds(MAX_REQUEST_THRESHOLD_PERIOD_MS / 2));
 	}
 
@@ -113,7 +113,7 @@ TEST_F(RequestFrequencyGuardTests_F, DelayResetAfterThresholdReached) {
 /**
  * @brief Try sending MAX_REQUEST_THRESHOLD_COUNT requests with time difference small enough to trigger the threshold;
  * next MAX_REQUEST_THRESHOLD_COUNT requests should be delayed by shorter time;
- * their timestamp difference is small enough to trigger the threshold afterwards
+ * their timestamp difference is small enough to trigger the threshold afterward
  */
 TEST_F(RequestFrequencyGuardTests_F, DelayNotResetAfterThresholdReached) {
 	auto timeBefore = getCurrentTime();
@@ -133,7 +133,7 @@ TEST_F(RequestFrequencyGuardTests_F, DelayNotResetAfterThresholdReached) {
 	// The next MAX_REQUEST_THRESHOLD_COUNT calls should be delayed by short delay
 	for(int i = 0; i < MAX_REQUEST_THRESHOLD_COUNT; i++) {
 		std::cout << "Expecting " << RETRY_REQUESTS_DELAY_MS << "ms delay" << std::endl;
-		requestFrequencyGuard->handleDelays();
+		ASSERT_FALSE(requestFrequencyGuard->handleDelays());
 	}
 
 	timeAfter = getCurrentTime();
@@ -144,7 +144,7 @@ TEST_F(RequestFrequencyGuardTests_F, DelayNotResetAfterThresholdReached) {
 
 	// The next call should be delayed by long delay since the threshold was not reset
 	std::cout << "Expecting " << DELAY_AFTER_THRESHOLD_REACHED_MS << "ms delay" << std::endl;
-	requestFrequencyGuard->handleDelays();
+	ASSERT_TRUE(requestFrequencyGuard->handleDelays());
 
 	timeAfter = getCurrentTime();
 	ASSERT_GE(timeAfter - timeBefore, DELAY_AFTER_THRESHOLD_REACHED_MS);

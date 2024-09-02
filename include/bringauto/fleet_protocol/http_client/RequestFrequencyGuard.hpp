@@ -35,8 +35,9 @@ public:
 	/**
 	 * @brief Determines how long the next request should be delayed when the max request rate is reached
 	 * Saves the current timestamp and calculates the delay based on timestamps of previous requests
+	 * @return true if threshold was reached and long delay was applied
 	 */
-	void handleDelays();
+	bool handleDelays();
 
 private:
 	uint32_t maxRequestsThresholdCount_ {};
