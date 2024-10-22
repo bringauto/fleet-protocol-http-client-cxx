@@ -8,7 +8,7 @@ std::unique_ptr<FleetApiClient> fleetApiClient;
 
 void createFleetApiClient() {
 	FleetApiClient::FleetApiClientConfig facConfig {
-		.apiUrl = "http://localhost:8080",
+		.apiUrl = "http://localhost:8080/v2/protocol",
 		.apiKey = "ProtocolStaticAccessKey",
 		.companyName = "bringauto",
 		.carName = "virtual_vehicle"
@@ -26,65 +26,73 @@ void createFleetApiClient() {
 }
 
 void getCars() {
-	try {
-		auto cars = fleetApiClient->getCars();
+	auto [cars, rc] = fleetApiClient->getCars();
+	if (rc != FleetApiClient::ReturnCode::OK) {
+		std::cerr << "getCars() function failed" << std::endl;
+		return;
+	}
 
-		std::cout << "Cars:" << std::endl;
-		for(const auto &car: cars.first) {
-			std::cout << "  " << car->getCompanyName() << " / " << car->getCarName() << std::endl;
-		}
-	} catch(const std::exception &e) {
-		std::cerr << e.what() << std::endl;
+	std::cout << "Cars:" << std::endl;
+	for(const auto &car: cars) {
+		std::cout << "  " << car->getCompanyName() << " / " << car->getCarName() << std::endl;
 	}
 }
 
 void getCommands() {
-	auto commands = fleetApiClient->getCommands();
+	auto [commands, rc] = fleetApiClient->getCommands();
+	if (rc != FleetApiClient::ReturnCode::OK) {
+		std::cerr << "getCommands() function failed" << std::endl;
+		return;
+	}
 
 	std::cout << "Commands:" << std::endl;
-	for(const auto& command: commands.first) {
+	for(const auto& command: commands) {
 		std::cout << "  Timestamp: " << command->getTimestamp() << std::endl;
 		std::cout << "  Payload: " << command->getPayload()->getData()->getJson().serialize() << std::endl;
 	}
 }
 
 void getStatuses() {
-	auto statuses = fleetApiClient->getStatuses();
+	auto [statuses, rc] = fleetApiClient->getStatuses();
+	if (rc != FleetApiClient::ReturnCode::OK) {
+		std::cerr << "getStatuses() function failed" << std::endl;
+		return;
+	}
 
 	std::cout << "Statuses:" << std::endl;
-	for(const auto& status: statuses.first) {
+	for(const auto& status: statuses) {
 		std::cout << "  Timestamp: " << status->getTimestamp() << std::endl;
 		std::cout << "  Payload: " << status->getPayload()->getData()->getJson().serialize() << std::endl;
 	}
 }
 
 void sendCommand() {
-	try {
-		fleetApiClient->sendCommand("{}");
-	} catch(const std::exception &e) {
-		std::cerr << e.what() << std::endl;
+	if (fleetApiClient->sendCommand("{}") != FleetApiClient::ReturnCode::OK) {
+		std::cerr << "sendCommand() function failed" << std::endl;
+	} else {
+		std::cout << "Command sent successfuly" << std::endl;
 	}
 }
 
 void sendStatus() {
-	try {
-		fleetApiClient->sendStatus("{}");
-	} catch(const std::exception &e) {
-		std::cerr << e.what() << std::endl;
+	if (fleetApiClient->sendStatus("{}") != FleetApiClient::ReturnCode::OK) {
+		std::cerr << "sendStatus() function failed" << std::endl;
+	} else {
+		std::cout << "Status sent successfuly" << std::endl;
 	}
 }
 
 void getAvailableDevices() {
-	try {
-		auto availableDevices = fleetApiClient->getAvailableDevices(1);
+		auto [availableDevices, rc] = fleetApiClient->getAvailableDevices(1);
+		if (rc != FleetApiClient::ReturnCode::OK) {
+			std::cerr << "getAvailableDevices() function failed" << std::endl;
+			return;
+		}
 
-		std::cout << "All module's devices:" << std::endl;
+		std::cout << "All devices of module 1:" << std::endl;
 		for(const auto& device: availableDevices->getDeviceList()) {
 			std::cout << "  " << device->getName() << std::endl;
 		}
-	} catch(const std::exception &e) {
-		std::cerr << e.what() << std::endl;
-	}
 }
 
 int main(int argc, char **argv) {

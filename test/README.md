@@ -17,5 +17,5 @@ make
 
 ## Run
 ```
-./fleethttpclient_tests
+./test/fleethttpclient_tests
 ```

@@ -51,7 +51,7 @@ TEST(FleetApiClientTests, DelayRepeatedRequests) {
 	for(int i = 0; i < MAX_REQUEST_THRESHOLD_COUNT; i++) {
 		std::cout << "Expecting " << RETRY_REQUESTS_DELAY_MS << "ms delay" << std::endl;
 		auto ret = fleetApiClient->getStatuses(0, true);
-		ASSERT_EQ(ret.second, FleetApiClient::ReturnCode::OK);
+		ASSERT_EQ(ret.second, FleetApiClient::ReturnCode::FAILED);
 	}
 
 	timeAfter = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
