@@ -53,13 +53,14 @@ void FleetApiClient::setDeviceIdentification(const cxx::DeviceID &deviceId) cons
 std::pair<std::vector<std::shared_ptr<model::Car>>, FleetApiClient::ReturnCode> FleetApiClient::getCars(
 	const std::optional<int64_t> since, const std::optional<bool> wait) const
 {
-	const auto carsRequest = carApi_->availableCars(wait.value_or(false), since.value_or(0));
 	std::vector<std::shared_ptr<model::Car>> cars {};
 	auto rc = ReturnCode::OK;
 
 	try {
+		const auto carsRequest = carApi_->availableCars(wait.value_or(false), since.value_or(0));
 		cars = carsRequest.get();
 	} catch(std::exception &) {
+		rc = ReturnCode::FAILED;
 	}
 
 	if(wait && requestFrequencyGuard_->handleDelays()) {
@@ -72,13 +73,14 @@ std::pair<std::vector<std::shared_ptr<model::Car>>, FleetApiClient::ReturnCode> 
 std::pair<std::vector<std::shared_ptr<model::Message>>, FleetApiClient::ReturnCode> FleetApiClient::getCommands(
 	const std::optional<int64_t> since, const std::optional<bool> wait) const
 {
-	const auto commandsRequest = deviceApi_->listCommands(companyName_, carName_, since.value_or(0), wait.value_or(false));
 	std::vector<std::shared_ptr<model::Message>> commands {};
 	auto rc = ReturnCode::OK;
 
 	try {
+		const auto commandsRequest = deviceApi_->listCommands(companyName_, carName_, since.value_or(0), wait.value_or(false));
 		commands = commandsRequest.get();
 	} catch(std::exception &) {
+		rc = ReturnCode::FAILED;
 	}
 
 	if(wait && requestFrequencyGuard_->handleDelays()) {
@@ -91,13 +93,14 @@ std::pair<std::vector<std::shared_ptr<model::Message>>, FleetApiClient::ReturnCo
 std::pair<std::vector<std::shared_ptr<model::Message>>, FleetApiClient::ReturnCode> FleetApiClient::getStatuses(
 	const std::optional<int64_t> since, const std::optional<bool>& wait) const
 {
-	const auto statusesRequest = deviceApi_->listStatuses(companyName_, carName_, since.value_or(0), wait.value_or(false));
 	std::vector<std::shared_ptr<model::Message>> statuses {};
 	auto rc = ReturnCode::OK;
 
 	try {
+		const auto statusesRequest = deviceApi_->listStatuses(companyName_, carName_, since.value_or(0), wait.value_or(false));
 		statuses = statusesRequest.get();
 	} catch(std::exception &) {
+		rc = ReturnCode::FAILED;
 	}
 
 	if(wait && requestFrequencyGuard_->handleDelays()) {
@@ -107,20 +110,29 @@ std::pair<std::vector<std::shared_ptr<model::Message>>, FleetApiClient::ReturnCo
 }
 
 
-void FleetApiClient::sendCommand(const std::string &commandJson) const {
+FleetApiClient::ReturnCode FleetApiClient::sendCommand(const std::string &commandJson) const {
 	payloadPtr_->setMessageType(settings::Constants::COMMAND_MESSAGE_TYPE);
-	payloadDataPtr_->setJson(web::json::value::parse(commandJson));
+	std::error_code json_ec {};
+	payloadDataPtr_->setJson(web::json::value::parse(commandJson, json_ec));
+	if(json_ec) {
+		return ReturnCode::INVALID_ARGUMENTS;
+	}
 	messagePtr_->setTimestamp(utility::datetime::utc_timestamp());
 
 	std::vector<std::shared_ptr<model::Message>> commands;
 	commands.push_back(messagePtr_);
 
-	const auto commandsRequest = deviceApi_->sendCommands(companyName_, carName_, commands);
-	commandsRequest.wait();
+	try {
+		const auto commandsRequest = deviceApi_->sendCommands(companyName_, carName_, commands);
+		commandsRequest.wait();
+	} catch(std::exception &) {
+		return ReturnCode::FAILED;
+	}
+	return ReturnCode::OK;
 }
 
 
-void FleetApiClient::sendStatus(const std::string &statusJson, const StatusType statusType) const {
+FleetApiClient::ReturnCode FleetApiClient::sendStatus(const std::string &statusJson, const StatusType statusType) const {
 	switch(statusType) {
 		case StatusType::STATUS:
 			payloadPtr_->setMessageType(settings::Constants::STATUS_MESSAGE_TYPE);
@@ -129,27 +141,46 @@ void FleetApiClient::sendStatus(const std::string &statusJson, const StatusType 
 			payloadPtr_->setMessageType(settings::Constants::STATUS_ERROR_MESSAGE_TYPE);
 			break;
 		default:
-			throw std::invalid_argument("Invalid status type");
+			return ReturnCode::INVALID_ARGUMENTS;
 	}
-	payloadDataPtr_->setJson(web::json::value::parse(statusJson));
+	std::error_code json_ec {};
+	payloadDataPtr_->setJson(web::json::value::parse(statusJson, json_ec));
+	if(json_ec) {
+		return ReturnCode::INVALID_ARGUMENTS;
+	}
 	messagePtr_->setTimestamp(utility::datetime::utc_timestamp());
 
 	std::vector<std::shared_ptr<model::Message>> statuses;
 	statuses.push_back(messagePtr_);
 
-	const auto statusesRequest = deviceApi_->sendStatuses(companyName_, carName_, statuses);
-	statusesRequest.wait();
+	try {
+		const auto statusesRequest = deviceApi_->sendStatuses(companyName_, carName_, statuses);
+		statusesRequest.wait();
+	} catch(std::exception &) {
+		return ReturnCode::FAILED;
+	}
+	return ReturnCode::OK;
 }
 
 
-std::shared_ptr<model::AvailableDevices> FleetApiClient::getAvailableDevices(std::optional<int32_t> moduleId) const {
+std::pair<std::shared_ptr<model::AvailableDevices>, FleetApiClient::ReturnCode> FleetApiClient::getAvailableDevices(
+	std::optional<int32_t> moduleId) const
+{
 	boost::optional<int32_t> moduleIdBoost = boost::none;
 	if(moduleId.has_value()) {
 		moduleIdBoost = moduleId.value();
 	}
 
-	const auto availableDevicesRequest = moduleApi_->availableDevices(companyName_, carName_, moduleIdBoost);
-	return availableDevicesRequest.get();
+	std::shared_ptr<model::AvailableDevices> availableDevices {};
+	auto rc = ReturnCode::OK;
+
+	try {
+		const auto availableDevicesRequest = moduleApi_->availableDevices(companyName_, carName_, moduleIdBoost);
+		availableDevices = availableDevicesRequest.get();
+	} catch(std::exception &) {
+		rc = ReturnCode::FAILED;
+	}
+	return {availableDevices, rc};
 }
 
 }// namespace bringauto::fleet_protocol::http_client

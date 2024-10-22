@@ -28,8 +28,12 @@ public:
 	enum class ReturnCode {
 		// request was successful without any delays
 		OK,
+		// request failed
+		FAILED,
 		// request was delayed due to request rate threshold being reached
-		DELAYED 
+		DELAYED,
+		// invalid arguments were passed to the function
+		INVALID_ARGUMENTS
 	};
 
 	/**
@@ -56,7 +60,7 @@ public:
 	~FleetApiClient() = default;
 
 	/**
-	 * @brief Sets the DeviceId parameters, required for sendCommand and sendStatuse functions
+	 * @brief Sets the DeviceId parameters, required for sendCommand and sendStatus functions
 	 * @param deviceId DeviceId struct containing the device identification parameters
 	 */
 	void setDeviceIdentification(const cxx::DeviceID &deviceId) const;
@@ -96,7 +100,7 @@ public:
 	 * setDeviceIdentification needs to be used beforehand to set DeviceId, otherwise placeholder values will be used.
 	 * @param commandJson payload data of a command represented by a json as a string
 	 */
-	void sendCommand(const std::string &commandJson) const;
+	ReturnCode sendCommand(const std::string &commandJson) const;
 
 	/**
 	 * @brief Calls the POST function on /status/{company_name}/{car_name} of Fleet v2 HTTP API.
@@ -104,14 +108,14 @@ public:
 	 * @param statusJson payload data of a status represented by a json as a string
 	 * @param statusType optional, type of the status, default is STATUS
 	 */
-	void sendStatus(const std::string &statusJson, StatusType statusType = StatusType::STATUS) const;
+	ReturnCode sendStatus(const std::string &statusJson, StatusType statusType = StatusType::STATUS) const;
 
 	/**
 	 * @brief Calls the GET function on /available-devices/{company_name}/{car_name} of Fleet v2 HTTP API
 	 * @param moduleId optional, filters returned devices to only those with matching module Id
 	 * @return Shared pointer to the AvailableDevices model
 	 */
-	[[nodiscard]] std::shared_ptr<org::openapitools::client::model::AvailableDevices> getAvailableDevices(
+	[[nodiscard]] std::pair<std::shared_ptr<org::openapitools::client::model::AvailableDevices>, ReturnCode> getAvailableDevices(
 		std::optional<int32_t> moduleId = std::nullopt) const;
 
 private:
