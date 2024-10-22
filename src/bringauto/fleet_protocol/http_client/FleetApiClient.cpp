@@ -113,10 +113,11 @@ std::pair<std::vector<std::shared_ptr<model::Message>>, FleetApiClient::ReturnCo
 FleetApiClient::ReturnCode FleetApiClient::sendCommand(const std::string &commandJson) const {
 	payloadPtr_->setMessageType(settings::Constants::COMMAND_MESSAGE_TYPE);
 	std::error_code json_ec {};
-	payloadDataPtr_->setJson(web::json::value::parse(commandJson, json_ec));
+	const auto json = web::json::value::parse(commandJson, json_ec);
 	if(json_ec) {
 		return ReturnCode::INVALID_ARGUMENTS;
 	}
+	payloadDataPtr_->setJson(json);
 	messagePtr_->setTimestamp(utility::datetime::utc_timestamp());
 
 	std::vector<std::shared_ptr<model::Message>> commands;
@@ -144,10 +145,11 @@ FleetApiClient::ReturnCode FleetApiClient::sendStatus(const std::string &statusJ
 			return ReturnCode::INVALID_ARGUMENTS;
 	}
 	std::error_code json_ec {};
-	payloadDataPtr_->setJson(web::json::value::parse(statusJson, json_ec));
+	const auto json = web::json::value::parse(statusJson, json_ec);
 	if(json_ec) {
 		return ReturnCode::INVALID_ARGUMENTS;
 	}
+	payloadDataPtr_->setJson(json);
 	messagePtr_->setTimestamp(utility::datetime::utc_timestamp());
 
 	std::vector<std::shared_ptr<model::Message>> statuses;
