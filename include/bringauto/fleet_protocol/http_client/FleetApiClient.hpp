@@ -99,6 +99,7 @@ public:
 	 * @brief Calls the POST function on /command/{company_name}/{car_name} of Fleet v2 HTTP API.
 	 * setDeviceIdentification needs to be used beforehand to set DeviceId, otherwise placeholder values will be used.
 	 * @param commandJson payload data of a command represented by a json as a string
+	 * @return ReturnCode indicating the result of the operation
 	 */
 	ReturnCode sendCommand(const std::string &commandJson) const;
 
@@ -107,13 +108,14 @@ public:
 	 * setDeviceIdentification needs to be used beforehand to set DeviceId, otherwise placeholder values will be used.
 	 * @param statusJson payload data of a status represented by a json as a string
 	 * @param statusType optional, type of the status, default is STATUS
+	 * @return ReturnCode indicating the result of the operation
 	 */
 	ReturnCode sendStatus(const std::string &statusJson, StatusType statusType = StatusType::STATUS) const;
 
 	/**
 	 * @brief Calls the GET function on /available-devices/{company_name}/{car_name} of Fleet v2 HTTP API
 	 * @param moduleId optional, filters returned devices to only those with matching module Id
-	 * @return Shared pointer to the AvailableDevices model
+	 * @return Shared pointer to the AvailableDevices model and a ReturnCode indicating the result
 	 */
 	[[nodiscard]] std::pair<std::shared_ptr<org::openapitools::client::model::AvailableDevices>, ReturnCode> getAvailableDevices(
 		std::optional<int32_t> moduleId = std::nullopt) const;
