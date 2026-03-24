@@ -1,4 +1,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.25 FATAL_ERROR)
+
+SET(CMAKE_POLICY_DEFAULT_CMP0167 NEW)
+
 PROJECT(fleet-http-client C CXX)
 
 IF (TARGET fleet-http-client-static)
@@ -38,7 +41,9 @@ IF(NOT BRINGAUTO_SYSTEM_DEP)
 ENDIF()
 
 FIND_PACKAGE(fleet-protocol-interface 2.0.0 REQUIRED)
-FIND_PACKAGE(fleet-protocol-cxx-helpers-static 1.1.1 REQUIRED)
+FIND_PACKAGE(fleet-protocol-cxx-helpers-static 1.2.0 REQUIRED)
+FIND_PACKAGE(aeron 1.48.6 REQUIRED)
+FIND_PACKAGE(async-function-execution-shared 1.0.0 REQUIRED)
 
 SET(BUILD_SHARED_LIBS OFF)
 ADD_SUBDIRECTORY("lib/bringauto-fleet-http-client-generated")
