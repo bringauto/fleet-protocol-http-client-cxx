@@ -1,5 +1,8 @@
 #include <bringauto/fleet_protocol/http_client/FleetApiClient.hpp>
 #include <bringauto/fleet_protocol/http_client/settings/Constants.hpp>
+#include <bringauto-fleet-http-client-generated/ApiException.h>
+
+#include <iostream>
 
 using namespace org::openapitools::client;
 
@@ -147,6 +150,7 @@ FleetApiClient::ReturnCode FleetApiClient::sendStatus(const std::string &statusJ
 	std::error_code json_ec {};
 	const auto json = web::json::value::parse(statusJson, json_ec);
 	if(json_ec) {
+		std::cerr << "[fleet-http-client] sendStatus JSON parse error: " << json_ec.message() << "\n";
 		return ReturnCode::INVALID_ARGUMENTS;
 	}
 	payloadDataPtr_->setJson(json);
@@ -158,7 +162,13 @@ FleetApiClient::ReturnCode FleetApiClient::sendStatus(const std::string &statusJ
 	try {
 		const auto statusesRequest = deviceApi_->sendStatuses(companyName_, carName_, statuses);
 		statusesRequest.wait();
-	} catch(std::exception &) {
+	} catch(const api::ApiException &e) {
+		std::cerr << "[fleet-http-client] sendStatus API error HTTP " << e.error_code()
+		          << ": " << e.what() << " (company=" << companyName_ << ", car=" << carName_ << ")\n";
+		return ReturnCode::FAILED;
+	} catch(const std::exception &e) {
+		std::cerr << "[fleet-http-client] sendStatus failed: " << e.what()
+		          << " (company=" << companyName_ << ", car=" << carName_ << ")\n";
 		return ReturnCode::FAILED;
 	}
 	return ReturnCode::OK;
